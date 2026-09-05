@@ -185,7 +185,7 @@ const PAGE = `<!doctype html>
       .campaign-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; position: relative; }
       .campaign-card img { aspect-ratio: 4 / 3; object-fit: cover; transition: transform .35s ease; width: 100%; }
       .campaign-card:hover img { transform: scale(1.04); }
-      .campaign-card figcaption { background: linear-gradient(0deg, rgba(6,9,14,.92), rgba(6,9,14,.15)); bottom: 0; color: var(--ink); font-size: .78rem; left: 0; padding: 36px 15px 14px; position: absolute; right: 0; }
+      .campaign-card figcaption { background: var(--panel); color: var(--ink); font-size: .78rem; padding: 12px 15px 14px; }
       .campaign-card figcaption span { color: var(--cyan); display: block; font-size: .66rem; font-weight: 800; letter-spacing: .11em; margin-bottom: 3px; text-transform: uppercase; }
       .manifesto { background: var(--red); color: #250b12; overflow: hidden; padding: 95px 0; position: relative; }
       .manifesto::after { border: 1px solid rgba(37,11,18,.22); border-radius: 50%; content: ""; height: 560px; position: absolute; right: -80px; top: -210px; width: 560px; }
@@ -301,12 +301,12 @@ const PAGE = `<!doctype html>
         <section id="scenes">
           <div class="section-head"><div><div class="eyebrow">HCG1 in the wild</div><h2>One headset. Every kind of session.</h2></div><p>From ranked matches to late-night playlists, the HCG1 is made to move with the people who use it.</p></div>
           <div class="campaign-grid">
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-gaming.png" alt="Gamer wearing the HCG1 headset during a focused PC session" loading="lazy" /><figcaption><span>Ranked mode</span>Lock in and read the room.</figcaption></figure>
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-studio.png" alt="Music producer wearing the HCG1 headset in a home studio" loading="lazy" /><figcaption><span>Studio time</span>Make every layer count.</figcaption></figure>
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-party.png" alt="Friend wearing the HCG1 headset at a rooftop game night" loading="lazy" /><figcaption><span>Squad night</span>Pass the controller, keep the energy.</figcaption></figure>
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-beach.png" alt="Skater wearing the HCG1 headset on a sunny beach boardwalk" loading="lazy" /><figcaption><span>Out of office</span>Your soundtrack travels.</figcaption></figure>
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-streamer.png" alt="Streamer wearing the HCG1 headset in a cozy creator setup" loading="lazy" /><figcaption><span>Creator mode</span>Clear comms, camera ready.</figcaption></figure>
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-esports.png" alt="Esports teammate wearing the HCG1 headset in a tournament arena" loading="lazy" /><figcaption><span>Match point</span>Call the play when it matters.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-gaming.png" alt="Gamer wearing the HCG1 headset during a focused PC session" /><figcaption><span>Ranked mode</span>Lock in and read the room.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-studio.png" alt="Music producer wearing the HCG1 headset in a home studio" /><figcaption><span>Studio time</span>Make every layer count.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-party.png" alt="Friend wearing the HCG1 headset at a rooftop game night" /><figcaption><span>Squad night</span>Pass the controller, keep the energy.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-beach.png" alt="Skater wearing the HCG1 headset on a sunny beach boardwalk" /><figcaption><span>Out of office</span>Your soundtrack travels.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-streamer.png" alt="Streamer wearing the HCG1 headset in a cozy creator setup" /><figcaption><span>Creator mode</span>Clear comms, camera ready.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-esports.png" alt="Esports teammate wearing the HCG1 headset in a tournament arena" /><figcaption><span>Match point</span>Call the play when it matters.</figcaption></figure>
           </div>
         </section>
 
