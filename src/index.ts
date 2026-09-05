@@ -289,7 +289,7 @@ const PAGE = `<!doctype html>
           <div class="hero-art" aria-label="HCG1 Pro Gaming Headset product photography" role="img">
             <div class="product-stage">
               <div class="stage-label"><strong>HCG1</strong> / PRO SERIES</div>
-              <img class="product-photo" src="/media/image?key=product-hero&amp;width=1000&amp;height=1000&amp;fit=contain" alt="Black and red HCG1 Pro Gaming Headset with detachable microphone" decoding="async" fetchpriority="high" />
+              <img class="product-photo" src="/media/image?key=product-hero&amp;variant=product&amp;v=2" alt="Black and red HCG1 Pro Gaming Headset with detachable microphone" decoding="async" fetchpriority="high" />
               <div class="stage-note"><div class="price-note"><strong>Sound that stays sharp</strong> Hear the moment before it happens.</div><div class="signal" aria-label="Three signal bars"><i></i><i></i><i></i></div></div>
               <div class="photo-credit">Official HCG1 product photography · 53mm drivers · wired 3.5mm</div>
             </div>
@@ -305,10 +305,10 @@ const PAGE = `<!doctype html>
         <section id="gallery">
           <div class="section-head"><div><div class="eyebrow">See the HCG1</div><h2>Built to look as sharp as it sounds.</h2></div><p>Black-and-red hardware, a detachable boom mic, and the controls you need close at hand.</p></div>
           <div class="visual-product">
-            <article class="visual-main"><img src="/media/image?key=product-angle&amp;width=1200&amp;height=900&amp;fit=cover" alt="HCG1 headset shown at an angle with its detachable microphone" loading="lazy" decoding="async" /><div class="visual-caption"><h3>Focus on the play.</h3><p>The closed-back over-ear fit keeps the room out while the 53mm drivers keep the action clear.</p></div></article>
+            <article class="visual-main"><img src="/media/image?key=product-angle&amp;variant=hero&amp;v=2" alt="HCG1 headset shown at an angle with its detachable microphone" loading="lazy" decoding="async" /><div class="visual-caption"><h3>Focus on the play.</h3><p>The closed-back over-ear fit keeps the room out while the 53mm drivers keep the action clear.</p></div></article>
             <div class="visual-stack">
-              <article class="visual-card"><img src="/media/image?key=product-comfort&amp;width=900&amp;height=700&amp;fit=cover" alt="HCG1 earcup and padded headband detail" loading="lazy" decoding="async" /><span>All-weekend comfort</span></article>
-              <article class="visual-card"><img src="/media/image?key=product-controls&amp;width=900&amp;height=700&amp;fit=cover" alt="HCG1 detachable boom microphone and inline controls" loading="lazy" decoding="async" /><span>Clear comms, simple controls</span></article>
+              <article class="visual-card"><img src="/media/image?key=product-comfort&amp;variant=card&amp;v=2" alt="HCG1 earcup and padded headband detail" loading="lazy" decoding="async" /><span>All-weekend comfort</span></article>
+              <article class="visual-card"><img src="/media/image?key=product-controls&amp;variant=card&amp;v=2" alt="HCG1 detachable boom microphone and inline controls" loading="lazy" decoding="async" /><span>Clear comms, simple controls</span></article>
             </div>
           </div>
           <div class="spec-callout"><span class="spec-pip">53</span><div><strong>53mm stereo drivers</strong><span>20Hz–20kHz response, 32 ohms impedance, and an inline volume controller.</span></div></div>
@@ -317,12 +317,12 @@ const PAGE = `<!doctype html>
         <section id="scenes">
           <div class="section-head"><div><div class="eyebrow">HCG1 in the wild</div><h2>One headset. Every kind of session.</h2></div><p>From ranked matches to late-night playlists, the HCG1 is made to move with the people who use it.</p></div>
           <div class="campaign-grid">
-            <figure class="campaign-card"><img src="/media/image?key=campaign-gaming&amp;width=1200&amp;height=900&amp;fit=cover" alt="Gamer wearing the HCG1 headset during a focused PC session" decoding="async" /><figcaption><span>Ranked mode</span>Lock in and read the room.</figcaption></figure>
-            <figure class="campaign-card"><img src="/media/image?key=campaign-studio&amp;width=1200&amp;height=900&amp;fit=cover" alt="Music producer wearing the HCG1 headset in a home studio" decoding="async" /><figcaption><span>Studio time</span>Make every layer count.</figcaption></figure>
-            <figure class="campaign-card"><img src="/media/image?key=campaign-party&amp;width=1200&amp;height=900&amp;fit=cover" alt="Friend wearing the HCG1 headset at a rooftop game night" decoding="async" /><figcaption><span>Squad night</span>Pass the controller, keep the energy.</figcaption></figure>
-            <figure class="campaign-card"><img src="/media/image?key=campaign-beach&amp;width=1200&amp;height=900&amp;fit=cover" alt="Skater wearing the HCG1 headset on a sunny beach boardwalk" decoding="async" /><figcaption><span>Out of office</span>Your soundtrack travels.</figcaption></figure>
-            <figure class="campaign-card"><img src="/media/image?key=campaign-streamer&amp;width=1200&amp;height=900&amp;fit=cover" alt="Streamer wearing the HCG1 headset in a cozy creator setup" decoding="async" /><figcaption><span>Creator mode</span>Clear comms, camera ready.</figcaption></figure>
-            <figure class="campaign-card"><img src="/media/image?key=campaign-esports&amp;width=1200&amp;height=900&amp;fit=cover" alt="Esports teammate wearing the HCG1 headset in a tournament arena" decoding="async" /><figcaption><span>Match point</span>Call the play when it matters.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-gaming&amp;variant=card&amp;v=2" alt="Gamer wearing the HCG1 headset during a focused PC session" decoding="async" /><figcaption><span>Ranked mode</span>Lock in and read the room.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-studio&amp;variant=card&amp;v=2" alt="Music producer wearing the HCG1 headset in a home studio" decoding="async" /><figcaption><span>Studio time</span>Make every layer count.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-party&amp;variant=card&amp;v=2" alt="Friend wearing the HCG1 headset at a rooftop game night" decoding="async" /><figcaption><span>Squad night</span>Pass the controller, keep the energy.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-beach&amp;variant=card&amp;v=2" alt="Skater wearing the HCG1 headset on a sunny beach boardwalk" decoding="async" /><figcaption><span>Out of office</span>Your soundtrack travels.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-streamer&amp;variant=card&amp;v=2" alt="Streamer wearing the HCG1 headset in a cozy creator setup" decoding="async" /><figcaption><span>Creator mode</span>Clear comms, camera ready.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-esports&amp;variant=card&amp;v=2" alt="Esports teammate wearing the HCG1 headset in a tournament arena" decoding="async" /><figcaption><span>Match point</span>Call the play when it matters.</figcaption></figure>
           </div>
         </section>
 
