@@ -1,3 +1,18 @@
+/// <reference types="@cloudflare/workers-types" />
+
+const MEDIA_SOURCES: Record<string, string> = {
+  "product-hero": "https://www.hcgamerlife.com/cdn/shop/products/81DJJX5paJL._SL1500.jpg?v=1525886539",
+  "product-angle": "https://www.hcgamerlife.com/cdn/shop/products/71UxzyHgnFL._SL1500.jpg?v=1525886544",
+  "product-comfort": "https://www.hcgamerlife.com/cdn/shop/products/71sW88FIVRL._SL1500.jpg?v=1525886558",
+  "product-controls": "https://www.hcgamerlife.com/cdn/shop/products/71LUwGLZtuL._SL1500.jpg?v=1525886566",
+  "campaign-gaming": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-gaming.png",
+  "campaign-studio": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-studio.png",
+  "campaign-party": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-party.png",
+  "campaign-beach": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-beach.png",
+  "campaign-streamer": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-streamer.png",
+  "campaign-esports": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-esports.png"
+};
+
 const PAGE = `<!doctype html>
 <html lang="en">
   <head>
@@ -274,7 +289,7 @@ const PAGE = `<!doctype html>
           <div class="hero-art" aria-label="HCG1 Pro Gaming Headset product photography" role="img">
             <div class="product-stage">
               <div class="stage-label"><strong>HCG1</strong> / PRO SERIES</div>
-              <img class="product-photo" src="https://www.hcgamerlife.com/cdn/shop/products/81DJJX5paJL._SL1500.jpg?v=1525886539" alt="Black and red HCG1 Pro Gaming Headset with detachable microphone" />
+              <img class="product-photo" src="/media/image?key=product-hero&amp;width=1000&amp;height=1000&amp;fit=contain" alt="Black and red HCG1 Pro Gaming Headset with detachable microphone" decoding="async" fetchpriority="high" />
               <div class="stage-note"><div class="price-note"><strong>Sound that stays sharp</strong> Hear the moment before it happens.</div><div class="signal" aria-label="Three signal bars"><i></i><i></i><i></i></div></div>
               <div class="photo-credit">Official HCG1 product photography · 53mm drivers · wired 3.5mm</div>
             </div>
@@ -290,10 +305,10 @@ const PAGE = `<!doctype html>
         <section id="gallery">
           <div class="section-head"><div><div class="eyebrow">See the HCG1</div><h2>Built to look as sharp as it sounds.</h2></div><p>Black-and-red hardware, a detachable boom mic, and the controls you need close at hand.</p></div>
           <div class="visual-product">
-            <article class="visual-main"><img src="https://www.hcgamerlife.com/cdn/shop/products/71UxzyHgnFL._SL1500.jpg?v=1525886544" alt="HCG1 headset shown at an angle with its detachable microphone" loading="lazy" /><div class="visual-caption"><h3>Focus on the play.</h3><p>The closed-back over-ear fit keeps the room out while the 53mm drivers keep the action clear.</p></div></article>
+            <article class="visual-main"><img src="/media/image?key=product-angle&amp;width=1200&amp;height=900&amp;fit=cover" alt="HCG1 headset shown at an angle with its detachable microphone" loading="lazy" decoding="async" /><div class="visual-caption"><h3>Focus on the play.</h3><p>The closed-back over-ear fit keeps the room out while the 53mm drivers keep the action clear.</p></div></article>
             <div class="visual-stack">
-              <article class="visual-card"><img src="https://www.hcgamerlife.com/cdn/shop/products/71sW88FIVRL._SL1500.jpg?v=1525886558" alt="HCG1 earcup and padded headband detail" loading="lazy" /><span>All-weekend comfort</span></article>
-              <article class="visual-card"><img src="https://www.hcgamerlife.com/cdn/shop/products/71LUwGLZtuL._SL1500.jpg?v=1525886566" alt="HCG1 detachable boom microphone and inline controls" loading="lazy" /><span>Clear comms, simple controls</span></article>
+              <article class="visual-card"><img src="/media/image?key=product-comfort&amp;width=900&amp;height=700&amp;fit=cover" alt="HCG1 earcup and padded headband detail" loading="lazy" decoding="async" /><span>All-weekend comfort</span></article>
+              <article class="visual-card"><img src="/media/image?key=product-controls&amp;width=900&amp;height=700&amp;fit=cover" alt="HCG1 detachable boom microphone and inline controls" loading="lazy" decoding="async" /><span>Clear comms, simple controls</span></article>
             </div>
           </div>
           <div class="spec-callout"><span class="spec-pip">53</span><div><strong>53mm stereo drivers</strong><span>20Hz–20kHz response, 32 ohms impedance, and an inline volume controller.</span></div></div>
@@ -302,12 +317,12 @@ const PAGE = `<!doctype html>
         <section id="scenes">
           <div class="section-head"><div><div class="eyebrow">HCG1 in the wild</div><h2>One headset. Every kind of session.</h2></div><p>From ranked matches to late-night playlists, the HCG1 is made to move with the people who use it.</p></div>
           <div class="campaign-grid">
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-gaming.png" alt="Gamer wearing the HCG1 headset during a focused PC session" /><figcaption><span>Ranked mode</span>Lock in and read the room.</figcaption></figure>
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-studio.png" alt="Music producer wearing the HCG1 headset in a home studio" /><figcaption><span>Studio time</span>Make every layer count.</figcaption></figure>
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-party.png" alt="Friend wearing the HCG1 headset at a rooftop game night" /><figcaption><span>Squad night</span>Pass the controller, keep the energy.</figcaption></figure>
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-beach.png" alt="Skater wearing the HCG1 headset on a sunny beach boardwalk" /><figcaption><span>Out of office</span>Your soundtrack travels.</figcaption></figure>
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-streamer.png" alt="Streamer wearing the HCG1 headset in a cozy creator setup" /><figcaption><span>Creator mode</span>Clear comms, camera ready.</figcaption></figure>
-            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-esports.png" alt="Esports teammate wearing the HCG1 headset in a tournament arena" /><figcaption><span>Match point</span>Call the play when it matters.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-gaming&amp;width=1200&amp;height=900&amp;fit=cover" alt="Gamer wearing the HCG1 headset during a focused PC session" decoding="async" /><figcaption><span>Ranked mode</span>Lock in and read the room.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-studio&amp;width=1200&amp;height=900&amp;fit=cover" alt="Music producer wearing the HCG1 headset in a home studio" decoding="async" /><figcaption><span>Studio time</span>Make every layer count.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-party&amp;width=1200&amp;height=900&amp;fit=cover" alt="Friend wearing the HCG1 headset at a rooftop game night" decoding="async" /><figcaption><span>Squad night</span>Pass the controller, keep the energy.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-beach&amp;width=1200&amp;height=900&amp;fit=cover" alt="Skater wearing the HCG1 headset on a sunny beach boardwalk" decoding="async" /><figcaption><span>Out of office</span>Your soundtrack travels.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-streamer&amp;width=1200&amp;height=900&amp;fit=cover" alt="Streamer wearing the HCG1 headset in a cozy creator setup" decoding="async" /><figcaption><span>Creator mode</span>Clear comms, camera ready.</figcaption></figure>
+            <figure class="campaign-card"><img src="/media/image?key=campaign-esports&amp;width=1200&amp;height=900&amp;fit=cover" alt="Esports teammate wearing the HCG1 headset in a tournament arena" decoding="async" /><figcaption><span>Match point</span>Call the play when it matters.</figcaption></figure>
           </div>
         </section>
 
@@ -343,14 +358,76 @@ const HEADERS = {
   "permissions-policy": "camera=(), microphone=(), geolocation=()"
 };
 
+const clampDimension = (value: string | null, fallback: number, maximum: number): number => {
+  const parsed = Number.parseInt(value ?? "", 10);
+  return Number.isFinite(parsed) ? Math.min(Math.max(parsed, 120), maximum) : fallback;
+};
+
+const negotiatedFormat = (request: Request): "avif" | "webp" | undefined => {
+  const accept = request.headers.get("accept") ?? "";
+  if (accept.includes("image/avif")) return "avif";
+  if (accept.includes("image/webp")) return "webp";
+  return undefined;
+};
+
+async function serveOptimizedImage(request: Request, url: URL): Promise<Response> {
+  const sourceKey = url.searchParams.get("key") ?? "";
+  const source = MEDIA_SOURCES[sourceKey];
+  if (!source) return new Response("Unknown media asset", { status: 404 });
+
+  const width = clampDimension(url.searchParams.get("width"), 1200, 2400);
+  const height = clampDimension(url.searchParams.get("height"), 900, 2400);
+  const requestedFit = url.searchParams.get("fit");
+  const fit = requestedFit === "contain" || requestedFit === "scale-down" ? requestedFit : "cover";
+  const format = negotiatedFormat(request);
+  const cacheUrl = new URL(request.url);
+  cacheUrl.searchParams.set("format", format ?? "source");
+  const cacheKey = new Request(cacheUrl.toString(), { method: "GET" });
+  const cache = (caches as unknown as { default: Cache }).default;
+  const cached = await cache.match(cacheKey);
+  if (cached) return cached;
+
+  let upstream: Response;
+  try {
+    upstream = await fetch(source, {
+      cf: {
+        image: {
+          fit,
+          width,
+          height,
+          quality: 82,
+          ...(format ? { format } : {})
+        }
+      }
+    } as RequestInit);
+  } catch {
+    upstream = await fetch(source);
+  }
+
+  if (!upstream.ok) return new Response("Media source unavailable", { status: 502 });
+  const headers = new Headers(upstream.headers);
+  headers.set("cache-control", "public, max-age=31536000, immutable");
+  headers.set("cdn-cache-control", "public, max-age=31536000, immutable");
+  headers.set("vary", "Accept");
+  headers.set("cross-origin-resource-policy", "same-origin");
+  const response = new Response(upstream.body, { status: upstream.status, headers });
+  try {
+    await cache.put(cacheKey, response.clone());
+  } catch {
+    // Cache writes are best effort; the transformed response is still valid.
+  }
+  return response;
+}
+
 export default {
-  fetch(request: Request): Response {
+  async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname === "/healthz") {
       return new Response(JSON.stringify({ ok: true, service: "hc-gamer-life" }), {
         headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
       });
     }
+    if (url.pathname === "/media/image") return serveOptimizedImage(request, url);
     return new Response(PAGE, { headers: HEADERS });
   }
 };
