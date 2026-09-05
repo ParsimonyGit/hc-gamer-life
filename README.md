@@ -19,4 +19,9 @@ Authenticate Wrangler locally with `npx wrangler login`, then run `npm run deplo
 
 The Worker serves the site at every route and exposes `/healthz` for a lightweight deployment check. A custom domain can be attached in Cloudflare later without changing the source.
 
+## Media delivery
+
+The product gallery and campaign scenes are stored in Cloudflare Images and delivered through the Worker’s `/media/image` route. The route selects the global `product`, `hero`, and `card` variants, keeps the responses at the edge for a year, and falls back to Cloudflare Image Transformations when a future source is not already in Images.
+
+The Worker is also configured with remote Cloudflare Images, Media Transformations, and Stream bindings for future assets. When video is added, use Cloudflare Stream’s direct player or HLS/DASH manifest URLs so Stream can handle adaptive playback globally; the Worker should not cache or proxy manifests.
 

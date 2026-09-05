@@ -4,10 +4,21 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-09-05",
   "compatibility_flags": ["nodejs_compat"],
+  "images": {
+    "binding": "IMAGES",
+    "remote": true
+  },
+  "media": {
+    "binding": "MEDIA",
+    "remote": true
+  },
+  "stream": {
+    "binding": "STREAM",
+    "remote": true
+  },
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
   }
 }
-
 
