@@ -1,16 +1,16 @@
 /// <reference types="@cloudflare/workers-types" />
 
 const MEDIA_SOURCES: Record<string, string> = {
-  "product-hero": "https://www.hcgamerlife.com/cdn/shop/products/81DJJX5paJL._SL1500.jpg?v=1525886539",
-  "product-angle": "https://www.hcgamerlife.com/cdn/shop/products/71UxzyHgnFL._SL1500.jpg?v=1525886544",
-  "product-comfort": "https://www.hcgamerlife.com/cdn/shop/products/71sW88FIVRL._SL1500.jpg?v=1525886558",
-  "product-controls": "https://www.hcgamerlife.com/cdn/shop/products/71LUwGLZtuL._SL1500.jpg?v=1525886566",
-  "campaign-gaming": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-gaming.png",
-  "campaign-studio": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-studio.png",
-  "campaign-party": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-party.png",
-  "campaign-beach": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-beach.png",
-  "campaign-streamer": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-streamer.png",
-  "campaign-esports": "https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-esports.png"
+  "product-hero": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-hero",
+  "product-angle": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-angle",
+  "product-comfort": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-comfort",
+  "product-controls": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-controls",
+  "campaign-gaming": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/campaign-gaming",
+  "campaign-studio": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/campaign-studio",
+  "campaign-party": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/campaign-party",
+  "campaign-beach": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/campaign-beach",
+  "campaign-streamer": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/campaign-streamer",
+  "campaign-esports": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/campaign-esports"
 };
 
 const PAGE = `<!doctype html>
@@ -380,6 +380,12 @@ async function serveOptimizedImage(request: Request, url: URL): Promise<Response
   const requestedFit = url.searchParams.get("fit");
   const fit = requestedFit === "contain" || requestedFit === "scale-down" ? requestedFit : "cover";
   const format = negotiatedFormat(request);
+  const requestedVariant = url.searchParams.get("variant");
+  const defaultVariant = sourceKey === "product-hero" ? "product" : sourceKey === "product-angle" ? "hero" : "card";
+  const variant = requestedVariant === "public" || requestedVariant === "product" || requestedVariant === "hero" || requestedVariant === "card"
+    ? requestedVariant
+    : defaultVariant;
+  const imageDeliverySource = source.includes("imagedelivery.net/") ? `${source}/${variant}` : source;
   const cacheUrl = new URL(request.url);
   cacheUrl.searchParams.set("format", format ?? "source");
   const cacheKey = new Request(cacheUrl.toString(), { method: "GET" });
@@ -394,24 +400,26 @@ async function serveOptimizedImage(request: Request, url: URL): Promise<Response
 
   let upstream: Response | undefined;
   try {
-    upstream = await fetch(source, {
-      cf: {
-        image: {
-          fit,
-          width,
-          height,
-          quality: 82,
-          ...(format ? { format } : {})
-        }
-      }
-    } as RequestInit);
+    upstream = source.includes("imagedelivery.net/")
+      ? await fetch(imageDeliverySource)
+      : await fetch(source, {
+          cf: {
+            image: {
+              fit,
+              width,
+              height,
+              quality: 82,
+              ...(format ? { format } : {})
+            }
+          }
+        } as RequestInit);
   } catch {
     upstream = undefined;
   }
 
   if (!upstream?.ok) {
     try {
-      upstream = await fetch(source);
+      upstream = await fetch(imageDeliverySource);
     } catch {
       upstream = undefined;
     }
