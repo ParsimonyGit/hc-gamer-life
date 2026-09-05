@@ -384,10 +384,15 @@ async function serveOptimizedImage(request: Request, url: URL): Promise<Response
   cacheUrl.searchParams.set("format", format ?? "source");
   const cacheKey = new Request(cacheUrl.toString(), { method: "GET" });
   const cache = (caches as unknown as { default: Cache }).default;
-  const cached = await cache.match(cacheKey);
+  let cached: Response | undefined;
+  try {
+    cached = await cache.match(cacheKey);
+  } catch {
+    cached = undefined;
+  }
   if (cached) return cached;
 
-  let upstream: Response;
+  let upstream: Response | undefined;
   try {
     upstream = await fetch(source, {
       cf: {
@@ -401,10 +406,17 @@ async function serveOptimizedImage(request: Request, url: URL): Promise<Response
       }
     } as RequestInit);
   } catch {
-    upstream = await fetch(source);
+    upstream = undefined;
   }
 
-  if (!upstream.ok) return new Response("Media source unavailable", { status: 502 });
+  if (!upstream?.ok) {
+    try {
+      upstream = await fetch(source);
+    } catch {
+      upstream = undefined;
+    }
+  }
+  if (!upstream?.ok) return new Response("Media source unavailable", { status: 502 });
   const headers = new Headers(upstream.headers);
   headers.set("cache-control", "public, max-age=31536000, immutable");
   headers.set("cdn-cache-control", "public, max-age=31536000, immutable");
