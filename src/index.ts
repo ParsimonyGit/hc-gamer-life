@@ -183,7 +183,7 @@ const PAGE = `<!doctype html>
       .spec-pip { align-items: center; background: var(--cyan); border-radius: 50%; color: #06201f; display: inline-flex; flex: 0 0 auto; font-size: .8rem; font-weight: 900; height: 34px; justify-content: center; width: 34px; }
       .campaign-grid { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
       .campaign-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; position: relative; }
-      .campaign-card img { aspect-ratio: 4 / 3; object-fit: cover; transition: transform .35s ease; width: 100%; }
+      .campaign-card img { background: #182334; display: block; height: 220px; object-fit: cover; object-position: center; transition: transform .35s ease; width: 100%; }
       .campaign-card:hover img { transform: scale(1.04); }
       .campaign-card figcaption { background: var(--panel); color: var(--ink); font-size: .78rem; padding: 12px 15px 14px; }
       .campaign-card figcaption span { color: var(--cyan); display: block; font-size: .66rem; font-weight: 800; letter-spacing: .11em; margin-bottom: 3px; text-transform: uppercase; }
@@ -238,6 +238,7 @@ const PAGE = `<!doctype html>
         .visual-stack { grid-template-rows: 1fr 1fr; }
         .visual-main, .visual-main img { min-height: 285px; }
         .campaign-grid { grid-template-columns: 1fr; }
+        .campaign-card img { height: 185px; }
         .closing { padding: 30px 24px; }
         .footer-row { align-items: start; flex-direction: column; gap: 12px; }
       }
