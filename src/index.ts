@@ -31,6 +31,7 @@ const PAGE = `<!doctype html>
         line-height: 1.5;
       }
       a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; }
       .shell { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
       .eyebrow {
         color: var(--cyan);
@@ -129,6 +130,18 @@ const PAGE = `<!doctype html>
         transform: rotate(-7deg);
         z-index: 1;
       }
+      .product-photo {
+        aspect-ratio: 1 / 1;
+        border-radius: 18px;
+        filter: drop-shadow(0 26px 28px rgba(0, 0, 0, .38));
+        height: 330px;
+        margin: 22px auto 18px;
+        object-fit: contain;
+        position: relative;
+        width: 100%;
+        z-index: 1;
+      }
+      .photo-credit { color: #768197; font-size: .7rem; margin: 4px 0 0; position: relative; z-index: 1; }
       .stage-note { align-items: end; display: flex; justify-content: space-between; position: relative; z-index: 1; }
       .price-note { color: var(--muted); font-size: .84rem; }
       .price-note strong { color: var(--ink); display: block; font-size: 1.18rem; }
@@ -153,6 +166,27 @@ const PAGE = `<!doctype html>
       .feature-icon svg { height: 21px; width: 21px; }
       h3 { font-size: 1.16rem; letter-spacing: -.035em; margin-bottom: 9px; }
       .feature-card p { color: var(--muted); font-size: .92rem; margin-bottom: 0; }
+      .visual-product { align-items: stretch; display: grid; gap: 26px; grid-template-columns: 1.15fr .85fr; }
+      .visual-main, .visual-card { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; position: relative; }
+      .visual-main { min-height: 420px; }
+      .visual-main img { height: 100%; min-height: 420px; object-fit: cover; object-position: center; width: 100%; }
+      .visual-main::after { background: linear-gradient(0deg, rgba(5,8,13,.8), transparent 60%); content: ""; inset: 0; pointer-events: none; position: absolute; }
+      .visual-caption { bottom: 25px; left: 27px; max-width: 420px; position: absolute; right: 27px; z-index: 1; }
+      .visual-caption h3 { font-size: 1.5rem; margin-bottom: 6px; }
+      .visual-caption p { color: #c4ccdb; font-size: .9rem; margin: 0; }
+      .visual-stack { display: grid; gap: 26px; grid-template-rows: 1fr 1fr; }
+      .visual-card img { height: 100%; min-height: 197px; object-fit: cover; width: 100%; }
+      .visual-card span { background: rgba(10,14,22,.82); bottom: 13px; color: var(--ink); font-size: .75rem; left: 13px; padding: 7px 10px; position: absolute; }
+      .spec-callout { align-items: center; background: linear-gradient(135deg, rgba(117,229,219,.1), rgba(255,79,94,.08)); border: 1px solid var(--line); border-radius: 16px; display: flex; gap: 15px; margin-top: 24px; padding: 18px; }
+      .spec-callout strong { display: block; font-size: 1.03rem; }
+      .spec-callout span { color: var(--muted); display: block; font-size: .82rem; margin-top: 2px; }
+      .spec-pip { align-items: center; background: var(--cyan); border-radius: 50%; color: #06201f; display: inline-flex; flex: 0 0 auto; font-size: .8rem; font-weight: 900; height: 34px; justify-content: center; width: 34px; }
+      .campaign-grid { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
+      .campaign-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; position: relative; }
+      .campaign-card img { aspect-ratio: 4 / 3; object-fit: cover; transition: transform .35s ease; width: 100%; }
+      .campaign-card:hover img { transform: scale(1.04); }
+      .campaign-card figcaption { background: linear-gradient(0deg, rgba(6,9,14,.92), rgba(6,9,14,.15)); bottom: 0; color: var(--ink); font-size: .78rem; left: 0; padding: 36px 15px 14px; position: absolute; right: 0; }
+      .campaign-card figcaption span { color: var(--cyan); display: block; font-size: .66rem; font-weight: 800; letter-spacing: .11em; margin-bottom: 3px; text-transform: uppercase; }
       .manifesto { background: var(--red); color: #250b12; overflow: hidden; padding: 95px 0; position: relative; }
       .manifesto::after { border: 1px solid rgba(37,11,18,.22); border-radius: 50%; content: ""; height: 560px; position: absolute; right: -80px; top: -210px; width: 560px; }
       .manifesto .shell { position: relative; z-index: 1; }
@@ -190,6 +224,9 @@ const PAGE = `<!doctype html>
         .section-head, .details { display: block; }
         .section-head p { margin-top: 18px; }
         .details-copy { margin-bottom: 40px; }
+        .visual-product { grid-template-columns: 1fr; }
+        .visual-main, .visual-main img { min-height: 350px; }
+        .campaign-grid { grid-template-columns: repeat(2, 1fr); }
       }
       @media (max-width: 580px) {
         h1 { font-size: clamp(3.05rem, 18vw, 5rem); }
@@ -198,6 +235,9 @@ const PAGE = `<!doctype html>
         .stat { padding: 10px 0; }
         .stat + .stat { border-left: 0; padding-left: 0; }
         .feature-grid, .faq { grid-template-columns: 1fr; }
+        .visual-stack { grid-template-rows: 1fr 1fr; }
+        .visual-main, .visual-main img { min-height: 285px; }
+        .campaign-grid { grid-template-columns: 1fr; }
         .closing { padding: 30px 24px; }
         .footer-row { align-items: start; flex-direction: column; gap: 12px; }
       }
@@ -230,30 +270,45 @@ const PAGE = `<!doctype html>
             </div>
             <p class="microproof">Made for everyday players on console, PC, and mobile.</p>
           </div>
-          <div class="hero-art" aria-label="Stylized illustration of the HCG1 headset" role="img">
+          <div class="hero-art" aria-label="HCG1 Pro Gaming Headset product photography" role="img">
             <div class="product-stage">
               <div class="stage-label"><strong>HCG1</strong> / PRO SERIES</div>
-              <svg class="headset" viewBox="0 0 560 390" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M137 234V177C137 83.2 198.8 30 280 30C361.2 30 423 83.2 423 177V234" stroke="#EAF1FF" stroke-width="30" stroke-linecap="round"/>
-                <path d="M137 235C137 211.8 119.2 193 97.2 193C75.2 193 57 211.8 57 235V290C57 313.2 75.2 332 97.2 332C119.2 332 137 313.2 137 290V235Z" fill="#172335" stroke="#F2F6FF" stroke-width="13"/>
-                <path d="M423 235C423 211.8 440.8 193 462.8 193C484.8 193 503 211.8 503 235V290C503 313.2 484.8 332 462.8 332C440.8 332 423 313.2 423 290V235Z" fill="#172335" stroke="#F2F6FF" stroke-width="13"/>
-                <path d="M93 272H116" stroke="#FF4F5E" stroke-width="12" stroke-linecap="round"/>
-                <path d="M444 272H467" stroke="#75E5DB" stroke-width="12" stroke-linecap="round"/>
-                <path d="M421 295C449 301 461 315 465 338" stroke="#FF4F5E" stroke-width="10" stroke-linecap="round"/>
-                <path d="M465 338H503" stroke="#FF4F5E" stroke-width="10" stroke-linecap="round"/>
-                <path d="M504 338C522 338 530 351 530 360" stroke="#FF4F5E" stroke-width="10" stroke-linecap="round"/>
-                <circle cx="280" cy="44" r="13" fill="#FF4F5E"/>
-              </svg>
+              <img class="product-photo" src="https://www.hcgamerlife.com/cdn/shop/products/81DJJX5paJL._SL1500.jpg?v=1525886539" alt="Black and red HCG1 Pro Gaming Headset with detachable microphone" />
               <div class="stage-note"><div class="price-note"><strong>Sound that stays sharp</strong> Hear the moment before it happens.</div><div class="signal" aria-label="Three signal bars"><i></i><i></i><i></i></div></div>
+              <div class="photo-credit">Official HCG1 product photography · 53mm drivers · wired 3.5mm</div>
             </div>
           </div>
         </section>
 
         <div class="stats" aria-label="Product highlights">
-          <div class="stat"><strong>3.5mm ready</strong><span>Plug into the gear you already own.</span></div>
+          <div class="stat"><strong>53mm drivers</strong><span>Hear footsteps, movement, and music in detail.</span></div>
           <div class="stat"><strong>Detachable mic</strong><span>Clear callouts when the match gets loud.</span></div>
           <div class="stat"><strong>2-year warranty</strong><span>Backed for the sessions ahead.</span></div>
         </div>
+
+        <section id="gallery">
+          <div class="section-head"><div><div class="eyebrow">See the HCG1</div><h2>Built to look as sharp as it sounds.</h2></div><p>Black-and-red hardware, a detachable boom mic, and the controls you need close at hand.</p></div>
+          <div class="visual-product">
+            <article class="visual-main"><img src="https://www.hcgamerlife.com/cdn/shop/products/71UxzyHgnFL._SL1500.jpg?v=1525886544" alt="HCG1 headset shown at an angle with its detachable microphone" loading="lazy" /><div class="visual-caption"><h3>Focus on the play.</h3><p>The closed-back over-ear fit keeps the room out while the 53mm drivers keep the action clear.</p></div></article>
+            <div class="visual-stack">
+              <article class="visual-card"><img src="https://www.hcgamerlife.com/cdn/shop/products/71sW88FIVRL._SL1500.jpg?v=1525886558" alt="HCG1 earcup and padded headband detail" loading="lazy" /><span>All-weekend comfort</span></article>
+              <article class="visual-card"><img src="https://www.hcgamerlife.com/cdn/shop/products/71LUwGLZtuL._SL1500.jpg?v=1525886566" alt="HCG1 detachable boom microphone and inline controls" loading="lazy" /><span>Clear comms, simple controls</span></article>
+            </div>
+          </div>
+          <div class="spec-callout"><span class="spec-pip">53</span><div><strong>53mm stereo drivers</strong><span>20Hz–20kHz response, 32 ohms impedance, and an inline volume controller.</span></div></div>
+        </section>
+
+        <section id="scenes">
+          <div class="section-head"><div><div class="eyebrow">HCG1 in the wild</div><h2>One headset. Every kind of session.</h2></div><p>From ranked matches to late-night playlists, the HCG1 is made to move with the people who use it.</p></div>
+          <div class="campaign-grid">
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-gaming.png" alt="Gamer wearing the HCG1 headset during a focused PC session" loading="lazy" /><figcaption><span>Ranked mode</span>Lock in and read the room.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-studio.png" alt="Music producer wearing the HCG1 headset in a home studio" loading="lazy" /><figcaption><span>Studio time</span>Make every layer count.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-party.png" alt="Friend wearing the HCG1 headset at a rooftop game night" loading="lazy" /><figcaption><span>Squad night</span>Pass the controller, keep the energy.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-beach.png" alt="Skater wearing the HCG1 headset on a sunny beach boardwalk" loading="lazy" /><figcaption><span>Out of office</span>Your soundtrack travels.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-streamer.png" alt="Streamer wearing the HCG1 headset in a cozy creator setup" loading="lazy" /><figcaption><span>Creator mode</span>Clear comms, camera ready.</figcaption></figure>
+            <figure class="campaign-card"><img src="https://raw.githubusercontent.com/ParsimonyGit/hc-gamer-life/main/assets/campaign-esports.png" alt="Esports teammate wearing the HCG1 headset in a tournament arena" loading="lazy" /><figcaption><span>Match point</span>Call the play when it matters.</figcaption></figure>
+          </div>
+        </section>
 
         <section id="product">
           <div class="section-head"><div><div class="eyebrow">Why HCG1</div><h2>Every detail earns its spot.</h2></div><p>Good gear disappears into the moment. You hear more, say more, and think less about what is on your head.</p></div>
@@ -281,7 +336,7 @@ const PAGE = `<!doctype html>
 const HEADERS = {
   "content-type": "text/html; charset=UTF-8",
   "cache-control": "public, max-age=300",
-  "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' data:; script-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' https://www.hcgamerlife.com https://hcgamerlife.com https://raw.githubusercontent.com data:; script-src 'none'; base-uri 'none'; frame-ancestors 'none'",
   "referrer-policy": "strict-origin-when-cross-origin",
   "x-content-type-options": "nosniff",
   "permissions-policy": "camera=(), microphone=(), geolocation=()"
@@ -298,5 +353,4 @@ export default {
     return new Response(PAGE, { headers: HEADERS });
   }
 };
-
 
