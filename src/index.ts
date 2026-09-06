@@ -392,6 +392,31 @@ const PAGE = `<!doctype html>
       .journal-card p { color: var(--muted); font-size: .88rem; margin-bottom: 18px; }
       .journal-kicker { color: var(--cyan); font-size: .66rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
       .journal-link { color: var(--ink); font-size: .78rem; font-weight: 800; margin-top: auto; }
+      .editorial-grid { display: grid; gap: 14px; grid-template-columns: repeat(4, 1fr); }
+      .editorial-card { background: linear-gradient(145deg, rgba(117,229,219,.08), var(--panel) 58%); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+      .editorial-card:nth-child(2) { background: linear-gradient(145deg, rgba(255,79,94,.11), var(--panel) 58%); }
+      .editorial-card:nth-child(3) { background: linear-gradient(145deg, rgba(143,117,255,.1), var(--panel) 58%); }
+      .editorial-card:nth-child(4) { background: linear-gradient(145deg, rgba(255,190,92,.1), var(--panel) 58%); }
+      .editorial-card .eyebrow { margin-bottom: 26px; }
+      .editorial-card h3 { font-size: 1.28rem; line-height: 1.08; }
+      .editorial-card p { color: var(--muted); font-size: .9rem; margin: 0 0 18px; }
+      .editorial-card a { color: var(--cyan); font-size: .78rem; font-weight: 800; }
+      .featured-guide { align-items: stretch; background: var(--panel); border: 1px solid var(--line); border-radius: 22px; display: grid; gap: 0; grid-template-columns: 1.02fr .98fr; overflow: hidden; }
+      .featured-guide-media { min-height: 410px; position: relative; }
+      .featured-guide-media::after { background: linear-gradient(90deg, transparent 40%, rgba(16,23,34,.35)); content: ""; inset: 0; pointer-events: none; position: absolute; }
+      .featured-guide-media img { display: block; height: 100%; object-fit: cover; width: 100%; }
+      .featured-guide-copy { display: flex; flex-direction: column; justify-content: center; padding: 42px; }
+      .featured-guide-copy h2 { font-size: clamp(2.1rem, 4vw, 3.7rem); margin: 10px 0 18px; }
+      .featured-guide-copy p { color: var(--muted); font-size: .98rem; max-width: 470px; }
+      .featured-guide-copy p + p { margin-top: 0; }
+      .featured-guide-copy .text-link { color: var(--cyan); font-size: .84rem; font-weight: 800; margin-top: 10px; }
+      .method-grid { display: grid; gap: 14px; grid-template-columns: repeat(4, 1fr); }
+      .method-card { border-top: 2px solid var(--cyan); padding: 19px 4px 0; }
+      .method-card:nth-child(2) { border-color: var(--red); }
+      .method-card:nth-child(3) { border-color: #a78bfa; }
+      .method-card:nth-child(4) { border-color: #ffbe5c; }
+      .method-card h3 { font-size: 1.05rem; }
+      .method-card p { color: var(--muted); font-size: .88rem; margin: 0; }
       .manifesto { background: var(--red); color: #250b12; overflow: hidden; padding: 95px 0; position: relative; }
       .manifesto::after { border: 1px solid rgba(37,11,18,.22); border-radius: 50%; content: ""; height: 560px; position: absolute; right: -80px; top: -210px; width: 560px; }
       .manifesto .shell { position: relative; z-index: 1; }
@@ -433,6 +458,9 @@ const PAGE = `<!doctype html>
         .visual-main, .visual-main img { min-height: 350px; }
         .campaign-grid { grid-template-columns: repeat(2, 1fr); }
         .journal-grid { grid-template-columns: repeat(2, 1fr); }
+        .editorial-grid, .method-grid { grid-template-columns: repeat(2, 1fr); }
+        .featured-guide { grid-template-columns: 1fr; }
+        .featured-guide-media { min-height: 330px; }
       }
       @media (max-width: 580px) {
         h1 { font-size: clamp(3.05rem, 18vw, 5rem); }
@@ -446,6 +474,9 @@ const PAGE = `<!doctype html>
         .campaign-grid { grid-template-columns: 1fr; }
         .campaign-card img { height: 185px; }
         .journal-grid { grid-template-columns: 1fr; }
+        .editorial-grid, .method-grid { grid-template-columns: 1fr; }
+        .featured-guide-copy { padding: 30px 24px 34px; }
+        .featured-guide-media { min-height: 250px; }
         .closing { padding: 30px 24px; }
         .footer-row { align-items: start; flex-direction: column; gap: 12px; }
       }
@@ -522,6 +553,33 @@ const PAGE = `<!doctype html>
         <section id="journal">
           <div class="section-head"><div><div class="eyebrow">The HC GamerLife journal</div><h2>Play smarter. Set up better. Stay for the next round.</h2></div><p>Practical guides, honest game-night advice, and buyer’s notes for people who want their gear to disappear into the moment.</p></div>
           <div class="journal-grid">${JOURNAL_CARDS}</div>
+        </section>
+
+        <section id="field-notes">
+          <div class="section-head"><div><div class="eyebrow">Start where you are</div><h2>A better session has more than one setting.</h2></div><p>Use the journal like a toolkit. Pick the problem in front of you, make one useful change, and come back when the next part of the setup needs attention.</p></div>
+          <div class="editorial-grid">
+            <article class="editorial-card"><div class="eyebrow">01 · Choose</div><h3>Find the right fit for your play style.</h3><p>Compare wired and wireless habits, comfort details, microphone choices, and the compatibility questions that matter before you buy.</p><a href="/journal/wired-vs-wireless-gaming-headsets">Open the buyer’s guide ↗</a></article>
+            <article class="editorial-card"><div class="eyebrow">02 · Tune</div><h3>Make the room work harder for you.</h3><p>Fix echo, balance game and chat audio, clean up the cable path, and protect the directional cues that help you react sooner.</p><a href="/journal/fix-party-chat-echo">Start with the setup fixes ↗</a></article>
+            <article class="editorial-card"><div class="eyebrow">03 · Play</div><h3>Give game night a little shape.</h3><p>Plan a low-pressure squad night, keep late arrivals included, and build a flexible rhythm that works for competitive and casual players.</p><a href="/journal/plan-a-low-pressure-squad-night">Plan the next session ↗</a></article>
+            <article class="editorial-card"><div class="eyebrow">04 · Keep</div><h3>Stay comfortable for the long haul.</h3><p>Small fit checks, short resets, and simple care habits help your headset and your ears feel ready for the next round.</p><a href="/journal/long-session-headset-comfort">Read the comfort notes ↗</a></article>
+          </div>
+        </section>
+
+        <section id="featured-guide">
+          <div class="featured-guide">
+            <div class="featured-guide-media"><img src="/media/image?key=campaign-gaming&amp;variant=hero&amp;v=3" alt="Player wearing the HCG1 headset during a focused gaming session" loading="lazy" decoding="async" /></div>
+            <div class="featured-guide-copy"><div class="eyebrow">Featured guide · Make the setup disappear</div><h2>Start with the habit, then choose the hardware.</h2><p>The best headset decision is rarely about the longest feature list. It is about the little friction you want to remove from every session: pairing menus, a microphone that sits too far away, a cable that catches on the chair, or cushions that make you quit early.</p><p>Our wired-versus-wireless guide turns those tradeoffs into a simple checklist. Read it before you shop, share it with a friend who is upgrading, or use it to tune the gear you already own.</p><a class="text-link" href="/journal/wired-vs-wireless-gaming-headsets">Read the featured guide ↗</a></div>
+          </div>
+        </section>
+
+        <section id="method">
+          <div class="section-head"><div><div class="eyebrow">Our editorial lens</div><h2>What we look for when gear meets real life.</h2></div><p>Every recommendation starts with the same question: does this make an actual session clearer, easier, or more comfortable?</p></div>
+          <div class="method-grid">
+            <article class="method-card"><h3>Clarity</h3><p>Can you follow voices, footsteps, movement, and music without turning the volume into a guessing game?</p></article>
+            <article class="method-card"><h3>Communication</h3><p>Does the microphone keep your callouts understandable when the room and the match both get loud?</p></article>
+            <article class="method-card"><h3>Comfort</h3><p>Does the fit stay easy through a full session, including glasses, breaks, and the inevitable “one more”?</p></article>
+            <article class="method-card"><h3>Friction</h3><p>Can you connect, adjust, clean, and move the setup without needing a manual open beside you?</p></article>
+          </div>
         </section>
 
         <section id="product">
