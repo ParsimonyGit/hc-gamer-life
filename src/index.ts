@@ -604,6 +604,7 @@ const PAGE = `<!doctype html>
       .stage-note { bottom: 29px; color: var(--ink); font-family: "Bodoni 72", Didot, Georgia, serif; font-size: clamp(1.5rem, 3vw, 2.2rem); left: 28px; line-height: .95; max-width: 260px; position: absolute; z-index: 2; }
       .photo-credit { bottom: 18px; color: var(--muted); font-size: .53rem; left: auto; right: 24px; }
       .stats { background: var(--panel); border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); margin: 0 calc(50% - 50vw); padding-left: max(24px, calc((100vw - var(--max))/2)); padding-right: max(24px, calc((100vw - var(--max))/2)); }
+      .stats { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; width: 100%; }
       .stat { padding: 25px 0; }
       .stat-number { color: var(--acid); font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 2.9rem; }
       section { position: relative; }
