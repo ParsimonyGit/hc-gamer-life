@@ -903,6 +903,18 @@ function renderArticle(article: Article): Response {
       .more a { color:var(--cyan); }
       footer { border-top:1px solid var(--line); color:var(--muted); font-size:.8rem; padding:25px 0 40px; }
       @media (max-width:580px) { header { padding:18px 0; } .hero { padding-top:38px; } .wrap { padding:0 16px; } }
+      /* Keep the journal in the same signal-noir world as the home page. */
+      :root { --bg:#14110f; --panel:#201b18; --ink:#f5efe4; --muted:#b4ac9f; --line:rgba(245,239,228,.16); --acid:#d8ff3e; --coral:#ff765c; --cyan:#d8ff3e; }
+      html { background:#0d0b0a; overflow-x:clip; }
+      body { background:radial-gradient(circle at 90% 10%,rgba(255,118,92,.13),transparent 22rem),#14110f; font-family:"Avenir Next","Century Gothic","Trebuchet MS",sans-serif; overflow-x:clip; }
+      h1, .prose h2, .more h2 { font-family:"Bodoni 72",Didot,"Iowan Old Style",Baskerville,Georgia,serif; font-weight:500; }
+      .brand { font-family:"IBM Plex Mono","Courier New",monospace; font-size:.78rem; letter-spacing:.16em; }
+      .brand-mark { background:var(--acid); border-radius:3px; color:#16140f; }
+      .kicker { color:var(--acid); font-family:"IBM Plex Mono","Courier New",monospace; }
+      .hero { border-bottom-color:var(--line); }
+      .feature { border-radius:4px 34px 4px 34px; box-shadow:0 18px 55px rgba(0,0,0,.25); }
+      .callout { background:linear-gradient(135deg,rgba(216,255,62,.12),rgba(255,118,92,.12)); border-color:rgba(216,255,62,.35); border-radius:4px 22px 4px 22px; }
+      .more a { color:var(--acid); }
     </style>
   </head>
   <body>
