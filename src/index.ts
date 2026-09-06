@@ -700,6 +700,34 @@ const PAGE = `<!doctype html>
       .brand-mark { background: var(--brand-red); color: #210a10; }
       .nav-cta { background: var(--brand-red); color: #210a10; }
       .nav-cta:hover, .nav-cta:focus-visible { background: #ff7380; }
+
+      /* Final alignment and contrast pass: red for brand text, green for surfaces/actions. */
+      h1 span,
+      .eyebrow, .section-kicker, .journal-kicker, .stage-label, .photo-credit,
+      .stat-label, .method-label, .purchase-panel .eyebrow,
+      .kicker, .journal-link, .more a, .campaign-card figcaption span,
+      .editorial-card a, .featured-guide-copy .text-link { color: var(--brand-red); }
+      nav a:hover { color: var(--brand-red); }
+      .stat-number { color: var(--brand-red); }
+      .campaign-card:nth-child(2n), .campaign-card:nth-child(2n):hover { transform: none; }
+      .campaign-card { display: flex; flex-direction: column; }
+      .campaign-card img { aspect-ratio: 4 / 3; height: auto; min-height: 0; object-fit: cover; object-position: center; }
+      .campaign-card figcaption { flex: 1; min-height: 86px; }
+      .visual-main img { height: clamp(330px, 38vw, 470px); min-height: 0; object-fit: cover; object-position: center; }
+      .visual-card img { height: 220px; min-height: 0; object-fit: cover; object-position: center; }
+      .topline { font-size: .78rem; }
+      nav a, .nav-cta { font-size: .8rem; }
+      .eyebrow, .section-kicker, .journal-kicker, .stage-label, .method-label, .purchase-panel .eyebrow { font-size: .78rem; }
+      .microproof, .photo-credit { font-size: .76rem; }
+      .button { font-size: .82rem; }
+      .section-head p, .feature-card p, .journal-card p, .editorial-card p, .method-card p, .purchase-panel p { font-size: 1.04rem; line-height: 1.58; }
+      .journal-link, .editorial-card a, .featured-guide-copy .text-link { font-size: .8rem; }
+      .spec-callout span, .price-note, .spec-row span, .spec-row strong, details p { font-size: 1rem; }
+      @media (max-width: 760px) {
+        .campaign-card img { height: auto; }
+        .visual-main img { height: 330px; }
+        .visual-card img { height: 200px; }
+      }
     </style>
   </head>
   <body>
@@ -971,6 +999,13 @@ function renderArticle(article: Article): Response {
         .dek { font-size:1.08rem; }
         .prose p { font-size:1.05rem; }
       }
+      .brand-mark { background:var(--brand-red, #ff4f5e); color:#210a10; }
+      .kicker, .more a { color:var(--brand-red, #ff4f5e); }
+      .back { font-size:1rem; }
+      .kicker { font-size:.82rem; }
+      .dek { font-size:1.22rem; }
+      .prose p { font-size:1.1rem; }
+      .callout, .more { font-size:1.04rem; }
     </style>
   </head>
   <body>
