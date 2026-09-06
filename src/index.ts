@@ -1118,7 +1118,10 @@ function notFoundPage(): Response {
 }
 
 async function servePublicAsset(request: Request, env: Env, pathname: string): Promise<Response> {
-  const assetRequest = new Request(new URL(pathname, request.url).toString(), { method: "GET" });
+  const inbound = new Headers();
+  const range = request.headers.get("Range");
+  if (range) inbound.set("Range", range);
+  const assetRequest = new Request(new URL(pathname, request.url).toString(), { method: "GET", headers: inbound });
   const upstream = await env.ASSETS.fetch(assetRequest);
   if (upstream.status === 404) {
     if (pathname.includes(".")) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=UTF-8", "cache-control": "no-store", "strict-transport-security": "max-age=31536000" } });
@@ -1129,6 +1132,7 @@ async function servePublicAsset(request: Request, env: Env, pathname: string): P
   else if (pathname.startsWith("/brand/")) headers.set("cache-control", "public, max-age=604800");
   else headers.set("cache-control", "public, max-age=3600");
   headers.set("strict-transport-security", "max-age=31536000");
+  if (pathname.endsWith(".mp4") && !headers.has("accept-ranges")) headers.set("accept-ranges", "bytes");
   if (request.method === "HEAD") return new Response(null, { status: upstream.status, headers });
   return new Response(upstream.body, { status: upstream.status, headers });
 }
