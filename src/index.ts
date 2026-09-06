@@ -125,12 +125,15 @@ const articleMediaKey = (article: Article): string => ARTICLE_MEDIA_KEYS[Math.ma
 
 const JOURNAL_CARDS = ARTICLES.map((article) => `<a class="journal-card" href="/journal/${article.slug}"><div class="journal-card-image"><img src="/media/image?key=${articleMediaKey(article)}&amp;variant=card&amp;v=3" alt="${article.title}" loading="lazy" decoding="async" /></div><div class="journal-card-copy"><span class="journal-kicker">${article.section}</span><h3>${article.title}</h3><p>${article.excerpt}</p><span class="journal-link">Read the guide ↗</span></div></a>`).join("");
 
+const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#ff4f5e"/><text x="32" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#19090e">HC</text></svg>`;
+
 const PAGE = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0a0e16" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="description" content="HC GamerLife makes long sessions sound better. Meet the HCG1 Pro Gaming Headset." />
     <title>HC GamerLife | Lock in. Play longer.</title>
     <style>
@@ -497,6 +500,7 @@ function renderArticle(article: Article): Response {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0a0e16" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="description" content="${article.excerpt}" />
     <title>${article.title} | HC GamerLife</title>
     <style>
@@ -624,6 +628,9 @@ export default {
       return new Response(JSON.stringify({ ok: true, service: "hc-gamer-life" }), {
         headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
       });
+    }
+    if (url.pathname === "/favicon.svg") {
+      return new Response(FAVICON, { headers: { "content-type": "image/svg+xml; charset=UTF-8", "cache-control": "public, max-age=31536000, immutable" } });
     }
     if (url.pathname.startsWith("/journal/")) {
       const slug = decodeURIComponent(url.pathname.slice("/journal/".length)).replace(/\/+$/, "");
