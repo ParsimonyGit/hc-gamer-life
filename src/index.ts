@@ -15,6 +15,11 @@ const MEDIA_SOURCES: Record<string, string> = {
 
 const SITE_URL = "https://hcgamerlife.org";
 const SEO_IMAGE_URL = `${SITE_URL}/media/image?key=product-hero&variant=product&v=4`;
+type Env = {
+  STRIPE_SECRET_KEY?: string;
+  STRIPE_PUBLISHABLE_KEY?: string;
+  STRIPE_PRICE_ID?: string;
+};
 const safeJsonLd = (value: unknown): string => JSON.stringify(value).replace(/</g, "\\u003c");
 const HOME_JSON_LD = safeJsonLd({
   "@context": "https://schema.org",
@@ -286,6 +291,12 @@ const PAGE = `<!doctype html>
       .button-primary:hover, .button-primary:focus-visible { background: #ff6673; }
       .button-quiet { border: 1px solid var(--line); color: var(--ink); }
       .button-quiet:hover, .button-quiet:focus-visible { background: var(--panel-2); }
+      .purchase-panel { align-items: center; background: linear-gradient(135deg, rgba(255,79,94,.11), rgba(117,229,219,.08)); border: 1px solid var(--line); border-radius: 18px; display: flex; gap: 24px; justify-content: space-between; margin-top: 24px; padding: 24px; }
+      .purchase-panel h3 { font-size: 1.25rem; margin: 8px 0 5px; }
+      .purchase-panel p { color: var(--muted); font-size: .88rem; margin: 0; max-width: 510px; }
+      .purchase-panel form { align-items: end; display: flex; flex: 0 0 auto; gap: 10px; }
+      .quantity-label { color: var(--muted); display: grid; font-size: .72rem; gap: 5px; letter-spacing: .08em; text-transform: uppercase; }
+      .quantity-label select { background: var(--panel-2); border: 1px solid var(--line); border-radius: 9px; color: var(--ink); font: inherit; padding: 12px 13px; }
       .microproof { color: #768197; font-size: .78rem; margin: 18px 0 0; }
       .hero-art { position: relative; }
       .hero-art::before {
@@ -461,6 +472,8 @@ const PAGE = `<!doctype html>
         .editorial-grid, .method-grid { grid-template-columns: repeat(2, 1fr); }
         .featured-guide { grid-template-columns: 1fr; }
         .featured-guide-media { min-height: 330px; }
+        .purchase-panel { align-items: start; flex-direction: column; }
+        .purchase-panel form { width: 100%; }
       }
       @media (max-width: 580px) {
         h1 { font-size: clamp(3.05rem, 18vw, 5rem); }
@@ -477,6 +490,8 @@ const PAGE = `<!doctype html>
         .editorial-grid, .method-grid { grid-template-columns: 1fr; }
         .featured-guide-copy { padding: 30px 24px 34px; }
         .featured-guide-media { min-height: 250px; }
+        .purchase-panel form { align-items: stretch; flex-direction: column; }
+        .quantity-label select { width: 100%; }
         .closing { padding: 30px 24px; }
         .footer-row { align-items: start; flex-direction: column; gap: 12px; }
       }
@@ -589,6 +604,7 @@ const PAGE = `<!doctype html>
             <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 5v7a5 5 0 0 0 10 0V5"/><path d="M4 10v2a8 8 0 0 0 16 0v-2M12 20v-3m-3 3h6"/></svg></div><h3>Comfort for the “last game”</h3><p>Soft over-ear cushions and a flexible fit stay easy through long queues, long flights, and long nights with friends.</p></article>
             <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 5 6v5c0 4.5 2.9 8.2 7 10 4.1-1.8 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Ready when you are</h3><p>A detachable boom mic, inline controls, and broad device compatibility keep the setup simple and the focus where it belongs.</p></article>
           </div>
+          <div class="purchase-panel"><div><div class="eyebrow">Stripe test checkout</div><h3>Put the HCG1 in your cart.</h3><p>This checkout is wired for Stripe test mode. It stays inactive until the store’s test price and server-side secret are configured.</p></div><form action="/checkout" method="post"><input type="hidden" name="product" value="hcg1" /><label class="quantity-label" for="quantity">Quantity<select id="quantity" name="quantity"><option value="1">1 headset</option><option value="2">2 headsets</option><option value="3">3 headsets</option><option value="4">4 headsets</option></select></label><button class="button button-primary" type="submit">Open test checkout <span aria-hidden="true">↗</span></button></form></div>
         </section>
       </div>
 
@@ -783,8 +799,49 @@ async function serveOptimizedImage(request: Request, url: URL): Promise<Response
   return response;
 }
 
+function checkoutStatusPage(title: string, message: string, status: number): Response {
+  const page = `<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex, nofollow" /><link rel="icon" href="/favicon.svg" type="image/svg+xml" /><title>${title} | HC GamerLife</title><style>:root{color-scheme:dark;--ink:#f5f7fb;--muted:#a8b1c4;--line:rgba(181,196,224,.16);--bg:#0a0e16;--panel:#101722;--red:#ff4f5e;--cyan:#75e5db}*{box-sizing:border-box}body{align-items:center;background:var(--bg);color:var(--ink);display:flex;font-family:Inter,ui-sans-serif,system-ui,sans-serif;justify-content:center;line-height:1.6;margin:0;min-height:100vh;padding:24px}.card{background:var(--panel);border:1px solid var(--line);border-radius:22px;max-width:620px;padding:42px}.eyebrow{color:var(--cyan);font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase}h1{font-size:clamp(2.3rem,7vw,4.5rem);letter-spacing:-.08em;line-height:.95;margin:12px 0 18px}p{color:var(--muted);font-size:1.02rem}.button{background:var(--red);border-radius:999px;color:#210a10;display:inline-flex;font-weight:800;margin-top:12px;padding:13px 19px;text-decoration:none}</style></head><body><main class="card"><div class="eyebrow">HC GamerLife checkout</div><h1>${title}</h1><p>${message}</p><a class="button" href="/#product">Back to the HCG1</a></main></body></html>`;
+  const headers = new Headers(HEADERS);
+  headers.set("cache-control", "no-store");
+  return new Response(page, { status, headers });
+}
+
+async function createStripeCheckout(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") return checkoutStatusPage("Checkout is ready", "Use the checkout button on the product section to start a test order.", 405);
+  const form = await request.formData();
+  if (form.get("product") !== "hcg1") return checkoutStatusPage("Product not found", "That cart item is no longer available.", 400);
+  const parsedQuantity = Number.parseInt(String(form.get("quantity") ?? "1"), 10);
+  const quantity = Number.isFinite(parsedQuantity) ? Math.min(Math.max(parsedQuantity, 1), 4) : 1;
+  if (!env.STRIPE_SECRET_KEY || !env.STRIPE_PRICE_ID) {
+    return checkoutStatusPage("Test checkout is not configured yet", "The site is ready for Stripe test mode. Add the test price ID and server-side Stripe secret to the Worker, then this button will open a real test checkout.", 503);
+  }
+
+  const params = new URLSearchParams();
+  params.set("mode", "payment");
+  params.set("line_items[0][price]", env.STRIPE_PRICE_ID);
+  params.set("line_items[0][quantity]", String(quantity));
+  params.set("success_url", `${SITE_URL}/?checkout=success#drop`);
+  params.set("cancel_url", `${SITE_URL}/?checkout=cancel#product`);
+  params.set("billing_address_collection", "auto");
+  params.set("allow_promotion_codes", "true");
+
+  let upstream: Response;
+  try {
+    upstream = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+      method: "POST",
+      headers: { authorization: `Bearer ${env.STRIPE_SECRET_KEY}`, "content-type": "application/x-www-form-urlencoded" },
+      body: params.toString()
+    });
+  } catch {
+    return checkoutStatusPage("Stripe could not be reached", "The test checkout service did not respond. Try again in a moment.", 502);
+  }
+  if (!upstream.ok) return checkoutStatusPage("Stripe test checkout needs attention", "Stripe rejected the test checkout request. Check the Worker’s test price ID and secret configuration.", 502);
+  const payload = await upstream.json() as { url?: unknown };
+  return typeof payload.url === "string" ? Response.redirect(payload.url, 303) : checkoutStatusPage("Stripe returned no checkout link", "The test session was created without a redirect link. Check the Stripe test-mode configuration.", 502);
+}
+
 export default {
-  async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname === "/healthz") {
       return new Response(JSON.stringify({ ok: true, service: "hc-gamer-life" }), {
@@ -809,6 +866,12 @@ export default {
     if (url.pathname === "/favicon.svg") {
       return new Response(FAVICON, { headers: { "content-type": "image/svg+xml; charset=UTF-8", "cache-control": "public, max-age=31536000, immutable" } });
     }
+    if (url.pathname === "/checkout/config" && request.method === "GET") {
+      return new Response(JSON.stringify({ publishableKey: env.STRIPE_PUBLISHABLE_KEY ?? null, ready: Boolean(env.STRIPE_SECRET_KEY && env.STRIPE_PRICE_ID) }), {
+        headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
+      });
+    }
+    if (url.pathname === "/checkout") return createStripeCheckout(request, env);
     if (url.pathname.startsWith("/journal/")) {
       const slug = decodeURIComponent(url.pathname.slice("/journal/".length)).replace(/\/+$/, "");
       const article = ARTICLES.find((candidate) => candidate.slug === slug);
