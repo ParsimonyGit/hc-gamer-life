@@ -21,11 +21,13 @@ The Worker serves the site at every route and exposes `/healthz` for a lightweig
 
 ## Media delivery
 
-The product gallery and campaign scenes are stored in Cloudflare Images and delivered through the Worker’s `/media/image` route. The route selects the global `product`, `hero`, and `card` variants, keeps the responses at the edge for a year, and falls back to Cloudflare Image Transformations when a future source is not already in Images.
+Official HCG1 stills and in-session photographs live in `public/assets/gallery/` and are served at `/assets/gallery/*` with a year-long immutable cache. The `/gallery` page is the full set: catalog plates, in-hand scale stills, and five session photos on PC, DualSense, Xbox, and PlayStation.
+
+Older Cloudflare Images assets remain available through `/media/image` for journal heroes. When video is added, use Cloudflare Stream’s direct player or HLS/DASH manifest URLs so Stream can handle adaptive playback globally; the Worker should not cache or proxy manifests.
 
 The Worker is also configured with remote Cloudflare Images, Media Transformations, and Stream bindings for future assets. When video is added, use Cloudflare Stream’s direct player or HLS/DASH manifest URLs so Stream can handle adaptive playback globally; the Worker should not cache or proxy manifests.
 
 ## Content and SEO
 
-The homepage includes a journal hub with evergreen buyer’s guides, setup advice, comfort notes, care instructions, and game-night ideas. Each guide has its own route with a canonical URL, social preview metadata, Article and Breadcrumb structured data, and a Cloudflare Images hero asset. The Worker also serves `robots.txt`, `sitemap.xml`, and a small web manifest so crawlers and share previews can discover the site cleanly.
+The homepage includes a journal hub with evergreen buyer’s guides, setup advice, comfort notes, care instructions, and game-night ideas. Each guide has its own route with a canonical URL, social preview metadata, Article and Breadcrumb structured data, and a Cloudflare Images hero asset. The Worker also serves `robots.txt`, `sitemap.xml`, `/gallery`, and a small web manifest so crawlers and share previews can discover the site cleanly. After deploy, `npm run indexnow` pings IndexNow with the sitemap.
 

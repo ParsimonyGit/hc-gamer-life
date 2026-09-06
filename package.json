@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "types": "wrangler types"
+    "types": "wrangler types",
+    "indexnow": "INDEXNOW_HOST=hcgamerlife.org node scripts/indexnow.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260903.1",

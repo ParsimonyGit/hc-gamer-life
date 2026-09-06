@@ -5,4 +5,10 @@ node_modules/
 .env
 .env.*
 !.env.example
+assets/ugc-source/
+assets/videos/
+assets/_do-not-use/
+assets/ideas.html
+.DS_Store
+worker-configuration.d.ts
 
