@@ -420,7 +420,7 @@ const RUNTIME = `(() => {
   function setProgress() {
     const captureWeight = state.phase === "capture" || state.phase === "result" ? 1 : 0;
     const total = questions.length + 1;
-    const current = state.phase === "intro" ? 0 : state.phase === "questions" ? state.step + (state.selected ? 0.55 : 0) : questions.length + captureWeight;
+    const current = state.phase === "intro" ? 0 : state.phase === "questions" ? state.step + (state.selected ? 0.7 : 0.22) : questions.length + captureWeight;
     const pct = state.phase === "intro" ? 0 : Math.min(100, (current / total) * 100);
     progressWrap.classList.toggle("hidden", state.phase === "intro");
     progressEl.style.width = pct + "%";
@@ -464,11 +464,11 @@ const RUNTIME = `(() => {
         <div class="mosaic-copy">
           <p class="eyebrow">Immersed · Climbing · Ready for Pro</p>
           <h2>Your answers build the band.</h2>
-          <p>Platform, play style, session length, and the pain that ends a night early. No LeadConnector form. No iframe.</p>
+          <p>Platform, play style, session length, and the pain that ends a night early. Tap a card. We handle the rest.</p>
         </div>
       </aside>
     </div>
-    <p class="fine">Results unlock after email · Soft-sell only · Existing pages stay put</p>\`;
+    <p class="fine">Results unlock after email · No account required · Unsubscribe anytime</p>\`;
   }
 
   function renderQuestion() {
@@ -528,7 +528,7 @@ const RUNTIME = `(() => {
           <p>\${escapeHtml(r.story)}</p>
           <div class="chose"><span>You chose</span>\${escapeHtml(r.answerSummary)}</div>
           <ul class="promises">\${promises}</ul>
-          <p class="saved">Profile unlocked. You are tagged for HCG1 nurture.</p>
+          <p class="saved">Profile unlocked. You are on the HCG1 list.</p>
           <div class="cta-row">
             <a class="button" href="/#product">Meet the HCG1 Pro →</a>
             <a class="button button-quiet" href="/#drop">Register your interest</a>
@@ -680,7 +680,7 @@ export function renderQuizPage(): Response {
     <style>${STYLES}</style>
   </head>
   <body>
-    <div class="topline"><strong>FIELD NOTE 002</strong> On-site quiz · no iframe · HCG1 Pro audio profile</div>
+    <div class="topline"><strong>FIELD NOTE 002</strong> On-site quiz · 60 seconds · HCG1 Pro audio profile</div>
     <div class="shell">
       <header>
         <a class="brand" href="/" aria-label="HC GamerLife home"><span class="brand-mark">HC</span> GAMERLIFE</a>
