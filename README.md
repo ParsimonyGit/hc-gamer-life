@@ -25,3 +25,7 @@ The product gallery and campaign scenes are stored in Cloudflare Images and deli
 
 The Worker is also configured with remote Cloudflare Images, Media Transformations, and Stream bindings for future assets. When video is added, use Cloudflare Stream’s direct player or HLS/DASH manifest URLs so Stream can handle adaptive playback globally; the Worker should not cache or proxy manifests.
 
+## Content and SEO
+
+The homepage includes a journal hub with evergreen buyer’s guides, setup advice, comfort notes, care instructions, and game-night ideas. Each guide has its own route with a canonical URL, social preview metadata, Article and Breadcrumb structured data, and a Cloudflare Images hero asset. The Worker also serves `robots.txt`, `sitemap.xml`, and a small web manifest so crawlers and share previews can discover the site cleanly.
+

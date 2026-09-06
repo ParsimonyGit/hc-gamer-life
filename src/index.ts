@@ -13,6 +13,52 @@ const MEDIA_SOURCES: Record<string, string> = {
   "campaign-esports": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/campaign-esports"
 };
 
+const SITE_URL = "https://hcgamerlife.org";
+const SEO_IMAGE_URL = `${SITE_URL}/media/image?key=product-hero&variant=product&v=4`;
+const safeJsonLd = (value: unknown): string => JSON.stringify(value).replace(/</g, "\\u003c");
+const HOME_JSON_LD = safeJsonLd({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "HC GamerLife",
+      url: SITE_URL,
+      logo: `${SITE_URL}/favicon.svg`,
+      description: "Practical gaming gear, setup advice, and long-session guides for everyday players."
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: "HC GamerLife",
+      url: SITE_URL,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      description: "Gaming headset guides, setup help, and game-night ideas for players who stay for one more match."
+    },
+    {
+      "@type": "Product",
+      name: "HCG1 Pro Gaming Headset",
+      image: [SEO_IMAGE_URL],
+      description: "A wired over-ear gaming headset with 53mm stereo drivers, detachable microphone, inline controls, and broad device compatibility.",
+      brand: { "@type": "Brand", name: "HC GamerLife" },
+      category: "Gaming headset",
+      additionalProperty: [
+        { "@type": "PropertyValue", name: "Connection", value: "Wired 3.5mm" },
+        { "@type": "PropertyValue", name: "Microphone", value: "Detachable boom" },
+        { "@type": "PropertyValue", name: "Drivers", value: "53mm stereo" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        { "@type": "Question", name: "Is the microphone removable?", acceptedAnswer: { "@type": "Answer", text: "Yes. Remove the boom microphone for solo play or listening on the go." } },
+        { "@type": "Question", name: "Does it work across consoles?", acceptedAnswer: { "@type": "Answer", text: "The wired 3.5mm connection works with PC, PlayStation, Xbox, Nintendo Switch, and compatible mobile devices." } },
+        { "@type": "Question", name: "Does it use active noise cancellation?", acceptedAnswer: { "@type": "Answer", text: "No. The closed-back design provides passive isolation without a battery or software." } }
+      ]
+    }
+  ]
+});
+
 type Article = {
   slug: string;
   section: string;
@@ -126,6 +172,8 @@ const articleMediaKey = (article: Article): string => ARTICLE_MEDIA_KEYS[Math.ma
 const JOURNAL_CARDS = ARTICLES.map((article) => `<a class="journal-card" href="/journal/${article.slug}"><div class="journal-card-image"><img src="/media/image?key=${articleMediaKey(article)}&amp;variant=card&amp;v=3" alt="${article.title}" loading="lazy" decoding="async" /></div><div class="journal-card-copy"><span class="journal-kicker">${article.section}</span><h3>${article.title}</h3><p>${article.excerpt}</p><span class="journal-link">Read the guide ↗</span></div></a>`).join("");
 
 const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#ff4f5e"/><text x="32" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#19090e">HC</text></svg>`;
+const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}/</loc></url>${ARTICLES.map((article) => `<url><loc>${SITE_URL}/journal/${article.slug}</loc></url>`).join("")}</urlset>`;
+const MANIFEST_JSON = JSON.stringify({ name: "HC GamerLife", short_name: "HC GamerLife", start_url: "/", display: "standalone", background_color: "#0a0e16", theme_color: "#0a0e16", icons: [{ src: "/favicon.svg", sizes: "any", type: "image/svg+xml" }] });
 
 const PAGE = `<!doctype html>
 <html lang="en">
@@ -135,6 +183,22 @@ const PAGE = `<!doctype html>
     <meta name="theme-color" content="#0a0e16" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="description" content="HC GamerLife makes long sessions sound better. Meet the HCG1 Pro Gaming Headset." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="HC GamerLife" />
+    <link rel="canonical" href="${SITE_URL}/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="HC GamerLife" />
+    <meta property="og:url" content="${SITE_URL}/" />
+    <meta property="og:title" content="HC GamerLife | Lock in. Play longer." />
+    <meta property="og:description" content="Gaming headset guides, setup help, and gear for the long session." />
+    <meta property="og:image" content="${SEO_IMAGE_URL}" />
+    <meta property="og:image:alt" content="HCG1 Pro Gaming Headset" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HC GamerLife | Lock in. Play longer." />
+    <meta name="twitter:description" content="Gaming headset guides, setup help, and gear for the long session." />
+    <meta name="twitter:image" content="${SEO_IMAGE_URL}" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script type="application/ld+json">${HOME_JSON_LD}</script>
     <title>HC GamerLife | Lock in. Play longer.</title>
     <style>
       :root {
@@ -494,6 +558,29 @@ const HEADERS = {
 
 function renderArticle(article: Article): Response {
   const imageKey = articleMediaKey(article);
+  const articleUrl = `${SITE_URL}/journal/${article.slug}`;
+  const articleImageUrl = `${SITE_URL}/media/image?key=${imageKey}&variant=hero&v=4`;
+  const articleJsonLd = safeJsonLd({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.excerpt,
+    articleSection: article.section,
+    mainEntityOfPage: articleUrl,
+    image: [articleImageUrl],
+    author: { "@type": "Organization", name: "HC GamerLife", url: SITE_URL },
+    publisher: { "@type": "Organization", name: "HC GamerLife", url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/favicon.svg` } },
+    isPartOf: { "@type": "WebSite", name: "HC GamerLife", url: SITE_URL }
+  });
+  const breadcrumbJsonLd = safeJsonLd({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "HC GamerLife", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Journal", item: `${SITE_URL}/#journal` },
+      { "@type": "ListItem", position: 3, name: article.title, item: articleUrl }
+    ]
+  });
   const page = `<!doctype html>
 <html lang="en">
   <head>
@@ -502,6 +589,23 @@ function renderArticle(article: Article): Response {
     <meta name="theme-color" content="#0a0e16" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="description" content="${article.excerpt}" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="HC GamerLife" />
+    <link rel="canonical" href="${articleUrl}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="HC GamerLife" />
+    <meta property="og:url" content="${articleUrl}" />
+    <meta property="og:title" content="${article.title} | HC GamerLife" />
+    <meta property="og:description" content="${article.excerpt}" />
+    <meta property="og:image" content="${articleImageUrl}" />
+    <meta property="og:image:alt" content="${article.title}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${article.title} | HC GamerLife" />
+    <meta name="twitter:description" content="${article.excerpt}" />
+    <meta name="twitter:image" content="${articleImageUrl}" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script type="application/ld+json">${articleJsonLd}</script>
+    <script type="application/ld+json">${breadcrumbJsonLd}</script>
     <title>${article.title} | HC GamerLife</title>
     <style>
       :root { color-scheme: dark; --ink:#f5f7fb; --muted:#a8b1c4; --line:rgba(181,196,224,.16); --bg:#0a0e16; --panel:#101722; --red:#ff4f5e; --cyan:#75e5db; }
@@ -627,6 +731,21 @@ export default {
     if (url.pathname === "/healthz") {
       return new Response(JSON.stringify({ ok: true, service: "hc-gamer-life" }), {
         headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
+      });
+    }
+    if (url.pathname === "/robots.txt") {
+      return new Response(`User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`, {
+        headers: { "content-type": "text/plain; charset=UTF-8", "cache-control": "public, max-age=3600" }
+      });
+    }
+    if (url.pathname === "/sitemap.xml") {
+      return new Response(SITEMAP_XML, {
+        headers: { "content-type": "application/xml; charset=UTF-8", "cache-control": "public, max-age=3600" }
+      });
+    }
+    if (url.pathname === "/site.webmanifest") {
+      return new Response(MANIFEST_JSON, {
+        headers: { "content-type": "application/manifest+json; charset=UTF-8", "cache-control": "public, max-age=3600" }
       });
     }
     if (url.pathname === "/favicon.svg") {
