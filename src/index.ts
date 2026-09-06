@@ -501,10 +501,166 @@ const PAGE = `<!doctype html>
         .closing { padding: 30px 24px; }
         .footer-row { align-items: start; flex-direction: column; gap: 12px; }
       }
+
+      /* Signal Noir / editorial arcade visual system */
+      :root {
+        --bg: #14110f;
+        --bg-deep: #0d0b0a;
+        --ink: #f5efe4;
+        --muted: #b4ac9f;
+        --line: rgba(245, 239, 228, .16);
+        --panel: #201b18;
+        --panel-2: #29221d;
+        --acid: #d8ff3e;
+        --coral: #ff765c;
+        --lavender: #c4b4ff;
+        --max: 1180px;
+      }
+      html { background: var(--bg-deep); scroll-behavior: smooth; }
+      body {
+        background:
+          radial-gradient(circle at 9% 5%, rgba(216,255,62,.13), transparent 22rem),
+          radial-gradient(circle at 91% 19%, rgba(255,118,92,.12), transparent 26rem),
+          var(--bg);
+        color: var(--ink);
+        font-family: "Avenir Next", "Century Gothic", "Trebuchet MS", sans-serif;
+        letter-spacing: .005em;
+      }
+      body::before {
+        background-image: linear-gradient(rgba(245,239,228,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(245,239,228,.035) 1px, transparent 1px);
+        background-size: 44px 44px;
+        content: "";
+        inset: 0;
+        mask-image: linear-gradient(to bottom, black, transparent 70%);
+        pointer-events: none;
+        position: fixed;
+        z-index: 0;
+      }
+      .shell, .topline, footer { position: relative; z-index: 1; }
+      a { text-decoration-thickness: .08em; text-underline-offset: .18em; }
+      h1, h2, h3, .closing h2, .featured-guide h2, .purchase-panel h3 {
+        font-family: "Bodoni 72", Didot, "Iowan Old Style", Baskerville, Georgia, serif;
+        font-weight: 500;
+      }
+      h1 { font-size: clamp(4.5rem, 11vw, 9.4rem); letter-spacing: -.085em; line-height: .78; max-width: 850px; }
+      h1 span { color: var(--acid); font-style: italic; }
+      h2 { font-size: clamp(2.8rem, 6vw, 5.4rem); letter-spacing: -.07em; line-height: .9; }
+      h3 { letter-spacing: -.045em; }
+      .topline {
+        background: var(--acid);
+        color: #17150e;
+        font-family: "IBM Plex Mono", "Courier New", monospace;
+        font-size: .68rem;
+        letter-spacing: .15em;
+        overflow: hidden;
+        padding: 10px 20px;
+        text-transform: uppercase;
+      }
+      .topline strong { margin-right: 26px; }
+      .shell { max-width: var(--max); }
+      header { border-bottom: 1px solid var(--line); padding: 28px 0 25px; }
+      .brand { font-family: "IBM Plex Mono", "Courier New", monospace; font-size: .78rem; letter-spacing: .16em; }
+      .brand-mark { background: var(--acid); border-radius: 3px; color: #16140f; height: 34px; width: 40px; }
+      nav a { color: var(--muted); font-family: "IBM Plex Mono", "Courier New", monospace; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; }
+      nav a:hover { color: var(--acid); }
+      .nav-cta, .button { border-radius: 3px; font-family: "IBM Plex Mono", "Courier New", monospace; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
+      .nav-cta { background: var(--coral); color: #1d100d; padding: 12px 16px; }
+      .hero { gap: clamp(40px, 6vw, 96px); min-height: 690px; padding: 96px 0 84px; }
+      .hero-copy { align-self: center; position: relative; z-index: 2; }
+      .eyebrow, .section-kicker, .journal-kicker, .stage-label, .photo-credit, .microproof, .stat-label, .method-label, .purchase-panel .eyebrow {
+        color: var(--acid); font-family: "IBM Plex Mono", "Courier New", monospace; font-size: .65rem; letter-spacing: .16em; text-transform: uppercase;
+      }
+      .hero-copy > * { animation: signal-reveal .8s cubic-bezier(.2,.75,.25,1) both; }
+      .hero-copy > *:nth-child(1) { animation-delay: .08s; }
+      .hero-copy > *:nth-child(2) { animation-delay: .16s; }
+      .hero-copy > *:nth-child(3) { animation-delay: .24s; }
+      .hero-copy > *:nth-child(4) { animation-delay: .32s; }
+      .hero-copy > *:nth-child(5) { animation-delay: .4s; }
+      .hero-copy p { color: var(--muted); max-width: 530px; }
+      .microproof { color: var(--muted); font-size: .62rem; }
+      .actions { gap: 12px; }
+      .button { align-items: center; border: 1px solid var(--line); padding: 15px 19px; transition: transform .25s ease, background .25s ease, color .25s ease; }
+      .button:hover { transform: translateY(-3px) rotate(-1deg); }
+      .button-primary { background: var(--acid); color: #16140f; }
+      .button-primary:hover { background: #efff9a; }
+      .button-ghost { color: var(--ink); }
+      .button-ghost:hover { background: var(--lavender); color: #1b1428; }
+      .hero-art { isolation: isolate; }
+      .hero-art::before { background: var(--coral); border-radius: 50%; content: ""; filter: blur(3px); height: 240px; opacity: .7; position: absolute; right: 2%; top: 12%; transform: rotate(23deg); width: 240px; z-index: -1; }
+      .product-stage {
+        background: radial-gradient(circle at 70% 30%, rgba(216,255,62,.2), transparent 20rem), linear-gradient(145deg, #2b241e, #171310 70%);
+        border: 1px solid rgba(216,255,62,.55);
+        border-radius: 6px 58px 6px 58px;
+        box-shadow: 18px 18px 0 rgba(255,118,92,.16), 0 24px 90px rgba(0,0,0,.3);
+        min-height: 610px;
+        overflow: hidden;
+        transform: rotate(2deg);
+      }
+      .product-stage::after { background: repeating-linear-gradient(0deg, transparent 0 5px, rgba(245,239,228,.05) 6px 7px); content: ""; inset: 0; opacity: .28; pointer-events: none; position: absolute; }
+      .stage-label { color: var(--acid); left: 28px; position: absolute; top: 26px; z-index: 2; }
+      .stage-label strong { color: var(--ink); font-size: .85rem; }
+      .product-photo { filter: drop-shadow(0 24px 35px rgba(0,0,0,.5)); mix-blend-mode: screen; transform: rotate(-7deg) scale(1.06); animation: product-float 6s ease-in-out infinite; }
+      .stage-note { bottom: 29px; color: var(--ink); font-family: "Bodoni 72", Didot, Georgia, serif; font-size: clamp(1.5rem, 3vw, 2.2rem); left: 28px; line-height: .95; max-width: 260px; position: absolute; z-index: 2; }
+      .photo-credit { bottom: 18px; color: var(--muted); font-size: .53rem; left: auto; right: 24px; }
+      .stats { background: var(--panel); border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); margin: 0 calc(50% - 50vw); padding-left: max(24px, calc((100vw - var(--max))/2)); padding-right: max(24px, calc((100vw - var(--max))/2)); }
+      .stat { padding: 25px 0; }
+      .stat-number { color: var(--acid); font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 2.9rem; }
+      section { position: relative; }
+      .section-head { align-items: end; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; padding-bottom: 24px; }
+      .section-head h2 { margin-bottom: 0; }
+      .feature-card, .journal-card, .editorial-card, .campaign-card, .visual-main, .visual-card, .featured-guide, .purchase-panel, details {
+        background: rgba(32,27,24,.82); border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 15px 40px rgba(0,0,0,.12); overflow: hidden;
+      }
+      .feature-card:hover, .journal-card:hover, .campaign-card:hover { border-color: rgba(216,255,62,.58); transform: translateY(-5px) rotate(-.4deg); }
+      .feature-card, .journal-card, .campaign-card { transition: border-color .25s ease, transform .25s ease; }
+      .feature-card h3, .journal-card h3, .campaign-card h3 { color: var(--ink); }
+      .feature-card p, .journal-card p, .campaign-card p, .editorial-card p, .method-grid p, .purchase-panel p { color: var(--muted); }
+      .visual-main, .visual-card { border-radius: 4px 28px 4px 28px; }
+      .visual-main img, .visual-card img, .campaign-card img, .journal-card-image img { filter: saturate(.86) contrast(1.06); transition: transform .6s cubic-bezier(.2,.75,.25,1), filter .6s ease; }
+      .visual-main:hover img, .visual-card:hover img, .campaign-card:hover img, .journal-card:hover img { filter: saturate(1.1) contrast(1.08); transform: scale(1.04); }
+      .campaign-card:nth-child(2n) { transform: translateY(26px); }
+      .campaign-card:nth-child(2n):hover { transform: translateY(20px) rotate(.4deg); }
+      .campaign-card:nth-child(3n) { border-color: rgba(196,180,255,.32); }
+      .campaign-card:nth-child(3n) .campaign-kicker { color: var(--lavender); }
+      .journal-grid { align-items: stretch; }
+      .journal-card-copy { padding: 22px; }
+      .journal-card h3 { font-size: clamp(1.55rem, 2.3vw, 2rem); line-height: .98; }
+      .journal-link { color: var(--acid); font-family: "IBM Plex Mono", "Courier New", monospace; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; }
+      .manifesto, .closing { background: var(--acid); border-radius: 4px 48px 4px 48px; color: #19170e; overflow: hidden; position: relative; }
+      .manifesto::after, .closing::after { border: 1px solid rgba(25,23,14,.25); content: ""; inset: 18px; pointer-events: none; position: absolute; transform: rotate(-2deg); }
+      .manifesto h2, .closing h2 { color: #19170e; max-width: 740px; }
+      .manifesto p, .closing p { color: rgba(25,23,14,.72); }
+      .featured-guide { background: linear-gradient(130deg, rgba(255,118,92,.18), rgba(32,27,24,.9) 55%); }
+      .featured-guide h2 { font-size: clamp(2.4rem, 5vw, 4.7rem); }
+      .method-label { color: var(--coral); }
+      .method-grid { border-top: 1px solid var(--line); }
+      .method-grid > div { border-right: 1px solid var(--line); }
+      .method-grid > div:last-child { border-right: 0; }
+      .purchase-panel { background: linear-gradient(135deg, rgba(216,255,62,.14), rgba(255,118,92,.13)); border-color: rgba(216,255,62,.42); border-radius: 4px 42px 4px 42px; }
+      .purchase-panel h3 { font-size: clamp(2.2rem, 4vw, 3.8rem); }
+      .quantity-label select { background: var(--panel); border: 1px solid var(--line); border-radius: 3px; color: var(--ink); }
+      .embedded-checkout { background: #fff; border-radius: 3px; }
+      details { border-radius: 3px; }
+      summary { color: var(--ink); font-family: "IBM Plex Mono", "Courier New", monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+      footer { border-top: 1px solid var(--line); }
+      @keyframes signal-reveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes product-float { 0%,100% { transform: rotate(-7deg) scale(1.06) translateY(0); } 50% { transform: rotate(-5deg) scale(1.06) translateY(-10px); } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+      @media (max-width: 760px) {
+        h1 { font-size: clamp(4rem, 18vw, 6.8rem); }
+        .hero { min-height: auto; padding: 68px 0 58px; }
+        .hero-art { margin-top: 14px; }
+        .product-stage { min-height: 440px; transform: none; }
+        .product-photo { transform: rotate(-5deg) scale(1.02); }
+        .campaign-card:nth-child(2n) { transform: none; }
+        .campaign-card:nth-child(2n):hover { transform: translateY(-5px) rotate(.4deg); }
+        .method-grid > div { border-bottom: 1px solid var(--line); border-right: 0; }
+        .method-grid > div:last-child { border-bottom: 0; }
+      }
     </style>
   </head>
   <body>
-    <div class="topline"><strong>Built for the long session.</strong> Wired comfort, clear comms, zero drama.</div>
+    <div class="topline"><strong>FIELD NOTE 001</strong> Wired audio for the long session · clear comms · zero drama.</div>
     <div class="shell">
       <header>
         <a class="brand" href="#top" aria-label="HC GamerLife home"><span class="brand-mark">HC</span> GAMERLIFE</a>
@@ -523,17 +679,17 @@ const PAGE = `<!doctype html>
         <section class="hero">
           <div class="hero-copy">
             <div class="eyebrow">HCG1 Pro Gaming Headset</div>
-            <h1>Lock in.<br /><span>Play longer.</span></h1>
+            <h1>Hear more.<br /><span>Stay longer.</span></h1>
             <p>Crystal-clear game audio, a mic that keeps your squad close, and comfort that holds up when “one more match” turns into an all-nighter.</p>
             <div class="actions">
               <a class="button button-primary" href="#product">Meet the HCG1 <span aria-hidden="true">↗</span></a>
               <a class="button button-quiet" href="#setup">Check your setup</a>
             </div>
-            <p class="microproof">Made for everyday players on console, PC, and mobile.</p>
+            <p class="microproof">For after-hours players · console / PC / mobile.</p>
           </div>
           <div class="hero-art" aria-label="HCG1 Pro Gaming Headset product photography" role="img">
             <div class="product-stage">
-              <div class="stage-label"><strong>HCG1</strong> / PRO SERIES</div>
+              <div class="stage-label"><strong>HCG1</strong> / FIELD TEST 001</div>
               <img class="product-photo" src="/media/image?key=product-hero&amp;variant=product&amp;v=2" alt="Black and red HCG1 Pro Gaming Headset with detachable microphone" decoding="async" fetchpriority="high" />
               <div class="stage-note"><div class="price-note"><strong>Sound that stays sharp</strong> Hear the moment before it happens.</div><div class="signal" aria-label="Three signal bars"><i></i><i></i><i></i></div></div>
               <div class="photo-credit">Official HCG1 product photography · 53mm drivers · wired 3.5mm</div>
