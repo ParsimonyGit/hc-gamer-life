@@ -121,11 +121,12 @@ describe("Stripe signature + webhook HTTP", () => {
 
   it("returns 400 for a bad signature and 200 ignored for payment_intent.succeeded", async () => {
     const secret = "whsec_test";
+    const now = Math.floor(Date.now() / 1000);
     const ignored = JSON.stringify({
       type: "payment_intent.succeeded",
       data: { object: { id: "pi_1", object: "payment_intent" } }
     });
-    const header = await signStripePayload(ignored, secret, 1_700_000_000);
+    const header = await signStripePayload(ignored, secret, now);
     const envWebhook: PurchaseEnv = { STRIPE_WEBHOOK_SECRET: secret, ERP_DRY_RUN: "1" };
 
     const bad = await handleStripeWebhook(
@@ -154,12 +155,13 @@ describe("Stripe signature + webhook HTTP", () => {
 
   it("dry-runs a paid checkout.session.completed without ERP writes", async () => {
     const secret = "whsec_test";
+    const now = Math.floor(Date.now() / 1000);
     const payload = JSON.stringify({
       id: "evt_1",
       type: "checkout.session.completed",
       data: { object: paidSession() }
     });
-    const header = await signStripePayload(payload, secret, 1_700_000_000);
+    const header = await signStripePayload(payload, secret, now);
     const response = await handleStripeWebhook(
       new Request("https://hcgamerlife.org/api/stripe/webhook", {
         method: "POST",

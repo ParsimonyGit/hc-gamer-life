@@ -90,13 +90,21 @@ function isUnknownFieldError(message: string): boolean {
 }
 
 export class ErpClient {
-  constructor(
-    private readonly env: ErpEnv,
-    private readonly fetchImpl: typeof fetch = fetch
-  ) {}
+  private readonly env: ErpEnv;
+  private readonly fetchImpl: typeof fetch;
+
+  constructor(env: ErpEnv, fetchImpl: typeof fetch = fetch) {
+    this.env = env;
+    this.fetchImpl = fetchImpl;
+  }
 
   private url(path: string): string {
     return `${erpBaseUrl(this.env)}${path}`;
+  }
+
+  private resourcePath(doctype: string, name?: string): string {
+    const encoded = `/api/resource/${encodeURIComponent(doctype)}`;
+    return name ? `${encoded}/${encodeURIComponent(name)}` : encoded;
   }
 
   private async request(path: string, init?: RequestInit): Promise<{ ok: boolean; status: number; body: Record<string, unknown> }> {
@@ -112,7 +120,7 @@ export class ErpClient {
     const filters = JSON.stringify([["email_id", "=", email]]);
     const fields = JSON.stringify(["name", "email_id", "customer_name"]);
     const result = await this.request(
-      `/api/resource/Customer?filters=${encodeURIComponent(filters)}&fields=${encodeURIComponent(fields)}&limit_page_length=5`
+      `${this.resourcePath("Customer")}?filters=${encodeURIComponent(filters)}&fields=${encodeURIComponent(fields)}&limit_page_length=5`
     );
     const rows = (result.body as ResourceList<{ name?: string; email_id?: string }>).data || [];
     const match = rows.find((row) => row.name);
@@ -128,7 +136,7 @@ export class ErpClient {
 
     for (const filters of searches) {
       const result = await this.request(
-        `/api/resource/Sales Order?filters=${encodeURIComponent(JSON.stringify(filters))}&fields=${encodeURIComponent(fields)}&limit_page_length=5`
+        `${this.resourcePath("Sales Order")}?filters=${encodeURIComponent(JSON.stringify(filters))}&fields=${encodeURIComponent(fields)}&limit_page_length=5`
       );
       if (!result.ok && isUnknownFieldError(frappeMessage(result.body))) continue;
       const rows = (result.body as ResourceList<ExistingSalesOrder>).data || [];
@@ -214,7 +222,7 @@ export class ErpClient {
   }
 
   async submitSalesOrder(name: string): Promise<CreatedSalesOrder> {
-    const result = await this.request(`/api/resource/Sales Order/${encodeURIComponent(name)}`);
+    const result = await this.request(this.resourcePath("Sales Order", name));
     const doc = (result.body as ResourceDoc<Record<string, unknown> & { name?: string }>).data;
     if (!result.ok || !doc?.name) {
       throw new Error(frappeMessage(result.body) || `Could not load Sales Order ${name}`);
@@ -228,7 +236,7 @@ export class ErpClient {
 
   private async insertResource<T extends { name?: string }>(doctype: string, doc: Record<string, unknown>): Promise<T> {
     const attempt = async (body: Record<string, unknown>) => {
-      const result = await this.request(`/api/resource/${encodeURIComponent(doctype)}`, {
+      const result = await this.request(this.resourcePath(doctype), {
         method: "POST",
         body: JSON.stringify(body)
       });
@@ -249,7 +257,7 @@ export class ErpClient {
 
   private async updateResource(doctype: string, name: string, values: Record<string, unknown>): Promise<void> {
     const attempt = async (body: Record<string, unknown>) =>
-      this.request(`/api/resource/${encodeURIComponent(doctype)}/${encodeURIComponent(name)}`, {
+      this.request(this.resourcePath(doctype, name), {
         method: "PUT",
         body: JSON.stringify(body)
       });
