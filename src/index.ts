@@ -295,6 +295,12 @@ const PAGE = `<!doctype html>
       .purchase-panel h3 { font-size: 1.25rem; margin: 8px 0 5px; }
       .purchase-panel p { color: var(--muted); font-size: .88rem; margin: 0; max-width: 510px; }
       .purchase-panel form { align-items: end; display: flex; flex: 0 0 auto; gap: 10px; }
+      .purchase-panel.embedded-open { display: block; }
+      .purchase-panel.embedded-open form { display: none; }
+      .embedded-checkout { background: #fff; border-radius: 16px; margin-top: 22px; min-height: 600px; overflow: hidden; }
+      .embedded-checkout[hidden] { display: none; }
+      .checkout-message { color: var(--muted); font-size: .88rem; margin: 13px 0 0; }
+      .checkout-message.error { color: #ff9fa8; }
       .quantity-label { color: var(--muted); display: grid; font-size: .72rem; gap: 5px; letter-spacing: .08em; text-transform: uppercase; }
       .quantity-label select { background: var(--panel-2); border: 1px solid var(--line); border-radius: 9px; color: var(--ink); font: inherit; padding: 12px 13px; }
       .microproof { color: #768197; font-size: .78rem; margin: 18px 0 0; }
@@ -604,7 +610,7 @@ const PAGE = `<!doctype html>
             <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 5v7a5 5 0 0 0 10 0V5"/><path d="M4 10v2a8 8 0 0 0 16 0v-2M12 20v-3m-3 3h6"/></svg></div><h3>Comfort for the “last game”</h3><p>Soft over-ear cushions and a flexible fit stay easy through long queues, long flights, and long nights with friends.</p></article>
             <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 5 6v5c0 4.5 2.9 8.2 7 10 4.1-1.8 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Ready when you are</h3><p>A detachable boom mic, inline controls, and broad device compatibility keep the setup simple and the focus where it belongs.</p></article>
           </div>
-          <div class="purchase-panel"><div><div class="eyebrow">Stripe test checkout</div><h3>Put the HCG1 in your cart.</h3><p>This checkout is wired for Stripe test mode. It stays inactive until the store’s test price and server-side secret are configured.</p></div><form action="/checkout" method="post"><input type="hidden" name="product" value="hcg1" /><label class="quantity-label" for="quantity">Quantity<select id="quantity" name="quantity"><option value="1">1 headset</option><option value="2">2 headsets</option><option value="3">3 headsets</option><option value="4">4 headsets</option></select></label><button class="button button-primary" type="submit">Open test checkout <span aria-hidden="true">↗</span></button></form></div>
+          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Secure Stripe checkout</div><h3>Put the HCG1 in your cart.</h3><p>Complete your test order securely without leaving HC GamerLife. Your payment details are handled by Stripe.</p></div><form id="stripe-checkout-form" action="/checkout" method="post"><input type="hidden" name="product" value="hcg1" /><label class="quantity-label" for="quantity">Quantity<select id="quantity" name="quantity"><option value="1">1 headset</option><option value="2">2 headsets</option><option value="3">3 headsets</option><option value="4">4 headsets</option></select></label><button class="button button-primary" type="submit">Checkout securely <span aria-hidden="true">↗</span></button></form><p id="checkout-message" class="checkout-message" role="status" aria-live="polite"></p><div id="embedded-checkout" class="embedded-checkout" hidden></div></div>
         </section>
       </div>
 
@@ -618,13 +624,45 @@ const PAGE = `<!doctype html>
     </main>
 
     <div class="shell"><footer><div class="footer-row"><a class="brand" href="#top"><span class="brand-mark">HC</span> GAMERLIFE</a><span>Original concept site · Built for the long session.</span></div></footer></div>
+    <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+    <script>
+      (() => {
+        const form = document.getElementById("stripe-checkout-form");
+        const panel = document.getElementById("purchase-panel");
+        const mount = document.getElementById("embedded-checkout");
+        const message = document.getElementById("checkout-message");
+        const button = form?.querySelector("button");
+        if (!form || !panel || !mount || !message || !button || !window.Stripe) return;
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          button.disabled = true;
+          message.className = "checkout-message";
+          message.textContent = "Preparing your secure checkout…";
+          try {
+            const response = await fetch("/checkout", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+            const payload = await response.json();
+            if (!response.ok || typeof payload.clientSecret !== "string" || typeof payload.publishableKey !== "string") throw new Error(payload.message || "Checkout could not be started.");
+            const stripe = window.Stripe(payload.publishableKey);
+            const checkout = await stripe.createEmbeddedCheckoutPage({ fetchClientSecret: async () => payload.clientSecret });
+            panel.classList.add("embedded-open");
+            mount.hidden = false;
+            message.textContent = "";
+            checkout.mount("#embedded-checkout");
+          } catch (error) {
+            button.disabled = false;
+            message.className = "checkout-message error";
+            message.textContent = error instanceof Error ? error.message : "Checkout could not be started. Please try again.";
+          }
+        });
+      })();
+    </script>
   </body>
 </html>`;
 
 const HEADERS = {
   "content-type": "text/html; charset=UTF-8",
   "cache-control": "public, max-age=300",
-      "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' https://www.hcgamerlife.com https://hcgamerlife.com https://raw.githubusercontent.com data:; script-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' https://www.hcgamerlife.com https://hcgamerlife.com https://raw.githubusercontent.com data:; script-src 'self' 'unsafe-inline' https://js.stripe.com; connect-src 'self' https://api.stripe.com https://js.stripe.com https://r.stripe.com; frame-src https://checkout.stripe.com https://*.stripe.com; base-uri 'none'; frame-ancestors 'none'",
   "referrer-policy": "strict-origin-when-cross-origin",
   "x-content-type-options": "nosniff",
   "permissions-policy": "camera=(), microphone=(), geolocation=()"
@@ -813,6 +851,7 @@ async function createStripeCheckout(request: Request, env: Env): Promise<Respons
   const parsedQuantity = Number.parseInt(String(form.get("quantity") ?? "1"), 10);
   const quantity = Number.isFinite(parsedQuantity) ? Math.min(Math.max(parsedQuantity, 1), 4) : 1;
   if (!env.STRIPE_SECRET_KEY || !env.STRIPE_PRICE_ID) {
+    if (request.headers.get("accept")?.includes("application/json")) return new Response(JSON.stringify({ message: "The test checkout is not configured yet." }), { status: 503, headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" } });
     return checkoutStatusPage("Test checkout is not configured yet", "The site is ready for Stripe test mode. Add the test price ID and server-side Stripe secret to the Worker, then this button will open a real test checkout.", 503);
   }
 
@@ -820,8 +859,9 @@ async function createStripeCheckout(request: Request, env: Env): Promise<Respons
   params.set("mode", "payment");
   params.set("line_items[0][price]", env.STRIPE_PRICE_ID);
   params.set("line_items[0][quantity]", String(quantity));
-  params.set("success_url", `${SITE_URL}/?checkout=success#drop`);
-  params.set("cancel_url", `${SITE_URL}/?checkout=cancel#product`);
+  params.set("ui_mode", "embedded_page");
+  params.set("return_url", `${SITE_URL}/?checkout=return&session_id={CHECKOUT_SESSION_ID}#drop`);
+  params.set("redirect_on_completion", "if_required");
   params.set("billing_address_collection", "auto");
   params.set("allow_promotion_codes", "true");
 
@@ -833,11 +873,26 @@ async function createStripeCheckout(request: Request, env: Env): Promise<Respons
       body: params.toString()
     });
   } catch {
+    if (request.headers.get("accept")?.includes("application/json")) return new Response(JSON.stringify({ message: "The test checkout service did not respond. Try again in a moment." }), { status: 502, headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" } });
     return checkoutStatusPage("Stripe could not be reached", "The test checkout service did not respond. Try again in a moment.", 502);
   }
-  if (!upstream.ok) return checkoutStatusPage("Stripe test checkout needs attention", "Stripe rejected the test checkout request. Check the Worker’s test price ID and secret configuration.", 502);
-  const payload = await upstream.json() as { url?: unknown };
-  return typeof payload.url === "string" ? Response.redirect(payload.url, 303) : checkoutStatusPage("Stripe returned no checkout link", "The test session was created without a redirect link. Check the Stripe test-mode configuration.", 502);
+  if (!upstream.ok) {
+    const errorPayload = await upstream.json().catch(() => undefined) as { error?: { message?: unknown } } | undefined;
+    const errorMessage = typeof errorPayload?.error?.message === "string" ? errorPayload.error.message : "Stripe rejected the test checkout request. Check the Worker’s test configuration.";
+    if (request.headers.get("accept")?.includes("application/json")) return new Response(JSON.stringify({ message: errorMessage }), { status: 502, headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" } });
+    return checkoutStatusPage("Stripe test checkout needs attention", errorMessage, 502);
+  }
+  const payload = await upstream.json() as { client_secret?: unknown };
+  if (typeof payload.client_secret !== "string" || !env.STRIPE_PUBLISHABLE_KEY) {
+    if (request.headers.get("accept")?.includes("application/json")) return new Response(JSON.stringify({ message: "The test session was created without the embedded checkout details." }), { status: 502, headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" } });
+    return checkoutStatusPage("Stripe returned no checkout link", "The test session was created without the embedded checkout details. Check the Stripe test-mode configuration.", 502);
+  }
+  if (request.headers.get("accept")?.includes("application/json")) {
+    return new Response(JSON.stringify({ clientSecret: payload.client_secret, publishableKey: env.STRIPE_PUBLISHABLE_KEY }), {
+      headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
+    });
+  }
+  return checkoutStatusPage("Checkout is ready", "Return to the product page to open the secure checkout on-site.", 200);
 }
 
 export default {
