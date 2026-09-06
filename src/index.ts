@@ -14,12 +14,51 @@ const MEDIA_SOURCES: Record<string, string> = {
 };
 
 const SITE_URL = "https://hcgamerlife.org";
-const SEO_IMAGE_URL = `${SITE_URL}/media/image?key=product-hero&variant=product&v=4`;
+const APEX_HOST = "hcgamerlife.org";
+const SEO_IMAGE_URL = `${SITE_URL}/brand/og.jpg`;
 type Env = {
   STRIPE_SECRET_KEY?: string;
   STRIPE_PUBLISHABLE_KEY?: string;
   STRIPE_PRICE_ID?: string;
+  ASSETS: Fetcher;
 };
+
+type GalleryItem = {
+  src: string;
+  alt: string;
+  caption: string;
+  kicker: string;
+};
+
+const GALLERY_CATALOG: GalleryItem[] = [
+  { src: "/assets/gallery/catalog-hero.jpg", kicker: "Catalog", caption: "Hero 3/4 with cable", alt: "HCG1 Pro Gaming Headset at a three-quarter angle with detachable microphone, cable, and inline controller" },
+  { src: "/assets/gallery/catalog-front.jpg", kicker: "Catalog", caption: "Front", alt: "Front view of the black and red HCG1 Pro Gaming Headset" },
+  { src: "/assets/gallery/catalog-inner.jpg", kicker: "Catalog", caption: "Inner cups", alt: "HCG1 inner ear cushions with red gamepad plates and red stitching" },
+  { src: "/assets/gallery/catalog-inner-alt.jpg", kicker: "Catalog", caption: "Inner cups, other side", alt: "Opposite three-quarter view of the HCG1 inner ear cushions" },
+  { src: "/assets/gallery/catalog-inline.jpg", kicker: "Catalog", caption: "Inline + adapter", alt: "HCG1 inline volume controller and PC adapter on a white background" },
+  { src: "/assets/gallery/catalog-controller.jpg", kicker: "Catalog", caption: "Inline controller", alt: "Close-up of the HCG1 inline mute and volume controller" }
+];
+
+const GALLERY_STUDIO: GalleryItem[] = [
+  { src: "/assets/gallery/studio-table.jpg", kicker: "Studio", caption: "On the table", alt: "HCG1 Pro Gaming Headset resting on a table at a three-quarter angle" },
+  { src: "/assets/gallery/studio-side.jpg", kicker: "Studio", caption: "Side, in hand", alt: "Hands holding the HCG1 in true side profile, showing palm-scale ear cups" },
+  { src: "/assets/gallery/studio-rear.jpg", kicker: "Studio", caption: "Rear headband", alt: "Rear view of the HCG1 headband with HC GAMERLIFE lettering" },
+  { src: "/assets/gallery/studio-front-held.jpg", kicker: "Studio", caption: "Front, held", alt: "Two hands holding the HCG1 from the front" },
+  { src: "/assets/gallery/studio-inner-held.jpg", kicker: "Studio", caption: "Inner, held", alt: "Hands holding the HCG1 to show inner pads and mesh cups" },
+  { src: "/assets/gallery/studio-front-mic.jpg", kicker: "Studio", caption: "Front with mic", alt: "HCG1 held from the front with the detachable boom microphone attached" },
+  { src: "/assets/gallery/detail-badge.jpg", kicker: "Detail", caption: "Nameplate", alt: "Close-up of the horizontal HC GAMERLIFE nameplate on the HCG1 ear cup" },
+  { src: "/assets/gallery/detail-inner-pad.jpg", kicker: "Detail", caption: "Inner pad", alt: "Close-up of the HCG1 red inner ear pad with white gamepad icon" }
+];
+
+const GALLERY_UGC: GalleryItem[] = [
+  { src: "/assets/gallery/ugc-pc.jpg", kicker: "PC", caption: "On the jack that still exists", alt: "College gamer wearing the HCG1 at a PC desk with the 3.5mm cable running to the computer" },
+  { src: "/assets/gallery/ugc-dualsense.jpg", kicker: "PlayStation", caption: "Jack on the pad", alt: "Ranked player wearing the HCG1 with a DualSense controller, 3.5mm plugged into the controller" },
+  { src: "/assets/gallery/ugc-creator.jpg", kicker: "Creator", caption: "One-hand hold", alt: "Creator at a streaming desk holding the HCG1 toward the camera" },
+  { src: "/assets/gallery/ugc-xbox.jpg", kicker: "Xbox", caption: "In the lap", alt: "Parent sitting on the floor with the HCG1 in his lap and an Xbox controller on the table" },
+  { src: "/assets/gallery/ugc-playstation.jpg", kicker: "PlayStation", caption: "Putting it on", alt: "Couch gamer putting on the HCG1 in front of a TV with a controller on the floor" }
+];
+
+const ALL_GALLERY_ITEMS = [...GALLERY_CATALOG, ...GALLERY_STUDIO, ...GALLERY_UGC];
 const safeJsonLd = (value: unknown): string => JSON.stringify(value).replace(/</g, "\\u003c");
 const HOME_JSON_LD = safeJsonLd({
   "@context": "https://schema.org",
@@ -177,7 +216,7 @@ const articleMediaKey = (article: Article): string => ARTICLE_MEDIA_KEYS[Math.ma
 const JOURNAL_CARDS = ARTICLES.map((article) => `<a class="journal-card" href="/journal/${article.slug}"><div class="journal-card-image"><img src="/media/image?key=${articleMediaKey(article)}&amp;variant=card&amp;v=3" alt="${article.title}" loading="lazy" decoding="async" /></div><div class="journal-card-copy"><span class="journal-kicker">${article.section}</span><h3>${article.title}</h3><p>${article.excerpt}</p><span class="journal-link">Read the guide ↗</span></div></a>`).join("");
 
 const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#ff4f5e"/><text x="32" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#19090e">HC</text></svg>`;
-const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}/</loc></url>${ARTICLES.map((article) => `<url><loc>${SITE_URL}/journal/${article.slug}</loc></url>`).join("")}</urlset>`;
+const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}/</loc></url><url><loc>${SITE_URL}/gallery</loc></url>${ARTICLES.map((article) => `<url><loc>${SITE_URL}/journal/${article.slug}</loc></url>`).join("")}</urlset>`;
 const MANIFEST_JSON = JSON.stringify({ name: "HC GamerLife", short_name: "HC GamerLife", start_url: "/", display: "standalone", background_color: "#0a0e16", theme_color: "#0a0e16", icons: [{ src: "/favicon.svg", sizes: "any", type: "image/svg+xml" }] });
 
 const PAGE = `<!doctype html>
@@ -426,7 +465,7 @@ const PAGE = `<!doctype html>
       .featured-guide-copy h2 { font-size: clamp(2.1rem, 4vw, 3.7rem); margin: 10px 0 18px; }
       .featured-guide-copy p { color: var(--muted); font-size: .98rem; max-width: 470px; }
       .featured-guide-copy p + p { margin-top: 0; }
-      .featured-guide-copy .text-link { color: var(--secondary); font-size: .84rem; font-weight: 800; margin-top: 10px; }
+      .featured-guide-copy .text-link, .section-head .text-link { color: var(--secondary); font-size: .84rem; font-weight: 800; }
       .method-grid { display: grid; gap: 14px; grid-template-columns: repeat(4, 1fr); }
       .method-card { border-top: 2px solid var(--secondary); padding: 19px 4px 0; }
       .method-card:nth-child(2) { border-color: var(--red); }
@@ -737,6 +776,7 @@ const PAGE = `<!doctype html>
         <a class="brand" href="#top" aria-label="HC GamerLife home"><span class="brand-mark">HC</span> GAMERLIFE</a>
         <nav aria-label="Main navigation">
           <a href="#product">The headset</a>
+          <a href="/gallery">Gallery</a>
           <a href="#journal">Journal</a>
           <a href="#setup">Your setup</a>
           <a href="#faq">FAQ</a>
@@ -775,26 +815,26 @@ const PAGE = `<!doctype html>
         </div>
 
         <section id="gallery">
-          <div class="section-head"><div><div class="eyebrow">See the HCG1</div><h2>Built to look as sharp as it sounds.</h2></div><p>Black-and-red hardware, a detachable boom mic, and the controls you need close at hand.</p></div>
+          <div class="section-head"><div><div class="eyebrow">See the HCG1</div><h2>Built to look as sharp as it sounds.</h2></div><p>Official catalog photography and in-hand stills of the real headset. <a class="text-link" href="/gallery">Open the full gallery ↗</a></p></div>
           <div class="visual-product">
-            <article class="visual-main"><img src="/media/image?key=product-angle&amp;variant=hero&amp;v=2" alt="HCG1 headset shown at an angle with its detachable microphone" loading="lazy" decoding="async" /><div class="visual-caption"><h3>Focus on the play.</h3><p>The closed-back over-ear fit keeps the room out while the 53mm drivers keep the action clear.</p></div></article>
+            <article class="visual-main"><img src="/assets/gallery/catalog-hero.jpg" alt="HCG1 Pro Gaming Headset at a three-quarter angle with detachable microphone, cable, and inline controller" loading="lazy" decoding="async" /><div class="visual-caption"><h3>Focus on the play.</h3><p>The closed-back over-ear fit keeps the room out while the 53mm drivers keep the action clear.</p></div></article>
             <div class="visual-stack">
-              <article class="visual-card"><img src="/media/image?key=product-comfort&amp;variant=card&amp;v=2" alt="HCG1 earcup and padded headband detail" loading="lazy" decoding="async" /><span>All-weekend comfort</span></article>
-              <article class="visual-card"><img src="/media/image?key=product-controls&amp;variant=card&amp;v=2" alt="HCG1 detachable boom microphone and inline controls" loading="lazy" decoding="async" /><span>Clear comms, simple controls</span></article>
+              <article class="visual-card"><img src="/assets/gallery/catalog-inner.jpg" alt="HCG1 inner ear cushions with red gamepad plates and red stitching" loading="lazy" decoding="async" /><span>All-weekend comfort</span></article>
+              <article class="visual-card"><img src="/assets/gallery/catalog-inline.jpg" alt="HCG1 inline volume controller and PC adapter" loading="lazy" decoding="async" /><span>Clear comms, simple controls</span></article>
             </div>
           </div>
           <div class="spec-callout"><span class="spec-pip">53</span><div><strong>53mm stereo drivers</strong><span>20Hz–20kHz response, 32 ohms impedance, and an inline volume controller.</span></div></div>
         </section>
 
         <section id="scenes">
-          <div class="section-head"><div><div class="eyebrow">HCG1 in the wild</div><h2>One headset. Every kind of session.</h2></div><p>From ranked matches to late-night playlists, the HCG1 is made to move with the people who use it.</p></div>
+          <div class="section-head"><div><div class="eyebrow">HCG1 in session</div><h2>One jack. The devices that still have one.</h2></div><p>PC, DualSense, Xbox, PlayStation. The 3.5mm cable goes where the jack still lives. <a class="text-link" href="/gallery">See every still ↗</a></p></div>
           <div class="campaign-grid">
-            <figure class="campaign-card"><img src="/media/image?key=campaign-gaming&amp;variant=card&amp;v=2" alt="Gamer wearing the HCG1 headset during a focused PC session" decoding="async" /><figcaption><span>Ranked mode</span>Lock in and read the room.</figcaption></figure>
-            <figure class="campaign-card"><img src="/media/image?key=campaign-studio&amp;variant=card&amp;v=2" alt="Music producer wearing the HCG1 headset in a home studio" decoding="async" /><figcaption><span>Studio time</span>Make every layer count.</figcaption></figure>
-            <figure class="campaign-card"><img src="/media/image?key=campaign-party&amp;variant=card&amp;v=2" alt="Friend wearing the HCG1 headset at a rooftop game night" decoding="async" /><figcaption><span>Squad night</span>Pass the controller, keep the energy.</figcaption></figure>
-            <figure class="campaign-card"><img src="/media/image?key=campaign-beach&amp;variant=card&amp;v=2" alt="Skater wearing the HCG1 headset on a sunny beach boardwalk" decoding="async" /><figcaption><span>Out of office</span>Your soundtrack travels.</figcaption></figure>
-            <figure class="campaign-card"><img src="/media/image?key=campaign-streamer&amp;variant=card&amp;v=2" alt="Streamer wearing the HCG1 headset in a cozy creator setup" decoding="async" /><figcaption><span>Creator mode</span>Clear comms, camera ready.</figcaption></figure>
-            <figure class="campaign-card"><img src="/media/image?key=campaign-esports&amp;variant=card&amp;v=2" alt="Esports teammate wearing the HCG1 headset in a tournament arena" decoding="async" /><figcaption><span>Match point</span>Call the play when it matters.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/ugc-pc.jpg" alt="College gamer wearing the HCG1 at a PC desk" decoding="async" /><figcaption><span>PC desk</span>Cable to the tower.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/ugc-dualsense.jpg" alt="Ranked player wearing the HCG1 with a DualSense controller" decoding="async" /><figcaption><span>DualSense</span>The jack is on the pad.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/ugc-creator.jpg" alt="Creator holding the HCG1 at a streaming desk" decoding="async" /><figcaption><span>Creator desk</span>One-hand hold.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/ugc-xbox.jpg" alt="Parent with the HCG1 in his lap and an Xbox controller" decoding="async" /><figcaption><span>Xbox night</span>In the lap, pad on the table.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/ugc-playstation.jpg" alt="Couch gamer putting on the HCG1 in front of a TV" decoding="async" /><figcaption><span>PlayStation</span>Putting it on.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/studio-table.jpg" alt="HCG1 Pro Gaming Headset on a table" decoding="async" /><figcaption><span>Studio</span>The real headset, still.</figcaption></figure>
           </div>
         </section>
 
@@ -815,7 +855,7 @@ const PAGE = `<!doctype html>
 
         <section id="featured-guide">
           <div class="featured-guide">
-            <div class="featured-guide-media"><img src="/media/image?key=campaign-gaming&amp;variant=hero&amp;v=3" alt="Player wearing the HCG1 headset during a focused gaming session" loading="lazy" decoding="async" /></div>
+            <div class="featured-guide-media"><img src="/assets/gallery/ugc-pc.jpg" alt="Player wearing the HCG1 at a PC desk" loading="lazy" decoding="async" /></div>
             <div class="featured-guide-copy"><div class="eyebrow">Featured guide · Make the setup disappear</div><h2>Start with the habit, then choose the hardware.</h2><p>The best headset decision is rarely about the longest feature list. It is about the little friction you want to remove from every session: pairing menus, a microphone that sits too far away, a cable that catches on the chair, or cushions that make you quit early.</p><p>Our wired-versus-wireless guide turns those tradeoffs into a simple checklist. Read it before you shop, share it with a friend who is upgrading, or use it to tune the gear you already own.</p><a class="text-link" href="/journal/wired-vs-wireless-gaming-headsets">Read the featured guide ↗</a></div>
           </div>
         </section>
@@ -888,12 +928,169 @@ const PAGE = `<!doctype html>
 
 const HEADERS = {
   "content-type": "text/html; charset=UTF-8",
-  "cache-control": "public, max-age=300",
-      "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' https://www.hcgamerlife.com https://hcgamerlife.com https://raw.githubusercontent.com data:; script-src 'self' 'unsafe-inline' https://js.stripe.com; connect-src 'self' https://api.stripe.com https://js.stripe.com https://r.stripe.com; frame-src https://checkout.stripe.com https://*.stripe.com; base-uri 'none'; frame-ancestors 'none'",
+  "cache-control": "public, max-age=0, must-revalidate",
+  "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' https://www.hcgamerlife.com https://hcgamerlife.com https://raw.githubusercontent.com data:; script-src 'self' 'unsafe-inline' https://js.stripe.com; connect-src 'self' https://api.stripe.com https://js.stripe.com https://r.stripe.com; frame-src https://checkout.stripe.com https://*.stripe.com; base-uri 'none'; frame-ancestors 'none'",
   "referrer-policy": "strict-origin-when-cross-origin",
   "x-content-type-options": "nosniff",
-  "permissions-policy": "camera=(), microphone=(), geolocation=()"
+  "permissions-policy": "camera=(), microphone=(), geolocation=()",
+  "strict-transport-security": "max-age=31536000"
 };
+
+const galleryFigures = (items: GalleryItem[]): string => items.map((item) =>
+  `<figure class="shot" data-full="${item.src}"><button type="button" aria-label="Open ${item.caption}"><img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async" /></button><figcaption><span>${item.kicker}</span>${item.caption}</figcaption></figure>`
+).join("");
+
+function renderGallery(): Response {
+  const galleryUrl = `${SITE_URL}/gallery`;
+  const jsonLd = safeJsonLd({
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    name: "HCG1 Pro Gaming Headset gallery",
+    url: galleryUrl,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@type": "Product", name: "HCG1 Pro Gaming Headset", brand: { "@type": "Brand", name: "HC GamerLife" } },
+    image: ALL_GALLERY_ITEMS.map((item) => `${SITE_URL}${item.src}`)
+  });
+  const page = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0e16" />
+    <meta name="description" content="Official HCG1 Pro Gaming Headset photography and in-session stills: catalog angles, in-hand scale, PC, DualSense, Xbox, and PlayStation." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="${galleryUrl}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="HC GamerLife" />
+    <meta property="og:url" content="${galleryUrl}" />
+    <meta property="og:title" content="HCG1 gallery | HC GamerLife" />
+    <meta property="og:description" content="The real HCG1, catalog through in-session. No generic stand-in headset." />
+    <meta property="og:image" content="${SEO_IMAGE_URL}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HCG1 gallery | HC GamerLife" />
+    <meta name="twitter:description" content="Official stills and in-session photos of the HCG1 Pro Gaming Headset." />
+    <meta name="twitter:image" content="${SEO_IMAGE_URL}" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">${jsonLd}</script>
+    <title>HCG1 gallery | HC GamerLife</title>
+    <style>
+      :root { color-scheme: dark; --ink:#f5f7fb; --muted:#a8b1c4; --line:rgba(181,196,224,.16); --bg:#0a0e16; --panel:#101722; --red:#ff4f5e; --secondary:#6bc9ff; --max:1160px; }
+      * { box-sizing: border-box; }
+      body { margin:0; background:radial-gradient(circle at 12% -10%, rgba(255,79,94,.16), transparent 28rem), var(--bg); color:var(--ink); font-family:Inter, ui-sans-serif, system-ui, sans-serif; line-height:1.5; }
+      a { color:inherit; text-decoration:none; }
+      img { display:block; max-width:100%; }
+      .shell { width:min(var(--max), calc(100% - 40px)); margin:0 auto; }
+      header { align-items:center; display:flex; justify-content:space-between; padding:25px 0; }
+      .brand { align-items:center; display:inline-flex; font-weight:850; gap:11px; letter-spacing:-.04em; }
+      .brand-mark { align-items:center; background:var(--red); border-radius:10px; color:#19090e; display:inline-flex; font-size:.8rem; height:33px; justify-content:center; width:38px; }
+      nav { display:flex; gap:22px; }
+      nav a { color:var(--muted); font-size:.88rem; }
+      nav a:hover, nav a:focus-visible { color:var(--ink); }
+      .hero { padding:36px 0 20px; }
+      .eyebrow { color:var(--secondary); font-size:.73rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+      h1 { font-size:clamp(2.6rem, 7vw, 5.4rem); letter-spacing:-.08em; line-height:.92; margin:10px 0 16px; max-width:16ch; }
+      h1 span { color:var(--red); }
+      .lede { color:var(--muted); font-size:1.05rem; max-width:38rem; }
+      h2 { font-size:clamp(1.6rem, 3vw, 2.4rem); letter-spacing:-.05em; margin:0 0 18px; }
+      section { padding:42px 0 10px; }
+      .grid { display:grid; gap:14px; grid-template-columns:repeat(3, 1fr); }
+      .grid.dense { grid-template-columns:repeat(4, 1fr); }
+      .shot { background:var(--panel); border:1px solid var(--line); border-radius:16px; margin:0; overflow:hidden; }
+      .shot button { background:#111; border:0; cursor:zoom-in; display:block; padding:0; width:100%; }
+      .shot img { height:240px; object-fit:cover; width:100%; }
+      .shot figcaption { font-size:.8rem; padding:12px 14px 14px; }
+      .shot figcaption span { color:var(--secondary); display:block; font-size:.66rem; font-weight:800; letter-spacing:.12em; margin-bottom:3px; text-transform:uppercase; }
+      footer { border-top:1px solid var(--line); color:var(--muted); font-size:.8rem; margin-top:48px; padding:24px 0 36px; }
+      dialog { background:#0a0e16; border:1px solid var(--line); border-radius:18px; color:var(--ink); max-width:min(920px, 94vw); padding:16px; }
+      dialog::backdrop { background:rgba(5,8,13,.78); }
+      dialog img { max-height:78vh; object-fit:contain; width:100%; }
+      dialog form { margin-top:12px; text-align:right; }
+      dialog button { background:transparent; border:1px solid var(--line); border-radius:999px; color:var(--ink); cursor:pointer; padding:8px 14px; }
+      :focus-visible { outline:2px solid var(--secondary); outline-offset:3px; }
+      @media (max-width: 820px) {
+        nav { display:none; }
+        .grid, .grid.dense { grid-template-columns:repeat(2, 1fr); }
+      }
+      @media (max-width: 560px) {
+        .grid, .grid.dense { grid-template-columns:1fr; }
+        .shot img { height:280px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <a class="brand" href="/"><span class="brand-mark">HC</span> GAMERLIFE</a>
+        <nav aria-label="Main navigation">
+          <a href="/#product">The headset</a>
+          <a href="/gallery" aria-current="page">Gallery</a>
+          <a href="/#journal">Journal</a>
+          <a href="/#drop">Get in the game</a>
+        </nav>
+      </header>
+      <main>
+        <section class="hero">
+          <div class="eyebrow">HCG1 photography</div>
+          <h1>The headset.<br /><span>As it is.</span></h1>
+          <p class="lede">Official catalog plates, in-hand stills for real scale, and five session photos on PC, DualSense, Xbox, and PlayStation. No generic stand-in. No phone jack.</p>
+        </section>
+        <section>
+          <h2>Catalog</h2>
+          <div class="grid">${galleryFigures(GALLERY_CATALOG)}</div>
+        </section>
+        <section>
+          <h2>In hand</h2>
+          <div class="grid dense">${galleryFigures(GALLERY_STUDIO)}</div>
+        </section>
+        <section>
+          <h2>In session</h2>
+          <div class="grid">${galleryFigures(GALLERY_UGC)}</div>
+        </section>
+      </main>
+      <footer>HC GamerLife · HCG1 Pro Gaming Headset · wired 3.5mm</footer>
+    </div>
+    <dialog id="lightbox" aria-label="Photograph">
+      <img alt="" />
+      <form method="dialog"><button type="submit">Close</button></form>
+    </dialog>
+    <script>
+      const box = document.getElementById("lightbox");
+      const frame = box.querySelector("img");
+      document.querySelectorAll(".shot").forEach((shot) => {
+        shot.querySelector("button").addEventListener("click", () => {
+          frame.src = shot.getAttribute("data-full");
+          frame.alt = shot.querySelector("img").alt;
+          box.showModal();
+        });
+      });
+    </script>
+  </body>
+</html>`;
+  return new Response(page, { headers: HEADERS });
+}
+
+function notFoundPage(): Response {
+  const page = `<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex, nofollow" /><link rel="canonical" href="${SITE_URL}/" /><link rel="icon" href="/favicon.svg" type="image/svg+xml" /><title>Page not found | HC GamerLife</title><style>:root{color-scheme:dark;--ink:#f5f7fb;--muted:#a8b1c4;--bg:#0a0e16;--red:#ff4f5e;--secondary:#6bc9ff}body{background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,sans-serif;margin:0;min-height:100vh;display:grid;place-items:center;padding:32px}main{max-width:28rem}.eyebrow{color:var(--secondary);font-size:.73rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase}h1{font-size:clamp(2.4rem,8vw,4.2rem);letter-spacing:-.07em;line-height:.95}p{color:var(--muted)}a{color:var(--red)}</style></head><body><main><div class="eyebrow">404</div><h1>This path is a miss.</h1><p>That page is not on HC GamerLife. Head back to the <a href="/">HCG1 home</a> or the <a href="/gallery">gallery</a>.</p></main></body></html>`;
+  const headers = new Headers(HEADERS);
+  headers.set("cache-control", "public, max-age=0, must-revalidate");
+  return new Response(page, { status: 404, headers });
+}
+
+async function servePublicAsset(request: Request, env: Env, pathname: string): Promise<Response> {
+  const assetRequest = new Request(new URL(pathname, request.url).toString(), { method: "GET" });
+  const upstream = await env.ASSETS.fetch(assetRequest);
+  if (upstream.status === 404) {
+    if (pathname.includes(".")) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=UTF-8", "cache-control": "no-store", "strict-transport-security": "max-age=31536000" } });
+    return notFoundPage();
+  }
+  const headers = new Headers(upstream.headers);
+  if (pathname.startsWith("/assets/")) headers.set("cache-control", "public, max-age=31536000, immutable");
+  else if (pathname.startsWith("/brand/")) headers.set("cache-control", "public, max-age=604800");
+  else headers.set("cache-control", "public, max-age=3600");
+  headers.set("strict-transport-security", "max-age=31536000");
+  if (request.method === "HEAD") return new Response(null, { status: upstream.status, headers });
+  return new Response(upstream.body, { status: upstream.status, headers });
+}
 
 function renderArticle(article: Article): Response {
   const imageKey = articleMediaKey(article);
@@ -1156,45 +1353,89 @@ async function createStripeCheckout(request: Request, env: Env): Promise<Respons
   return checkoutStatusPage("Checkout is ready", "Return to the product page to open the secure checkout on-site.", 200);
 }
 
+function withHsts(response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.set("strict-transport-security", "max-age=31536000");
+  return new Response(response.body, { status: response.status, headers });
+}
+
+function htmlHead(status: number): Response {
+  return new Response(null, { status, headers: HEADERS });
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const url = new URL(request.url);
-    if (url.pathname === "/healthz") {
-      return new Response(JSON.stringify({ ok: true, service: "hc-gamer-life" }), {
-        headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
-      });
-    }
-    if (url.pathname === "/robots.txt") {
-      return new Response(`User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`, {
-        headers: { "content-type": "text/plain; charset=UTF-8", "cache-control": "public, max-age=3600" }
-      });
-    }
-    if (url.pathname === "/sitemap.xml") {
-      return new Response(SITEMAP_XML, {
-        headers: { "content-type": "application/xml; charset=UTF-8", "cache-control": "public, max-age=3600" }
-      });
-    }
-    if (url.pathname === "/site.webmanifest") {
-      return new Response(MANIFEST_JSON, {
-        headers: { "content-type": "application/manifest+json; charset=UTF-8", "cache-control": "public, max-age=3600" }
-      });
-    }
-    if (url.pathname === "/favicon.svg") {
-      return new Response(FAVICON, { headers: { "content-type": "image/svg+xml; charset=UTF-8", "cache-control": "public, max-age=31536000, immutable" } });
-    }
-    if (url.pathname === "/checkout/config" && request.method === "GET") {
-      return new Response(JSON.stringify({ publishableKey: env.STRIPE_PUBLISHABLE_KEY ?? null, ready: Boolean(env.STRIPE_SECRET_KEY && env.STRIPE_PRICE_ID) }), {
-        headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
-      });
-    }
-    if (url.pathname === "/checkout") return createStripeCheckout(request, env);
-    if (url.pathname.startsWith("/journal/")) {
-      const slug = decodeURIComponent(url.pathname.slice("/journal/".length)).replace(/\/+$/, "");
-      const article = ARTICLES.find((candidate) => candidate.slug === slug);
-      return article ? renderArticle(article) : new Response("Guide not found", { status: 404, headers: { "content-type": "text/plain; charset=UTF-8" } });
-    }
-    if (url.pathname === "/media/image") return serveOptimizedImage(request, url);
-    return new Response(PAGE, { headers: HEADERS });
+    return withHsts(await handleRequest(request, env));
   }
 };
+
+async function handleRequest(request: Request, env: Env): Promise<Response> {
+  const url = new URL(request.url);
+  if (url.hostname === `www.${APEX_HOST}` || (url.hostname === APEX_HOST && url.protocol === "http:")) {
+    return Response.redirect(`https://${APEX_HOST}${url.pathname}${url.search}`, 301);
+  }
+  if (url.pathname.startsWith("/api/")) {
+    return new Response(JSON.stringify({ ok: false, error: "Not found" }), {
+      status: 404,
+      headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
+    });
+  }
+  if (
+    url.pathname.startsWith("/assets/") ||
+    url.pathname.startsWith("/brand/") ||
+    /^\/[0-9a-f]{32}\.txt$/.test(url.pathname)
+  ) {
+    return servePublicAsset(request, env, url.pathname);
+  }
+  if (url.pathname === "/healthz") {
+    return new Response(JSON.stringify({ ok: true, service: "hc-gamer-life" }), {
+      headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
+    });
+  }
+  if (url.pathname === "/robots.txt") {
+    return new Response(`User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`, {
+      headers: { "content-type": "text/plain; charset=UTF-8", "cache-control": "public, max-age=3600" }
+    });
+  }
+  if (url.pathname === "/sitemap.xml") {
+    return new Response(SITEMAP_XML, {
+      headers: { "content-type": "application/xml; charset=UTF-8", "cache-control": "public, max-age=3600" }
+    });
+  }
+  if (url.pathname === "/site.webmanifest") {
+    return new Response(MANIFEST_JSON, {
+      headers: { "content-type": "application/manifest+json; charset=UTF-8", "cache-control": "public, max-age=3600" }
+    });
+  }
+  if (url.pathname === "/favicon.svg") {
+    return new Response(FAVICON, { headers: { "content-type": "image/svg+xml; charset=UTF-8", "cache-control": "public, max-age=31536000, immutable" } });
+  }
+  if (url.pathname === "/checkout/config" && request.method === "GET") {
+    return new Response(JSON.stringify({ publishableKey: env.STRIPE_PUBLISHABLE_KEY ?? null, ready: Boolean(env.STRIPE_SECRET_KEY && env.STRIPE_PRICE_ID) }), {
+      headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
+    });
+  }
+  if (url.pathname === "/checkout") return createStripeCheckout(request, env);
+  if (url.pathname.startsWith("/journal/")) {
+    const slug = decodeURIComponent(url.pathname.slice("/journal/".length)).replace(/\/+$/, "");
+    const article = ARTICLES.find((candidate) => candidate.slug === slug);
+    if (!article) return notFoundPage();
+    if (request.method === "HEAD") return htmlHead(200);
+    return renderArticle(article);
+  }
+  if (url.pathname === "/media/image") return serveOptimizedImage(request, url);
+  if (url.pathname === "/gallery" || url.pathname === "/gallery/") {
+    if (request.method === "HEAD") return htmlHead(200);
+    return renderGallery();
+  }
+  if (url.pathname === "/" || url.pathname === "") {
+    if (request.method === "HEAD") return htmlHead(200);
+    return new Response(PAGE, { headers: HEADERS });
+  }
+  if (url.pathname.includes(".")) {
+    return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=UTF-8", "cache-control": "no-store" } });
+  }
+  if (request.method === "HEAD") return htmlHead(404);
+  return notFoundPage();
+}
 
