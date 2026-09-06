@@ -1,5 +1,6 @@
 /// <reference types="@cloudflare/workers-types" />
 
+import { handleStripeWebhook } from "./purchase/webhook.ts";
 import { handleQuizApi } from "./quiz/api.ts";
 import { renderQuizPage } from "./quiz/page.ts";
 
@@ -23,9 +24,20 @@ type Env = {
   STRIPE_SECRET_KEY?: string;
   STRIPE_PUBLISHABLE_KEY?: string;
   STRIPE_PRICE_ID?: string;
+  STRIPE_WEBHOOK_SECRET?: string;
   GHL_PIT?: string;
   HCGL_GHL_PIT?: string;
   GHL_LOCATION_ID?: string;
+  ERP_URL?: string;
+  ERP_API_KEY?: string;
+  ERP_API_SECRET?: string;
+  ERP_COMPANY?: string;
+  ERP_CUSTOMER_GROUP?: string;
+  ERP_TERRITORY?: string;
+  ERP_ITEM_CODE?: string;
+  ERP_ITEM_RATE?: string;
+  ERP_DRY_RUN?: string;
+  PURCHASE_DRY_RUN?: string;
   ASSETS: Fetcher;
 };
 
@@ -1380,6 +1392,9 @@ async function createStripeCheckout(request: Request, env: Env): Promise<Respons
   params.set("redirect_on_completion", "if_required");
   params.set("billing_address_collection", "auto");
   params.set("allow_promotion_codes", "true");
+  params.set("metadata[product]", "hcg1");
+  params.set("metadata[item_code]", "HCG1-PRO");
+  params.set("metadata[quantity]", String(quantity));
 
   let upstream: Response;
   try {
@@ -1434,6 +1449,9 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   }
   if (url.pathname === "/api/quiz") {
     return handleQuizApi(request, env);
+  }
+  if (url.pathname === "/api/stripe/webhook") {
+    return handleStripeWebhook(request, env);
   }
   if (url.pathname.startsWith("/api/")) {
     return new Response(JSON.stringify({ ok: false, error: "Not found" }), {

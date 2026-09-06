@@ -180,34 +180,31 @@ async function applyTags(token: string, contactId: string, tags: string[]): Prom
   }
 }
 
-export async function upsertQuizContact(
+export async function upsertTaggedContact(
   env: QuizEnv,
-  body: QuizSubmitBody & { email: string; answers: QuizAnswers }
+  input: {
+    email: string;
+    firstName?: string;
+    lastName?: string;
+    tags: string[];
+    source: string;
+    extra?: Record<string, unknown>;
+  }
 ): Promise<{ contactId: string; isNew: boolean }> {
   const token = ghlPrivateToken(env);
   const locationId = ghlLocationId(env);
-  if (!token) throw new Error("Quiz backend is not configured (missing GHL_PIT or HCGL_GHL_PIT).");
-
-  const scored = scoreQuiz(body.answers);
-  const tags = crmTagsForResult(scored, true);
-  const fieldMap = await loadCustomFieldMap(env, token, locationId);
+  if (!token) throw new Error("HighLevel is not configured (missing GHL_PIT or HCGL_GHL_PIT).");
 
   const payload: Record<string, unknown> = {
     locationId,
-    email: body.email,
-    source: "hcgl-quiz",
-    tags,
+    email: input.email,
+    source: input.source,
+    tags: input.tags,
     country: "US",
-    customFields: customFieldPayload(fieldMap, scored.customFields)
+    ...input.extra
   };
-  if (body.firstName) payload.firstName = body.firstName;
-  if (body.lastName) payload.lastName = body.lastName;
-  if (body.marketingOptIn === false) {
-    payload.dnd = true;
-    payload.dndSettings = {
-      Email: { status: "active", message: "Opted out at quiz submit", code: "" }
-    };
-  }
+  if (input.firstName) payload.firstName = input.firstName;
+  if (input.lastName) payload.lastName = input.lastName;
 
   const response = await fetch(`${GHL_API}/contacts/upsert`, {
     method: "POST",
@@ -226,8 +223,39 @@ export async function upsertQuizContact(
     throw new Error(data.message || data.error || `GHL upsert failed (${response.status})`);
   }
 
-  await applyTags(token, data.contact.id, tags);
+  await applyTags(token, data.contact.id, input.tags);
   return { contactId: data.contact.id, isNew: Boolean(data.new) };
+}
+
+export async function upsertQuizContact(
+  env: QuizEnv,
+  body: QuizSubmitBody & { email: string; answers: QuizAnswers }
+): Promise<{ contactId: string; isNew: boolean }> {
+  const token = ghlPrivateToken(env);
+  const locationId = ghlLocationId(env);
+  if (!token) throw new Error("Quiz backend is not configured (missing GHL_PIT or HCGL_GHL_PIT).");
+
+  const scored = scoreQuiz(body.answers);
+  const tags = crmTagsForResult(scored, true);
+  const fieldMap = await loadCustomFieldMap(env, token, locationId);
+  const extra: Record<string, unknown> = {
+    customFields: customFieldPayload(fieldMap, scored.customFields)
+  };
+  if (body.marketingOptIn === false) {
+    extra.dnd = true;
+    extra.dndSettings = {
+      Email: { status: "active", message: "Opted out at quiz submit", code: "" }
+    };
+  }
+
+  return upsertTaggedContact(env, {
+    email: body.email,
+    firstName: body.firstName,
+    lastName: body.lastName,
+    tags,
+    source: "hcgl-quiz",
+    extra
+  });
 }
 
 export async function submitQuiz(env: QuizEnv, raw: unknown): Promise<QuizSubmitResult> {
