@@ -516,7 +516,7 @@ const PAGE = `<!doctype html>
         --lavender: #c4b4ff;
         --max: 1180px;
       }
-      html { background: var(--bg-deep); scroll-behavior: smooth; }
+      html { background: var(--bg-deep); overflow-x: clip; scroll-behavior: smooth; }
       body {
         background:
           radial-gradient(circle at 9% 5%, rgba(216,255,62,.13), transparent 22rem),
@@ -525,6 +525,7 @@ const PAGE = `<!doctype html>
         color: var(--ink);
         font-family: "Avenir Next", "Century Gothic", "Trebuchet MS", sans-serif;
         letter-spacing: .005em;
+        overflow-x: clip;
       }
       body::before {
         background-image: linear-gradient(rgba(245,239,228,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(245,239,228,.035) 1px, transparent 1px);
