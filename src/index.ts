@@ -1,5 +1,8 @@
 /// <reference types="@cloudflare/workers-types" />
 
+import { handleQuizApi } from "./quiz/api.ts";
+import { renderQuizPage } from "./quiz/page.ts";
+
 const MEDIA_SOURCES: Record<string, string> = {
   "product-hero": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-hero",
   "product-angle": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-angle",
@@ -20,6 +23,9 @@ type Env = {
   STRIPE_SECRET_KEY?: string;
   STRIPE_PUBLISHABLE_KEY?: string;
   STRIPE_PRICE_ID?: string;
+  GHL_PIT?: string;
+  HCGL_GHL_PIT?: string;
+  GHL_LOCATION_ID?: string;
   ASSETS: Fetcher;
 };
 
@@ -232,7 +238,7 @@ const articleMediaKey = (article: Article): string => ARTICLE_MEDIA_KEYS[Math.ma
 const JOURNAL_CARDS = ARTICLES.map((article) => `<a class="journal-card" href="/journal/${article.slug}"><div class="journal-card-image"><img src="/media/image?key=${articleMediaKey(article)}&amp;variant=card&amp;v=3" alt="${article.title}" loading="lazy" decoding="async" /></div><div class="journal-card-copy"><span class="journal-kicker">${article.section}</span><h3>${article.title}</h3><p>${article.excerpt}</p><span class="journal-link">Read the guide ↗</span></div></a>`).join("");
 
 const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#ff4f5e"/><text x="32" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#19090e">HC</text></svg>`;
-const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}/</loc></url><url><loc>${SITE_URL}/gallery</loc></url>${ARTICLES.map((article) => `<url><loc>${SITE_URL}/journal/${article.slug}</loc></url>`).join("")}</urlset>`;
+const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}/</loc></url><url><loc>${SITE_URL}/quiz</loc></url><url><loc>${SITE_URL}/gallery</loc></url>${ARTICLES.map((article) => `<url><loc>${SITE_URL}/journal/${article.slug}</loc></url>`).join("")}</urlset>`;
 const MANIFEST_JSON = JSON.stringify({ name: "HC GamerLife", short_name: "HC GamerLife", start_url: "/", display: "standalone", background_color: "#0a0e16", theme_color: "#0a0e16", icons: [{ src: "/favicon.svg", sizes: "any", type: "image/svg+xml" }] });
 
 const PAGE = `<!doctype html>
@@ -796,7 +802,7 @@ const PAGE = `<!doctype html>
           <a href="#journal">Journal</a>
           <a href="#setup">Your setup</a>
           <a href="#faq">FAQ</a>
-          <a class="nav-cta" href="#drop">Get in the game</a>
+          <a class="nav-cta" href="/quiz">Take the quiz</a>
         </nav>
       </header>
     </div>
@@ -809,8 +815,8 @@ const PAGE = `<!doctype html>
             <h1>Hear more.<br /><span>Stay longer.</span></h1>
             <p>Crystal-clear game audio, a mic that keeps your squad close, and comfort that holds up when “one more match” turns into an all-nighter.</p>
             <div class="actions">
-              <a class="button button-primary" href="#product">Meet the HCG1 <span aria-hidden="true">↗</span></a>
-              <a class="button button-quiet" href="#setup">Check your setup</a>
+              <a class="button button-primary" href="/quiz">Take the quiz <span aria-hidden="true">↗</span></a>
+              <a class="button button-quiet" href="#product">Meet the HCG1</a>
             </div>
             <p class="microproof">For after-hours players · console / PC / mobile.</p>
           </div>
@@ -851,6 +857,13 @@ const PAGE = `<!doctype html>
             <figure class="campaign-card"><img src="/assets/gallery/ugc-xbox.jpg" alt="Parent with the HCG1 in his lap and an Xbox controller" decoding="async" /><figcaption><span>Xbox night</span>In the lap, pad on the table.</figcaption></figure>
             <figure class="campaign-card"><img src="/assets/gallery/ugc-playstation.jpg" alt="Couch gamer putting on the HCG1 in front of a TV" decoding="async" /><figcaption><span>PlayStation</span>Putting it on.</figcaption></figure>
             <figure class="campaign-card"><img src="/assets/gallery/studio-table.jpg" alt="HCG1 Pro Gaming Headset on a table" decoding="async" /><figcaption><span>Studio</span>The real headset, still.</figcaption></figure>
+          </div>
+        </section>
+
+        <section id="quiz-invite">
+          <div class="featured-guide">
+            <div class="featured-guide-media"><img src="/assets/gallery/ugc-dualsense.jpg" alt="Ranked player wearing the HCG1 with a DualSense controller" loading="lazy" decoding="async" /></div>
+            <div class="featured-guide-copy"><div class="eyebrow">Gamer Audio Profile</div><h2>Four taps. Your band. Then the HCG1 Pro.</h2><p>Platform, play style, session length, and the pain that ends a night early. Unlock Immersed, Climbing, or Ready for Pro — then a straight path to the wired headset with a two-year guarantee.</p><a class="text-link" href="/quiz">Take the quiz ↗</a></div>
           </div>
         </section>
 
@@ -902,11 +915,11 @@ const PAGE = `<!doctype html>
       <div class="shell">
         <section id="setup"><div class="details"><div class="details-copy"><div class="eyebrow">Your setup</div><h2>One jack. Every lobby.</h2><p>Use the included 3.5mm connection with the devices you already play on. The HCG1 is designed to move with you from desk to couch to wherever the next match starts.</p></div><div class="specs" aria-label="HCG1 specifications"><div class="spec-row"><span>Connection</span><strong>Wired 3.5mm · inline controls</strong></div><div class="spec-row"><span>Microphone</span><strong>Detachable boom · inline mute</strong></div><div class="spec-row"><span>Fit</span><strong>Closed-back over-ear</strong></div><div class="spec-row"><span>Compatibility</span><strong>PC · PlayStation · Xbox · Switch · mobile</strong></div><div class="spec-row"><span>Coverage</span><strong>Two-year warranty</strong></div></div></div></section>
         <section id="faq"><div class="section-head"><div><div class="eyebrow">Quick answers</div><h2>Before you queue up.</h2></div><p>Keep the setup moving. Here are the details players ask about most.</p></div><div class="faq"><details><summary>Is the microphone removable?</summary><p>Yes. Remove the boom mic when you are playing solo or listening on the go.</p></details><details><summary>Does it work across consoles?</summary><p>Yes. The wired 3.5mm connection works with PC, PlayStation, Xbox, Nintendo Switch, and compatible mobile devices. Some setups may need the included adapter.</p></details><details><summary>Does it use active noise cancellation?</summary><p>No. The closed-back design offers passive isolation so you can stay focused without a battery or software.</p></details><details><summary>How is it supported?</summary><p>Every HCG1 comes with a two-year, no-questions-asked warranty for extra confidence in your gear.</p></details></div></section>
-        <section id="drop"><div class="closing"><div class="eyebrow">Your next main character arc</div><h2>Hear the play. Call the play. Own the moment.</h2><p>The store link and custom domain can drop in here when you are ready. The Worker is already set up to carry the experience.</p><a class="button button-primary" href="#top">Back to the top <span aria-hidden="true">↑</span></a></div></section>
+        <section id="drop"><div class="closing"><div class="eyebrow">Your next main character arc</div><h2>Hear the play. Call the play. Own the moment.</h2><p>Four taps unlock your Gamer Audio Profile — Immersed, Climbing, or Ready for Pro — then a straight path to the HCG1 Pro.</p><a class="button button-primary" href="/quiz">Take the quiz <span aria-hidden="true">↗</span></a></div></section>
       </div>
     </main>
 
-    <div class="shell"><footer><div class="footer-row"><a class="brand" href="#top"><span class="brand-mark">HC</span> GAMERLIFE</a><span>Original concept site · Built for the long session.</span></div></footer></div>
+    <div class="shell"><footer><div class="footer-row"><a class="brand" href="#top"><span class="brand-mark">HC</span> GAMERLIFE</a><span>Original concept site · Built for the long session. · <a href="/quiz">Take the quiz</a></span></div></footer></div>
     <script src="https://js.stripe.com/dahlia/stripe.js"></script>
     <script>
       (() => {
@@ -1062,7 +1075,7 @@ function renderGallery(): Response {
           <a href="/#product">The headset</a>
           <a href="/gallery" aria-current="page">Gallery</a>
           <a href="/#journal">Journal</a>
-          <a href="/#drop">Get in the game</a>
+          <a href="/quiz">Take the quiz</a>
         </nav>
       </header>
       <main>
@@ -1419,6 +1432,9 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   if (url.hostname === `www.${APEX_HOST}` || (url.hostname === APEX_HOST && url.protocol === "http:")) {
     return Response.redirect(`https://${APEX_HOST}${url.pathname}${url.search}`, 301);
   }
+  if (url.pathname === "/api/quiz") {
+    return handleQuizApi(request, env);
+  }
   if (url.pathname.startsWith("/api/")) {
     return new Response(JSON.stringify({ ok: false, error: "Not found" }), {
       status: 404,
@@ -1472,6 +1488,10 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   if (url.pathname === "/gallery" || url.pathname === "/gallery/") {
     if (request.method === "HEAD") return htmlHead(200);
     return renderGallery();
+  }
+  if (url.pathname === "/quiz" || url.pathname === "/quiz/") {
+    if (request.method === "HEAD") return htmlHead(200);
+    return renderQuizPage();
   }
   if (url.pathname === "/" || url.pathname === "") {
     if (request.method === "HEAD") return htmlHead(200);

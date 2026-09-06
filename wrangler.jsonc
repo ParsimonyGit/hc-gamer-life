@@ -24,6 +24,9 @@
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
+  },
+  "vars": {
+    "GHL_LOCATION_ID": "STFgRxHbklvx2q1nDpi1"
   }
 }
 
