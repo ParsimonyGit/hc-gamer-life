@@ -59,6 +59,22 @@ const GALLERY_UGC: GalleryItem[] = [
 ];
 
 const ALL_GALLERY_ITEMS = [...GALLERY_CATALOG, ...GALLERY_STUDIO, ...GALLERY_UGC];
+
+type GalleryVideo = {
+  src: string;
+  poster: string;
+  caption: string;
+  kicker: string;
+  alt: string;
+  orientation: "landscape" | "portrait";
+};
+
+const GALLERY_VIDEOS: GalleryVideo[] = [
+  { src: "/assets/gallery/video/we-dont-teabag.mp4", poster: "/assets/gallery/video/we-dont-teabag.jpg", kicker: "30s", caption: "We don't teabag", alt: "HCG1 lifestyle spot: We don't teabag", orientation: "landscape" },
+  { src: "/assets/gallery/video/desk-spin.mp4", poster: "/assets/gallery/video/desk-spin.jpg", kicker: "15s", caption: "On the desk", alt: "HCG1 product clip rotating on a gaming desk", orientation: "portrait" },
+  { src: "/assets/gallery/video/lock-in.mp4", poster: "/assets/gallery/video/lock-in.jpg", kicker: "15s", caption: "Lock in", alt: "Player putting on the HCG1 Pro Gaming Headset", orientation: "landscape" },
+  { src: "/assets/gallery/video/you-heard-that.mp4", poster: "/assets/gallery/video/you-heard-that.jpg", kicker: "15s", caption: "You heard that?", alt: "HCG1 commercial: You heard that? They didn't.", orientation: "portrait" }
+];
 const safeJsonLd = (value: unknown): string => JSON.stringify(value).replace(/</g, "\\u003c");
 const HOME_JSON_LD = safeJsonLd({
   "@context": "https://schema.org",
@@ -815,7 +831,7 @@ const PAGE = `<!doctype html>
         </div>
 
         <section id="gallery">
-          <div class="section-head"><div><div class="eyebrow">See the HCG1</div><h2>Built to look as sharp as it sounds.</h2></div><p>Official catalog photography and in-hand stills of the real headset. <a class="text-link" href="/gallery">Open the full gallery ↗</a></p></div>
+          <div class="section-head"><div><div class="eyebrow">See the HCG1</div><h2>Built to look as sharp as it sounds.</h2></div><p>Official catalog photography, in-hand stills, and product videos. <a class="text-link" href="/gallery">Open the full gallery ↗</a></p></div>
           <div class="visual-product">
             <article class="visual-main"><img src="/assets/gallery/catalog-hero.jpg" alt="HCG1 Pro Gaming Headset at a three-quarter angle with detachable microphone, cable, and inline controller" loading="lazy" decoding="async" /><div class="visual-caption"><h3>Focus on the play.</h3><p>The closed-back over-ear fit keeps the room out while the 53mm drivers keep the action clear.</p></div></article>
             <div class="visual-stack">
@@ -929,15 +945,19 @@ const PAGE = `<!doctype html>
 const HEADERS = {
   "content-type": "text/html; charset=UTF-8",
   "cache-control": "public, max-age=0, must-revalidate",
-  "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' https://www.hcgamerlife.com https://hcgamerlife.com https://raw.githubusercontent.com data:; script-src 'self' 'unsafe-inline' https://js.stripe.com; connect-src 'self' https://api.stripe.com https://js.stripe.com https://r.stripe.com; frame-src https://checkout.stripe.com https://*.stripe.com; base-uri 'none'; frame-ancestors 'none'",
+  "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' https://www.hcgamerlife.com https://hcgamerlife.com https://raw.githubusercontent.com data:; media-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; connect-src 'self' https://api.stripe.com https://js.stripe.com https://r.stripe.com; frame-src https://checkout.stripe.com https://*.stripe.com; base-uri 'none'; frame-ancestors 'none'",
   "referrer-policy": "strict-origin-when-cross-origin",
   "x-content-type-options": "nosniff",
-  "permissions-policy": "camera=(), microphone=(), geolocation=()",
+  "permissions-policy": "camera=(), microphone=(), geolocation=(), fullscreen=(self)",
   "strict-transport-security": "max-age=31536000"
 };
 
 const galleryFigures = (items: GalleryItem[]): string => items.map((item) =>
   `<figure class="shot" data-full="${item.src}"><button type="button" aria-label="Open ${item.caption}"><img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async" /></button><figcaption><span>${item.kicker}</span>${item.caption}</figcaption></figure>`
+).join("");
+
+const galleryVideos = (items: GalleryVideo[]): string => items.map((item) =>
+  `<figure class="clip ${item.orientation}"><video controls playsinline preload="metadata" poster="${item.poster}" aria-label="${item.alt}"><source src="${item.src}" type="video/mp4" /></video><figcaption><span>${item.kicker}</span>${item.caption}</figcaption></figure>`
 ).join("");
 
 function renderGallery(): Response {
@@ -949,7 +969,15 @@ function renderGallery(): Response {
     url: galleryUrl,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     about: { "@type": "Product", name: "HCG1 Pro Gaming Headset", brand: { "@type": "Brand", name: "HC GamerLife" } },
-    image: ALL_GALLERY_ITEMS.map((item) => `${SITE_URL}${item.src}`)
+    image: ALL_GALLERY_ITEMS.map((item) => `${SITE_URL}${item.src}`),
+    video: GALLERY_VIDEOS.map((item) => ({
+      "@type": "VideoObject",
+      name: item.caption,
+      description: item.alt,
+      thumbnailUrl: `${SITE_URL}${item.poster}`,
+      contentUrl: `${SITE_URL}${item.src}`,
+      uploadDate: "2026-09-06"
+    }))
   });
   const page = `<!doctype html>
 <html lang="en">
@@ -957,18 +985,18 @@ function renderGallery(): Response {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0a0e16" />
-    <meta name="description" content="Official HCG1 Pro Gaming Headset photography and in-session stills: catalog angles, in-hand scale, PC, DualSense, Xbox, and PlayStation." />
+    <meta name="description" content="Official HCG1 Pro Gaming Headset photography, in-session stills, and product videos: catalog angles, in-hand scale, PC, DualSense, Xbox, and PlayStation." />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="${galleryUrl}" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="HC GamerLife" />
     <meta property="og:url" content="${galleryUrl}" />
     <meta property="og:title" content="HCG1 gallery | HC GamerLife" />
-    <meta property="og:description" content="The real HCG1, catalog through in-session. No generic stand-in headset." />
+    <meta property="og:description" content="The real HCG1: catalog stills, in-session photos, and product videos." />
     <meta property="og:image" content="${SEO_IMAGE_URL}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="HCG1 gallery | HC GamerLife" />
-    <meta name="twitter:description" content="Official stills and in-session photos of the HCG1 Pro Gaming Headset." />
+    <meta name="twitter:description" content="Official stills, in-session photos, and product videos of the HCG1 Pro Gaming Headset." />
     <meta name="twitter:image" content="${SEO_IMAGE_URL}" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script type="application/ld+json">${jsonLd}</script>
@@ -999,7 +1027,14 @@ function renderGallery(): Response {
       .shot button { background:#111; border:0; cursor:zoom-in; display:block; padding:0; width:100%; }
       .shot img { height:240px; object-fit:cover; width:100%; }
       .shot figcaption { font-size:.8rem; padding:12px 14px 14px; }
-      .shot figcaption span { color:var(--secondary); display:block; font-size:.66rem; font-weight:800; letter-spacing:.12em; margin-bottom:3px; text-transform:uppercase; }
+      .shot figcaption span, .clip figcaption span { color:var(--secondary); display:block; font-size:.66rem; font-weight:800; letter-spacing:.12em; margin-bottom:3px; text-transform:uppercase; }
+      .clips { display:grid; gap:14px; grid-template-columns:1.2fr .8fr; }
+      .clip { background:var(--panel); border:1px solid var(--line); border-radius:16px; margin:0; overflow:hidden; }
+      .clip video { background:#111; display:block; width:100%; height:auto; }
+      .clip.landscape video { aspect-ratio:16/9; object-fit:cover; }
+      .clip.portrait { grid-row: span 2; }
+      .clip.portrait video { aspect-ratio:9/16; max-height:640px; object-fit:cover; margin:0 auto; }
+      .clip figcaption { font-size:.8rem; padding:12px 14px 14px; }
       footer { border-top:1px solid var(--line); color:var(--muted); font-size:.8rem; margin-top:48px; padding:24px 0 36px; }
       dialog { background:#0a0e16; border:1px solid var(--line); border-radius:18px; color:var(--ink); max-width:min(920px, 94vw); padding:16px; }
       dialog::backdrop { background:rgba(5,8,13,.78); }
@@ -1009,11 +1044,13 @@ function renderGallery(): Response {
       :focus-visible { outline:2px solid var(--secondary); outline-offset:3px; }
       @media (max-width: 820px) {
         nav { display:none; }
-        .grid, .grid.dense { grid-template-columns:repeat(2, 1fr); }
+        .grid, .grid.dense, .clips { grid-template-columns:repeat(2, 1fr); }
+        .clip.portrait { grid-row: auto; }
       }
       @media (max-width: 560px) {
-        .grid, .grid.dense { grid-template-columns:1fr; }
+        .grid, .grid.dense, .clips { grid-template-columns:1fr; }
         .shot img { height:280px; }
+        .clip.portrait video { max-height:none; }
       }
     </style>
   </head>
@@ -1032,7 +1069,11 @@ function renderGallery(): Response {
         <section class="hero">
           <div class="eyebrow">HCG1 photography</div>
           <h1>The headset.<br /><span>As it is.</span></h1>
-          <p class="lede">Official catalog plates, in-hand stills for real scale, and five session photos on PC, DualSense, Xbox, and PlayStation. No generic stand-in. No phone jack.</p>
+          <p class="lede">Official catalog plates, in-hand stills, session photos, and the HCG1 videos. No generic stand-in. No phone jack.</p>
+        </section>
+        <section>
+          <h2>Video</h2>
+          <div class="clips">${galleryVideos(GALLERY_VIDEOS)}</div>
         </section>
         <section>
           <h2>Catalog</h2>
