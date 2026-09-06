@@ -659,6 +659,47 @@ const PAGE = `<!doctype html>
         .method-grid > div { border-bottom: 1px solid var(--line); border-right: 0; }
         .method-grid > div:last-child { border-bottom: 0; }
       }
+
+      /* Legibility pass: keep the editorial scale distinctive without making utility copy whisper. */
+      .topline { font-size: .75rem; line-height: 1.35; }
+      .brand { font-size: .82rem; }
+      nav a { font-size: .74rem; line-height: 1.35; }
+      .nav-cta { font-size: .74rem; }
+      .eyebrow, .section-kicker, .journal-kicker, .stage-label, .photo-credit, .microproof, .stat-label, .method-label, .purchase-panel .eyebrow {
+        font-size: .72rem;
+        line-height: 1.4;
+      }
+      .hero-copy > p { line-height: 1.58; }
+      .microproof { font-size: .7rem; }
+      .button { font-size: .76rem; line-height: 1.3; }
+      .photo-credit { font-size: .64rem; }
+      .stat span { font-size: .92rem; line-height: 1.45; }
+      .feature-card p, .journal-card p, .editorial-card p, .method-card p, .purchase-panel p, .section-head p {
+        font-size: 1rem;
+        line-height: 1.55;
+      }
+      .campaign-card figcaption { font-size: .86rem; line-height: 1.4; }
+      .campaign-card figcaption span { font-size: .72rem; line-height: 1.35; }
+      .journal-card h3 { line-height: 1.06; }
+      .journal-link, .editorial-card a { font-size: .74rem; line-height: 1.4; }
+      .spec-callout span, .price-note { font-size: .92rem; line-height: 1.45; }
+      .spec-row span { font-size: .92rem; }
+      .spec-row strong { font-size: 1rem; }
+      summary { font-size: .8rem; line-height: 1.45; }
+      details p { font-size: .96rem; line-height: 1.55; }
+      footer { font-size: .88rem; }
+      @media (max-width: 580px) {
+        .topline { font-size: .7rem; }
+        nav a { font-size: .72rem; }
+        .photo-credit { font-size: .6rem; }
+        .stat span, .feature-card p, .journal-card p, .editorial-card p, .method-card p, .purchase-panel p, .section-head p { font-size: .98rem; }
+      }
+
+      /* Brand red belongs to the HC mark and utility rail; neon green remains the action accent. */
+      :root { --brand-red: #ff4f5e; }
+      .brand-mark { background: var(--brand-red); color: #210a10; }
+      .nav-cta { background: var(--brand-red); color: #210a10; }
+      .nav-cta:hover, .nav-cta:focus-visible { background: #ff7380; }
     </style>
   </head>
   <body>
@@ -909,12 +950,27 @@ function renderArticle(article: Article): Response {
       body { background:radial-gradient(circle at 90% 10%,rgba(255,118,92,.13),transparent 22rem),#14110f; font-family:"Avenir Next","Century Gothic","Trebuchet MS",sans-serif; overflow-x:clip; }
       h1, .prose h2, .more h2 { font-family:"Bodoni 72",Didot,"Iowan Old Style",Baskerville,Georgia,serif; font-weight:500; }
       .brand { font-family:"IBM Plex Mono","Courier New",monospace; font-size:.78rem; letter-spacing:.16em; }
-      .brand-mark { background:var(--acid); border-radius:3px; color:#16140f; }
+      .brand-mark { background:var(--brand-red, #ff4f5e); border-radius:3px; color:#210a10; }
       .kicker { color:var(--acid); font-family:"IBM Plex Mono","Courier New",monospace; }
       .hero { border-bottom-color:var(--line); }
       .feature { border-radius:4px 34px 4px 34px; box-shadow:0 18px 55px rgba(0,0,0,.25); }
       .callout { background:linear-gradient(135deg,rgba(216,255,62,.12),rgba(255,118,92,.12)); border-color:rgba(216,255,62,.35); border-radius:4px 22px 4px 22px; }
       .more a { color:var(--acid); }
+      /* Legibility pass: preserve the editorial voice while giving reading copy a comfortable floor. */
+      .brand { font-size:.82rem; }
+      .back { font-size:.94rem; line-height:1.4; }
+      .kicker { font-size:.78rem; line-height:1.4; }
+      .dek { font-size:1.2rem; line-height:1.55; }
+      .prose p { font-size:1.08rem; line-height:1.72; }
+      .prose h2 { font-size:clamp(1.85rem, 4vw, 2.25rem); line-height:1.12; }
+      .callout { font-size:1rem; line-height:1.6; }
+      .more { font-size:1rem; }
+      .more h2 { font-size:1.7rem; }
+      footer { font-size:.88rem; }
+      @media (max-width:580px) {
+        .dek { font-size:1.08rem; }
+        .prose p { font-size:1.05rem; }
+      }
     </style>
   </head>
   <body>
@@ -1008,7 +1064,7 @@ async function serveOptimizedImage(request: Request, url: URL): Promise<Response
 }
 
 function checkoutStatusPage(title: string, message: string, status: number): Response {
-  const page = `<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex, nofollow" /><link rel="icon" href="/favicon.svg" type="image/svg+xml" /><title>${title} | HC GamerLife</title><style>:root{color-scheme:dark;--ink:#f5f7fb;--muted:#a8b1c4;--line:rgba(181,196,224,.16);--bg:#0a0e16;--panel:#101722;--red:#ff4f5e;--cyan:#75e5db}*{box-sizing:border-box}body{align-items:center;background:var(--bg);color:var(--ink);display:flex;font-family:Inter,ui-sans-serif,system-ui,sans-serif;justify-content:center;line-height:1.6;margin:0;min-height:100vh;padding:24px}.card{background:var(--panel);border:1px solid var(--line);border-radius:22px;max-width:620px;padding:42px}.eyebrow{color:var(--cyan);font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase}h1{font-size:clamp(2.3rem,7vw,4.5rem);letter-spacing:-.08em;line-height:.95;margin:12px 0 18px}p{color:var(--muted);font-size:1.02rem}.button{background:var(--red);border-radius:999px;color:#210a10;display:inline-flex;font-weight:800;margin-top:12px;padding:13px 19px;text-decoration:none}</style></head><body><main class="card"><div class="eyebrow">HC GamerLife checkout</div><h1>${title}</h1><p>${message}</p><a class="button" href="/#product">Back to the HCG1</a></main></body></html>`;
+  const page = `<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex, nofollow" /><link rel="icon" href="/favicon.svg" type="image/svg+xml" /><title>${title} | HC GamerLife</title><style>:root{color-scheme:dark;--ink:#f5efe4;--muted:#b4ac9f;--line:rgba(245,239,228,.16);--bg:#14110f;--panel:#201b18;--red:#ff4f5e;--acid:#d8ff3e}*{box-sizing:border-box}body{align-items:center;background:radial-gradient(circle at 90% 10%,rgba(255,118,92,.13),transparent 22rem),var(--bg);color:var(--ink);display:flex;font-family:"Avenir Next","Century Gothic","Trebuchet MS",sans-serif;justify-content:center;line-height:1.6;margin:0;min-height:100vh;padding:24px}.card{background:rgba(32,27,24,.9);border:1px solid var(--line);border-radius:4px 30px 4px 30px;max-width:620px;padding:42px;box-shadow:0 22px 70px rgba(0,0,0,.28)}.eyebrow{color:var(--acid);font-family:"IBM Plex Mono","Courier New",monospace;font-size:.78rem;font-weight:800;letter-spacing:.16em;line-height:1.4;text-transform:uppercase}h1{font-family:"Bodoni 72",Didot,"Iowan Old Style",Baskerville,Georgia,serif;font-size:clamp(2.5rem,7vw,4.8rem);font-weight:500;letter-spacing:-.08em;line-height:.95;margin:12px 0 18px}p{color:var(--muted);font-size:1.08rem;line-height:1.65}.button{background:var(--red);border-radius:3px;color:#210a10;display:inline-flex;font-family:"IBM Plex Mono","Courier New",monospace;font-size:.78rem;font-weight:800;letter-spacing:.08em;margin-top:12px;padding:14px 19px;text-decoration:none;text-transform:uppercase}</style></head><body><main class="card"><div class="eyebrow">HC GamerLife checkout</div><h1>${title}</h1><p>${message}</p><a class="button" href="/#product">Back to the HCG1</a></main></body></html>`;
   const headers = new Headers(HEADERS);
   headers.set("cache-control", "no-store");
   return new Response(page, { status, headers });
