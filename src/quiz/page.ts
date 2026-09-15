@@ -139,9 +139,12 @@ header {
   min-height: 36rem;
 }
 .hero-panel {
-  background:
+  background-color: #1a1613;
+  background-image:
     linear-gradient(180deg, rgba(13,11,10,.18), rgba(13,11,10,.78)),
-    url("/assets/gallery/catalog-hero.jpg") center/cover;
+    url("/assets/gallery/catalog-hero-640.webp");
+  background-position: center;
+  background-size: cover;
   box-shadow: 0 28px 70px -38px rgba(0,0,0,.7);
   display: flex;
   flex-direction: column;
@@ -383,6 +386,13 @@ input:focus { border-color: var(--red); outline: 2px solid rgba(255,79,94,.25); 
 .promises li::before { color: var(--red); content: "▸ "; }
 .saved { color: #9be7a6; font-weight: 700; }
 
+@media (min-width: 860px) {
+  .hero-panel {
+    background-image:
+      linear-gradient(180deg, rgba(13,11,10,.18), rgba(13,11,10,.78)),
+      url("/assets/gallery/catalog-hero.webp");
+  }
+}
 @media (max-width: 860px) {
   .intro, .result-grid, .cards, .form-row { grid-template-columns: 1fr; }
   .hero-panel, .mosaic-panel { min-height: 0; border-radius: 4px 24px 4px 24px; }
@@ -457,9 +467,9 @@ const RUNTIME = `(() => {
       </section>
       <aside class="mosaic-panel">
         <div class="mosaic">
-          <figure><img src="/assets/gallery/ugc-pc.jpg" alt="" /><figcaption>PC desk</figcaption></figure>
-          <figure><img src="/assets/gallery/ugc-dualsense.jpg" alt="" /><figcaption>Ranked</figcaption></figure>
-          <figure><img src="/assets/gallery/ugc-creator.jpg" alt="" /><figcaption>Creator</figcaption></figure>
+          <figure><img src="/assets/gallery/ugc-pc-640.webp" srcset="/assets/gallery/ugc-pc-640.webp 640w, /assets/gallery/ugc-pc.webp 1280w" sizes="(max-width: 860px) 92vw, 280px" alt="" width="640" height="853" decoding="async" /><figcaption>PC desk</figcaption></figure>
+          <figure><img src="/assets/gallery/ugc-dualsense-640.webp" srcset="/assets/gallery/ugc-dualsense-640.webp 640w, /assets/gallery/ugc-dualsense.webp 1280w" sizes="(max-width: 860px) 46vw, 180px" alt="" width="640" height="853" decoding="async" /><figcaption>Ranked</figcaption></figure>
+          <figure><img src="/assets/gallery/ugc-creator-640.webp" srcset="/assets/gallery/ugc-creator-640.webp 640w, /assets/gallery/ugc-creator.webp 1280w" sizes="(max-width: 860px) 46vw, 180px" alt="" width="640" height="853" decoding="async" /><figcaption>Creator</figcaption></figure>
         </div>
         <div class="mosaic-copy">
           <p class="eyebrow">Immersed · Climbing · Ready for Pro</p>
@@ -476,7 +486,7 @@ const RUNTIME = `(() => {
     const cards = q.options.map((opt) => {
       const active = state.selected === opt.id;
       return \`<button class="card\${state.advancing && !active ? " dim" : ""}" type="button" data-action="pick" data-id="\${opt.id}" aria-pressed="\${active}">
-        <div class="card-media"><img src="\${opt.image}" alt="\${escapeHtml(opt.imageAlt)}" /></div>
+        <div class="card-media"><img src="\${escapeHtml(opt.image.replace(/\\.jpe?g$/i, "-640.webp"))}" srcset="\${escapeHtml(opt.image.replace(/\\.jpe?g$/i, "-640.webp"))} 640w, \${escapeHtml(opt.image.replace(/\\.jpe?g$/i, ".webp"))} 1280w" sizes="(max-width: 860px) 92vw, 340px" alt="\${escapeHtml(opt.imageAlt)}" width="640" height="480" loading="lazy" decoding="async" /></div>
         <div class="card-body">
           <div class="card-top"><strong>\${escapeHtml(opt.label)}</strong><span class="check">✓</span></div>
           <p>\${escapeHtml(opt.blurb)}</p>
@@ -519,7 +529,7 @@ const RUNTIME = `(() => {
     const promises = (r.promise || []).map((item) => \`<li>\${escapeHtml(item)}</li>\`).join("");
     return \`<section class="result animate">
       <div class="result-grid">
-        <div class="result-photo"><img src="/assets/gallery/catalog-hero.jpg" alt="HCG1 Pro Gaming Headset" /></div>
+        <div class="result-photo"><img src="/assets/gallery/catalog-hero-640.webp" srcset="/assets/gallery/catalog-hero-640.webp 640w, /assets/gallery/catalog-hero.webp 1280w" sizes="(max-width: 860px) 92vw, 280px" alt="HCG1 Pro Gaming Headset" width="640" height="640" decoding="async" /></div>
         <div class="result-copy">
           <span class="band-pill" style="background:\${escapeHtml(r.accent)}">Your band · \${escapeHtml(r.bandTitle)}</span>
           <h2>\${name}’re <span style="color:\${escapeHtml(r.accent)}">\${escapeHtml(r.bandTitle)}</span></h2>
@@ -675,6 +685,7 @@ export function renderQuizPage(): Response {
     <meta name="twitter:description" content="Find your HCG1 audio profile in sixty seconds." />
     <meta name="twitter:image" content="${SEO_IMAGE}" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" as="image" href="/assets/gallery/catalog-hero-640.webp" fetchpriority="high" />
     <script type="application/ld+json">${QUIZ_JSON_LD}</script>
     <title>Gamer Audio Profile Quiz | HC GamerLife</title>
     <style>${STYLES}</style>
@@ -703,7 +714,7 @@ export function renderQuizPage(): Response {
     headers: {
       "content-type": "text/html; charset=UTF-8",
       "cache-control": "public, max-age=0, must-revalidate",
-      "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'",
+      "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' data:; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; frame-ancestors 'none'",
       "referrer-policy": "strict-origin-when-cross-origin",
       "x-content-type-options": "nosniff",
       "strict-transport-security": "max-age=31536000"
