@@ -88,10 +88,10 @@ type GalleryVideo = {
 };
 
 const GALLERY_VIDEOS: GalleryVideo[] = [
-  { src: "/assets/gallery/video/we-dont-teabag.mp4", poster: "/assets/gallery/video/we-dont-teabag.jpg", kicker: "30s", caption: "We don't teabag", alt: "HCG1 lifestyle spot: We don't teabag", orientation: "landscape" },
+  { src: "/assets/gallery/video/we-dont-teabag.mp4", poster: "/assets/gallery/video/we-dont-teabag.jpg", kicker: "30s", caption: "We don’t teabag", alt: "HCG1 lifestyle spot: We don’t teabag", orientation: "landscape" },
   { src: "/assets/gallery/video/desk-spin.mp4", poster: "/assets/gallery/video/desk-spin.jpg", kicker: "15s", caption: "On the desk", alt: "HCG1 product clip rotating on a gaming desk", orientation: "portrait" },
   { src: "/assets/gallery/video/lock-in.mp4", poster: "/assets/gallery/video/lock-in.jpg", kicker: "15s", caption: "Lock in", alt: "Player putting on the HCG1 Pro Gaming Headset", orientation: "landscape" },
-  { src: "/assets/gallery/video/you-heard-that.mp4", poster: "/assets/gallery/video/you-heard-that.jpg", kicker: "15s", caption: "You heard that?", alt: "HCG1 commercial: You heard that? They didn't.", orientation: "portrait" }
+  { src: "/assets/gallery/video/you-heard-that.mp4", poster: "/assets/gallery/video/you-heard-that.jpg", kicker: "15s", caption: "You heard that?", alt: "HCG1 commercial: You heard that? They didn’t.", orientation: "portrait" }
 ];
 const safeJsonLd = (value: unknown): string => JSON.stringify(value).replace(/</g, "\\u003c");
 const HOME_JSON_LD = safeJsonLd({
@@ -148,7 +148,7 @@ type Article = {
 const ARTICLES: Article[] = [
   {
     slug: "wired-vs-wireless-gaming-headsets",
-    section: "Buyer's guide",
+    section: "Buyer’s guide",
     title: "Wired vs. wireless gaming headsets: choose your play style",
     excerpt: "The right connection comes down to how you play, where you play, and how much setup you want between you and the next match.",
     body: `<p>There is no universal winner between wired and wireless audio. The better choice is the one that fits the way your sessions actually happen. A desk player who wants a simple, always-ready setup has different priorities from someone who moves between a console, a couch, and a phone.</p><h2>Choose wired when you want simple reliability</h2><p>A wired headset starts working as soon as it is plugged in. There is no battery to charge, pairing menu to troubleshoot, or wireless mode to remember. A good 3.5mm connection also makes it easy to move between compatible devices.</p><p>The tradeoff is the cable. Route it behind the desk, leave a little slack near the controller, and keep the inline controls where your hand can find them without looking.</p><h2>Choose wireless when movement matters most</h2><p>Wireless is a great fit for players who stand up often, play from a couch, or want a clean desk. Keep an eye on battery habits and make sure the headset supports the devices you use. A fast charging routine is as important as the headset itself.</p><h2>The practical answer</h2><p>If you value a low-friction setup and broad compatibility, wired is still a strong choice. If freedom of movement is the feature you notice every session, wireless may be worth the extra charging step. Start with the habit you want to improve, then choose the connection that supports it.</p>`
@@ -165,7 +165,7 @@ const ARTICLES: Article[] = [
     section: "Setup",
     title: "How to fix party-chat echo without guesswork",
     excerpt: "Echo usually has a small number of causes. This quick checklist helps you isolate the problem before you change everything.",
-    body: `<p>When a teammate hears their own voice, start with the simplest possibility: sound from your headset or TV is leaking back into the microphone. Lower the game and chat volume for a moment, then ask whether the echo changes.</p><h2>Check the microphone path</h2><p>Move the microphone slightly to the side of your mouth, about a finger-width away. Make sure the microphone opening is not pointed directly at the earcup. If your setup has a mute switch, toggle it once to confirm the input is being recognized.</p><h2>Check the output device</h2><p>Confirm that chat audio is going to the headset rather than the television or monitor. On a computer, open the sound settings and make sure the headset is selected for both input and output.</p><h2>Test one change at a time</h2><p>Echo is much easier to solve when you change one setting, test, and keep the result. If the issue follows one controller or one app, the headset may be fine and the problem may be in that device's chat routing.</p>`
+    body: `<p>When a teammate hears their own voice, start with the simplest possibility: sound from your headset or TV is leaking back into the microphone. Lower the game and chat volume for a moment, then ask whether the echo changes.</p><h2>Check the microphone path</h2><p>Move the microphone slightly to the side of your mouth, about a finger-width away. Make sure the microphone opening is not pointed directly at the earcup. If your setup has a mute switch, toggle it once to confirm the input is being recognized.</p><h2>Check the output device</h2><p>Confirm that chat audio is going to the headset rather than the television or monitor. On a computer, open the sound settings and make sure the headset is selected for both input and output.</p><h2>Test one change at a time</h2><p>Echo is much easier to solve when you change one setting, test, and keep the result. If the issue follows one controller or one app, the headset may be fine and the problem may be in that device’s chat routing.</p>`
   },
   {
     slug: "balance-game-and-chat-audio",

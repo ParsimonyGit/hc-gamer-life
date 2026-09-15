@@ -1,4 +1,4 @@
-/** Shared quiz content, scoring, and CRM field mapping for HC Gamer Life. */
+/** Shared quiz content, scoring, and CRM field mapping for HC GamerLife. */
 
 export type BandId = "immersed" | "climbing" | "ready-for-pro";
 
@@ -224,7 +224,7 @@ export const BANDS: Record<BandId, Band> = {
       "Closed-back seal for story and music",
       "Soft cups that last past the first hour",
       "Works on Switch, mobile, console, and PC",
-      "2-year no-questions guarantee"
+      "2-year no-questions-asked guarantee"
     ]
   },
   climbing: {
@@ -239,7 +239,7 @@ export const BANDS: Record<BandId, Band> = {
       "Detachable boom for party and content",
       "Inline mute and volume in the cable",
       "One jack across the devices you already own",
-      "2-year no-questions guarantee"
+      "2-year no-questions-asked guarantee"
     ]
   },
   "ready-for-pro": {
@@ -254,7 +254,7 @@ export const BANDS: Record<BandId, Band> = {
       "53mm stereo for footsteps and position",
       "Mic that stays intelligible in a loud lobby",
       "Always-on wired 3.5mm — no charge cycle",
-      "2-year no-questions guarantee"
+      "2-year no-questions-asked guarantee"
     ]
   }
 };
