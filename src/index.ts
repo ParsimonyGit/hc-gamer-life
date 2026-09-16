@@ -1,8 +1,15 @@
 /// <reference types="@cloudflare/workers-types" />
 
-import { handleStripeWebhook } from "./purchase/webhook.ts";
 import { handleQuizApi } from "./quiz/api.ts";
 import { renderQuizPage } from "./quiz/page.ts";
+import { handleStripeWebhook } from "./purchase/webhook.ts";
+import {
+  ARTICLES,
+  BUYER_GUIDE_CARDS,
+  FIELD_NOTE_CARDS,
+  articleMediaKey,
+  type Article
+} from "./journal.ts";
 
 const MEDIA_SOURCES: Record<string, string> = {
   "product-hero": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-hero",
@@ -136,118 +143,6 @@ const HOME_JSON_LD = safeJsonLd({
     }
   ]
 });
-
-type Article = {
-  slug: string;
-  section: string;
-  title: string;
-  excerpt: string;
-  body: string;
-};
-
-const ARTICLES: Article[] = [
-  {
-    slug: "wired-vs-wireless-gaming-headsets",
-    section: "Buyer's guide",
-    title: "Wired vs. wireless gaming headsets: choose your play style",
-    excerpt: "The right connection comes down to how you play, where you play, and how much setup you want between you and the next match.",
-    body: `<p>There is no universal winner between wired and wireless audio. The better choice is the one that fits the way your sessions actually happen. A desk player who wants a simple, always-ready setup has different priorities from someone who moves between a console, a couch, and a phone.</p><h2>Choose wired when you want simple reliability</h2><p>A wired headset starts working as soon as it is plugged in. There is no battery to charge, pairing menu to troubleshoot, or wireless mode to remember. A good 3.5mm connection also makes it easy to move between compatible devices.</p><p>The tradeoff is the cable. Route it behind the desk, leave a little slack near the controller, and keep the inline controls where your hand can find them without looking.</p><h2>Choose wireless when movement matters most</h2><p>Wireless is a great fit for players who stand up often, play from a couch, or want a clean desk. Keep an eye on battery habits and make sure the headset supports the devices you use. A fast charging routine is as important as the headset itself.</p><h2>The practical answer</h2><p>If you value a low-friction setup and broad compatibility, wired is still a strong choice. If freedom of movement is the feature you notice every session, wireless may be worth the extra charging step. Start with the habit you want to improve, then choose the connection that supports it.</p>`
-  },
-  {
-    slug: "long-session-headset-comfort",
-    section: "Setup",
-    title: "What makes a gaming headset comfortable for a long session?",
-    excerpt: "Comfort is more than soft padding. Fit, weight, heat, and small adjustments decide whether a headset disappears into the moment.",
-    body: `<p>A headset can sound excellent and still end a session early if the fit keeps asking for attention. Long-session comfort comes from a few small details working together: even pressure, breathable contact points, a headband that stays put, and controls that do not force you to reach.</p><h2>Look for even pressure</h2><p>The earcups should sit around your ears instead of pressing directly on them. The headband should feel supportive without creating a hot spot at the top of your head. If you are constantly shifting the headset, the fit is giving you useful information.</p><h2>Give heat somewhere to go</h2><p>Over-ear cushions create a quiet seal, but they also hold warmth. Take a short break between matches, keep hair and glasses frames clear of the cushion edge, and store the headset somewhere dry rather than inside a closed bag.</p><h2>Make the setup do less</h2><p>Place the volume control where your hand naturally rests. Keep the cable or wireless receiver out of the path of your chair. The best comfort upgrade is often removing the tiny interruptions that make you notice your gear.</p>`
-  },
-  {
-    slug: "fix-party-chat-echo",
-    section: "Setup",
-    title: "How to fix party-chat echo without guesswork",
-    excerpt: "Echo usually has a small number of causes. This quick checklist helps you isolate the problem before you change everything.",
-    body: `<p>When a teammate hears their own voice, start with the simplest possibility: sound from your headset or TV is leaking back into the microphone. Lower the game and chat volume for a moment, then ask whether the echo changes.</p><h2>Check the microphone path</h2><p>Move the microphone slightly to the side of your mouth, about a finger-width away. Make sure the microphone opening is not pointed directly at the earcup. If your setup has a mute switch, toggle it once to confirm the input is being recognized.</p><h2>Check the output device</h2><p>Confirm that chat audio is going to the headset rather than the television or monitor. On a computer, open the sound settings and make sure the headset is selected for both input and output.</p><h2>Test one change at a time</h2><p>Echo is much easier to solve when you change one setting, test, and keep the result. If the issue follows one controller or one app, the headset may be fine and the problem may be in that device's chat routing.</p>`
-  },
-  {
-    slug: "balance-game-and-chat-audio",
-    section: "Setup",
-    title: "How to balance game audio and chat audio",
-    excerpt: "Your squad should be clear without turning the game into background noise. Start with a repeatable mix instead of chasing one perfect number.",
-    body: `<p>Good audio balance lets you understand a callout and still feel what is happening in the game. Begin with both channels at a comfortable middle level. Then ask one question: can you understand a teammate without losing the important game cues?</p><h2>Use voices as the reference</h2><p>Set chat so a normal speaking voice is easy to follow. If voices are sharp or tiring, lower the overall volume before you change equalizer settings. Clear is more useful than loud.</p><h2>Protect the cues you rely on</h2><p>Footsteps, movement, reloads, and objective sounds should sit apart from music and effects. If the game offers separate sliders, lower music first and then adjust effects until the important cues return.</p><h2>Save a second profile</h2><p>Keep one balanced profile for multiplayer and another for story games or music. A small amount of preparation means you can switch modes without rebuilding your mix every night.</p>`
-  },
-  {
-    slug: "detachable-microphone-guide",
-    section: "Buyer’s guide",
-    title: "What a detachable microphone is actually useful for",
-    excerpt: "A removable boom mic gives one headset more than one job, especially when gaming, listening, and travel share the same gear.",
-    body: `<p>A detachable microphone is a small design choice with a practical effect. Keep it attached for team play and calls, then remove it when you want a cleaner profile for music, travel, or solo play.</p><h2>It keeps the mic where it belongs</h2><p>A boom microphone sits closer to your mouth than a built-in laptop or controller mic. That usually means clearer speech and less room noise, provided the boom is placed just off the corner of your mouth.</p><h2>It makes the headset easier to live with</h2><p>Removable hardware is easier to pack and less likely to snag on a bag. Store the microphone in a small pocket rather than leaving it attached while the headset is compressed.</p><h2>It is also a backup plan</h2><p>If you switch from multiplayer to music, removing the mic changes the feel immediately. The headset can move with you instead of staying tied to one kind of session.</p>`
-  },
-  {
-    slug: "console-and-pc-headset-setup",
-    section: "Setup",
-    title: "A simple console and PC headset setup guide",
-    excerpt: "Get the connection right first, then tune the details that make voice chat and game audio feel natural.",
-    body: `<p>Start by identifying the device that should receive both game audio and your microphone. On consoles, that is often the controller or a console headset port. On a PC, it may be a combined jack, a splitter, or a small USB adapter.</p><h2>Connect before changing settings</h2><p>Plug in the headset, then open the device sound menu. Select the headset as both the output and input device. Speak once and watch for the input meter to move before you enter a party.</p><h2>Set a comfortable baseline</h2><p>Keep the main volume below the point where voices feel sharp. Test the microphone with a friend or a private recording. If the voice is quiet, move the mic closer before raising every other level.</p><h2>Save the physical details</h2><p>Leave enough cable slack to turn your chair or move the controller. A two-minute cable tidy now prevents the sudden tug that ends a good match later.</p>`
-  },
-  {
-    slug: "hear-footsteps-and-directional-cues",
-    section: "Game audio",
-    title: "How to hear footsteps and directional cues more clearly",
-    excerpt: "Better positional awareness starts with a clean mix and a quiet setup, not simply turning everything up.",
-    body: `<p>Directional audio works best when the signal has room to breathe. Start by lowering music and unnecessary effects. The goal is not maximum loudness; it is enough separation to notice a sound before it becomes urgent.</p><h2>Keep both sides of the headset sealed</h2><p>A loose earcup or uneven fit can make one direction seem farther away. Adjust the headband and check that glasses arms or hair are not breaking the seal.</p><h2>Use a familiar test</h2><p>Choose a safe area in a game and move in a circle around a fixed sound source. Listen for whether the sound follows your movement smoothly. If it jumps, check the game mix and platform settings before blaming the headset.</p><h2>Take care of your ears</h2><p>Fatigue makes subtle cues harder to hear. Short breaks and a moderate listening level will help more than pushing the volume higher.</p>`
-  },
-  {
-    slug: "gaming-with-glasses",
-    section: "Comfort",
-    title: "How to choose and wear a headset with glasses",
-    excerpt: "The right fit keeps the earcup comfortable around your frames without giving up a stable seal.",
-    body: `<p>Glasses and headsets can work well together when the contact points are managed. The frame arm should sit in the cushion groove rather than being pressed sharply against the side of your head.</p><h2>Start with the frame</h2><p>Thinner, straighter arms are usually easier to accommodate, but the most important detail is where they cross the cushion. Adjust the headset slightly forward or back until the pressure feels even.</p><h2>Set the headband once</h2><p>Raise or lower the headband so the earcups sit centered around your ears. If you keep widening the headset to make room, you may be trading short-term relief for a loose fit.</p><h2>Make comfort a repeatable check</h2><p>After ten minutes, ask whether the frames are creating one hot spot. If they are, make a small adjustment before the next match rather than waiting for discomfort to build.</p>`
-  },
-  {
-    slug: "clean-gaming-headset",
-    section: "Care",
-    title: "How to clean your gaming headset safely",
-    excerpt: "A gentle routine keeps cushions, headbands, and controls comfortable without soaking the parts that carry the signal.",
-    body: `<p>Unplug the headset before cleaning. Use a dry, soft cloth for the headband and hard surfaces, then a barely damp cloth for marks that need more help. Keep liquid away from the microphone opening, inline control, and connector.</p><h2>Care for the cushions</h2><p>Wipe the cushion surface lightly and let it dry fully before wearing the headset. If the cushions are removable, follow the manufacturer instructions rather than pulling at the seam.</p><h2>Keep the microphone clear</h2><p>Use a dry cotton swab around the microphone grille, never inside it. Store a detachable microphone separately when the headset is in a bag.</p><h2>Finish with the cable</h2><p>Coil the cable loosely instead of wrapping it tightly around the earcups. Tight bends are harder on the cable than a relaxed loop.</p>`
-  },
-  {
-    slug: "reduce-gaming-desk-cable-clutter",
-    section: "Setup",
-    title: "How to reduce cable clutter at a gaming desk",
-    excerpt: "A cleaner cable path makes the setup easier to use and protects the connection from sudden pulls.",
-    body: `<p>Start by deciding where the headset should rest when it is not on your head. A hook or the side of the desk keeps the cable from collecting under a chair wheel.</p><h2>Give the cable one route</h2><p>Run the cable along the back edge of the desk, leaving one relaxed loop near the controller or keyboard. Use soft ties rather than tight knots so the cable can still move.</p><h2>Keep controls within reach</h2><p>Place the inline volume control where you can find it without looking. If the control disappears behind the desk, you will end up reaching for system menus during the match.</p><h2>Leave room to move</h2><p>Sit down and turn your chair before you finalize the route. The right setup has enough slack for normal movement and no slack dangling near wheels.</p>`
-  },
-  {
-    slug: "plan-a-low-pressure-squad-night",
-    section: "Game night",
-    title: "How to plan a low-pressure squad night",
-    excerpt: "The best group sessions leave room for changing games, late arrivals, and the friend who only has twenty minutes.",
-    body: `<p>Pick a loose start time and one anchor activity, then let the night move. A simple plan keeps the group from spending the first hour asking what everyone wants to play.</p><h2>Offer three lanes</h2><p>Have one competitive option, one co-op option, and one low-stakes option ready. People can move between them without making the whole group restart.</p><h2>Make joining easy</h2><p>Share the game, platform, and voice-chat plan in one message. If a friend arrives late, give them a clear way to join rather than asking them to reconstruct the evening.</p><h2>End while it is still fun</h2><p>A good squad night does not have to run until everyone is exhausted. Stop after a strong final round and leave the group wanting another session.</p>`
-  },
-  {
-    slug: "first-gaming-headset-gift-guide",
-    section: "Buyer’s guide",
-    title: "A first gaming headset guide for gift buyers",
-    excerpt: "When you do not know every detail of someone’s setup, choose the features that create the fewest compatibility surprises.",
-    body: `<p>A first headset should be comfortable, easy to connect, and useful across more than one device. Ask what platform the player uses most, then look for a connection that matches that setup.</p><h2>Prioritize fit and microphone quality</h2><p>Players notice an uncomfortable headset immediately. A removable or adjustable microphone also makes the gift more flexible for music, travel, and solo games.</p><h2>Do not overbuy features</h2><p>Extra modes and software can be useful, but they also add setup. For a first headset, reliable stereo audio, simple controls, and a clear warranty are often better value.</p><h2>Make the gift easy to use</h2><p>Include a short setup note with the connection type and the first three steps. The best gift is one that can be used the same day it is opened.</p>`
-  },
-  {
-    slug: "weekend-squad-night",
-    section: "Game night",
-    title: "The weekend squad-night playbook",
-    excerpt: "A flexible mix of games, food, and audio habits keeps a group together even when everyone has a different energy level.",
-    body: `<p>Start with a familiar game for the first round. It gives everyone time to arrive, catch up, and settle into the voice chat before you ask the group to learn something new.</p><h2>Build in a reset</h2><p>After two or three rounds, take five minutes to stretch, refill a drink, and check the headset fit. A small reset keeps the night from turning into a test of endurance.</p><h2>Keep the playlist in the background</h2><p>Music should support the room rather than compete with the conversation. Let the person who is not playing choose the next track, then lower it when a match begins.</p><h2>Save a highlight</h2><p>Write down the funniest moment or closest finish before everyone signs off. A tiny record gives the next squad night a natural opening.</p>`
-  }
-];
-
-const ARTICLE_MEDIA_KEYS = [
-  "campaign-gaming", "campaign-studio", "campaign-party", "campaign-beach",
-  "campaign-streamer", "campaign-esports", "product-angle", "product-comfort",
-  "product-controls", "campaign-party", "campaign-streamer", "campaign-gaming"
-];
-
-const articleMediaKey = (article: Article): string => ARTICLE_MEDIA_KEYS[Math.max(0, ARTICLES.indexOf(article))] ?? "campaign-gaming";
-
-const JOURNAL_CARDS = ARTICLES.map((article) => `<a class="journal-card" href="/journal/${article.slug}"><div class="journal-card-image"><img src="/media/image?key=${articleMediaKey(article)}&amp;variant=card&amp;v=3" alt="${article.title}" loading="lazy" decoding="async" /></div><div class="journal-card-copy"><span class="journal-kicker">${article.section}</span><h3>${article.title}</h3><p>${article.excerpt}</p><span class="journal-link">Read the guide ↗</span></div></a>`).join("");
 
 const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#ff4f5e"/><text x="32" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#19090e">HC</text></svg>`;
 const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}/</loc></url><url><loc>${SITE_URL}/quiz</loc></url><url><loc>${SITE_URL}/gallery</loc></url>${ARTICLES.map((article) => `<url><loc>${SITE_URL}/journal/${article.slug}</loc></url>`).join("")}</urlset>`;
@@ -472,6 +367,11 @@ const PAGE = `<!doctype html>
       .campaign-card figcaption { background: var(--panel); color: var(--ink); font-size: .78rem; padding: 12px 15px 14px; }
       .campaign-card figcaption span { color: var(--secondary); display: block; font-size: .66rem; font-weight: 800; letter-spacing: .11em; margin-bottom: 3px; text-transform: uppercase; }
       .journal-grid { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
+      .journal-block { margin-top: 42px; }
+      .journal-block:first-of-type { margin-top: 12px; }
+      .journal-subhead { align-items: baseline; display: flex; flex-wrap: wrap; gap: 12px 22px; margin-bottom: 18px; }
+      .journal-subhead span { color: var(--brand-red, #ff4f5e); font-family: "IBM Plex Mono", "Courier New", monospace; font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+      .journal-subhead p { color: var(--muted); font-size: 1rem; margin: 0; }
       .journal-card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; display: flex; flex-direction: column; overflow: hidden; transition: border-color .2s, transform .2s; }
       .journal-card:hover, .journal-card:focus-visible { border-color: rgba(107,201,255,.65); transform: translateY(-3px); }
       .journal-card-image { aspect-ratio: 1.45 / 1; background: #182334; overflow: hidden; }
@@ -880,14 +780,21 @@ const PAGE = `<!doctype html>
         </section>
 
         <section id="journal">
-          <div class="section-head"><div><div class="eyebrow">The HC GamerLife journal</div><h2>Play smarter. Set up better. Stay for the next round.</h2></div><p>Practical guides, honest game-night advice, and buyer’s notes for people who want their gear to disappear into the moment.</p></div>
-          <div class="journal-grid">${JOURNAL_CARDS}</div>
+          <div class="section-head"><div><div class="eyebrow">The HC GamerLife journal</div><h2>Play smarter. Set up better. Stay for the next round.</h2></div><p>Buyer’s guides first, then setup and game-night notes. Use them before you shop, or to tune the gear you already own.</p></div>
+          <div class="journal-block">
+            <div class="journal-subhead"><span>Buyer’s guides</span><p>Connection, fit, mic, and the features that are safe to skip.</p></div>
+            <div class="journal-grid">${BUYER_GUIDE_CARDS}</div>
+          </div>
+          <div class="journal-block">
+            <div class="journal-subhead"><span>Setup and sessions</span><p>Echo, mix, comfort, and the night itself.</p></div>
+            <div class="journal-grid">${FIELD_NOTE_CARDS}</div>
+          </div>
         </section>
 
         <section id="field-notes">
           <div class="section-head"><div><div class="eyebrow">Start where you are</div><h2>A better session has more than one setting.</h2></div><p>Use the journal like a toolkit. Pick the problem in front of you, make one useful change, and come back when the next part of the setup needs attention.</p></div>
           <div class="editorial-grid">
-            <article class="editorial-card"><div class="eyebrow">01 · Choose</div><h3>Find the right fit for your play style.</h3><p>Compare wired and wireless habits, comfort details, microphone choices, and the compatibility questions that matter before you buy.</p><a href="/journal/wired-vs-wireless-gaming-headsets">Open the buyer’s guide ↗</a></article>
+            <article class="editorial-card"><div class="eyebrow">01 · Choose</div><h3>Find the right fit for your play style.</h3><p>Start with how you play, then compare connection, fit, microphone, and the compatibility questions that matter before you buy.</p><a href="/journal/how-to-choose-a-gaming-headset">Open the buyer’s guide ↗</a></article>
             <article class="editorial-card"><div class="eyebrow">02 · Tune</div><h3>Make the room work harder for you.</h3><p>Fix echo, balance game and chat audio, clean up the cable path, and protect the directional cues that help you react sooner.</p><a href="/journal/fix-party-chat-echo">Start with the setup fixes ↗</a></article>
             <article class="editorial-card"><div class="eyebrow">03 · Play</div><h3>Give game night a little shape.</h3><p>Plan a low-pressure squad night, keep late arrivals included, and build a flexible rhythm that works for competitive and casual players.</p><a href="/journal/plan-a-low-pressure-squad-night">Plan the next session ↗</a></article>
             <article class="editorial-card"><div class="eyebrow">04 · Keep</div><h3>Stay comfortable for the long haul.</h3><p>Small fit checks, short resets, and simple care habits help your headset and your ears feel ready for the next round.</p><a href="/journal/long-session-headset-comfort">Read the comfort notes ↗</a></article>
@@ -897,7 +804,7 @@ const PAGE = `<!doctype html>
         <section id="featured-guide">
           <div class="featured-guide">
             <div class="featured-guide-media"><img src="/assets/gallery/ugc-pc.jpg" alt="Player wearing the HCG1 at a PC desk" loading="lazy" decoding="async" /></div>
-            <div class="featured-guide-copy"><div class="eyebrow">Featured guide · Make the setup disappear</div><h2>Start with the habit, then choose the hardware.</h2><p>The best headset decision is rarely about the longest feature list. It is about the little friction you want to remove from every session: pairing menus, a microphone that sits too far away, a cable that catches on the chair, or cushions that make you quit early.</p><p>Our wired-versus-wireless guide turns those tradeoffs into a simple checklist. Read it before you shop, share it with a friend who is upgrading, or use it to tune the gear you already own.</p><a class="text-link" href="/journal/wired-vs-wireless-gaming-headsets">Read the featured guide ↗</a></div>
+            <div class="featured-guide-copy"><div class="eyebrow">Featured guide · Buyer’s notes</div><h2>Start with the habit, then choose the hardware.</h2><p>The best headset decision is rarely about the longest feature list. It is about the little friction you want to remove from every session: pairing menus, a microphone that sits too far away, a cable that catches on the chair, or cushions that make you quit early.</p><p>The buyer’s guide turns those tradeoffs into a shortlist: connection, fit, mic, and warranty. Read it before you shop, share it with a friend who is upgrading, or use it to tune the gear you already own.</p><a class="text-link" href="/journal/how-to-choose-a-gaming-headset">Read the featured guide ↗</a></div>
           </div>
         </section>
 
@@ -1232,7 +1139,12 @@ function renderArticle(article: Article): Response {
       .feature img { display:block; height:clamp(240px,38vw,430px); object-fit:cover; width:100%; }
       .prose { max-width:730px; padding-bottom:80px; }
       .prose h2 { font-size:1.75rem; letter-spacing:-.04em; line-height:1.1; margin:39px 0 12px; }
+      .prose h3 { font-size:1.2rem; letter-spacing:-.03em; line-height:1.25; margin:26px 0 8px; }
       .prose p { color:#d6dce7; font-size:1.04rem; margin:0 0 17px; }
+      .prose ul, .prose ol { color:#d6dce7; margin:0 0 20px; padding-left:1.2em; }
+      .prose li { margin:0 0 8px; }
+      .prose a { color:var(--brand-red, #ff4f5e); }
+      .prose .related { border-top:1px solid var(--line); margin-top:28px; padding-top:18px; }
       .callout { background:linear-gradient(135deg,rgba(107,201,255,.1),rgba(255,79,94,.08)); border:1px solid var(--line); border-radius:16px; color:#dfe6f1; margin:30px 0; padding:20px 22px; }
       .more { border-top:1px solid var(--line); padding:34px 0 70px; }
       .more h2 { font-size:1.5rem; letter-spacing:-.04em; }
@@ -1243,7 +1155,7 @@ function renderArticle(article: Article): Response {
       :root { --bg:#14110f; --panel:#201b18; --ink:#f5efe4; --muted:#b4ac9f; --line:rgba(245,239,228,.16); --secondary:#6bc9ff; --coral:#ff765c; }
       html { background:#0d0b0a; overflow-x:clip; }
       body { background:radial-gradient(circle at 90% 10%,rgba(255,118,92,.13),transparent 22rem),#14110f; font-family:"Avenir Next","Century Gothic","Trebuchet MS",sans-serif; overflow-x:clip; }
-      h1, .prose h2, .more h2 { font-family:"Bodoni 72",Didot,"Iowan Old Style",Baskerville,Georgia,serif; font-weight:500; }
+      h1, .prose h2, .prose h3, .more h2 { font-family:"Bodoni 72",Didot,"Iowan Old Style",Baskerville,Georgia,serif; font-weight:500; }
       .brand { font-family:"IBM Plex Mono","Courier New",monospace; font-size:.78rem; letter-spacing:.16em; }
       .brand-mark { background:var(--brand-red, #ff4f5e); border-radius:3px; color:#210a10; }
       .kicker { color:var(--secondary); font-family:"IBM Plex Mono","Courier New",monospace; }
@@ -1271,13 +1183,14 @@ function renderArticle(article: Article): Response {
       .back { font-size:1rem; }
       .kicker { font-size:.82rem; }
       .dek { font-size:1.22rem; }
-      .prose p { font-size:1.1rem; }
+      .prose p, .prose li { font-size:1.1rem; line-height:1.72; }
+      .prose h3 { font-size:1.35rem; }
       .callout, .more { font-size:1.04rem; }
     </style>
   </head>
   <body>
     <div class="wrap"><header><a class="brand" href="/"><span class="brand-mark">HC</span> GAMERLIFE</a><a class="back" href="/#journal">Back to the journal ↗</a></header></div>
-    <main><div class="wrap"><section class="hero"><div class="kicker">${article.section}</div><h1>${article.title}</h1><p class="dek">${article.excerpt}</p></section><figure class="feature"><img src="/media/image?key=${imageKey}&amp;variant=hero&amp;v=3" alt="${article.title}" decoding="async" fetchpriority="high" /></figure><article class="prose">${article.body}<div class="callout"><strong>Make the next session easier.</strong><br />Save this guide, share it with your squad, and explore the HCG1 setup when you are ready for a simple, wired connection.</div></article><section class="more"><h2>Keep exploring</h2><p><a href="/#product">Meet the HCG1 Pro Gaming Headset</a> · <a href="/#setup">See the setup guide</a> · <a href="/#journal">Browse every guide</a></p></section></div></main>
+    <main><div class="wrap"><section class="hero"><div class="kicker">${article.section}</div><h1>${article.title}</h1><p class="dek">${article.excerpt}</p></section><figure class="feature"><img src="/media/image?key=${imageKey}&amp;variant=hero&amp;v=3" alt="${article.title}" decoding="async" fetchpriority="high" /></figure><article class="prose">${article.body}<div class="callout"><strong>Make the next session easier.</strong><br />Save this guide, share it with your squad, and explore the HCG1 setup when you are ready for a simple, wired connection.</div></article><section class="more"><h2>Keep exploring</h2><p><a href="/journal/how-to-choose-a-gaming-headset">Buyer’s guides</a> · <a href="/#product">Meet the HCG1</a> · <a href="/#journal">Browse every guide</a></p></section></div></main>
     <div class="wrap"><footer><a class="brand" href="/"><span class="brand-mark">HC</span> GAMERLIFE</a></footer></div>
   </body>
 </html>`;
