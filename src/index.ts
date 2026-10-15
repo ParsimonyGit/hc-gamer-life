@@ -973,6 +973,7 @@ const HEADERS = {
   "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' https://www.hcgamerlife.com https://hcgamerlife.com https://raw.githubusercontent.com data:; media-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; connect-src 'self' https://api.stripe.com https://js.stripe.com https://r.stripe.com; frame-src https://checkout.stripe.com https://*.stripe.com; base-uri 'none'; frame-ancestors 'none'",
   "referrer-policy": "strict-origin-when-cross-origin",
   "x-content-type-options": "nosniff",
+  "x-frame-options": "DENY",
   "permissions-policy": "camera=(), microphone=(), geolocation=(), fullscreen=(self)",
   "strict-transport-security": "max-age=31536000"
 };
@@ -1429,6 +1430,7 @@ async function createStripeCheckout(request: Request, env: Env): Promise<Respons
 function withHsts(response: Response): Response {
   const headers = new Headers(response.headers);
   headers.set("strict-transport-security", "max-age=31536000");
+  headers.set("x-frame-options", "DENY");
   return new Response(response.body, { status: response.status, headers });
 }
 
