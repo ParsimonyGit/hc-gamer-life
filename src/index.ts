@@ -247,7 +247,7 @@ const ARTICLE_MEDIA_KEYS = [
 
 const articleMediaKey = (article: Article): string => ARTICLE_MEDIA_KEYS[Math.max(0, ARTICLES.indexOf(article))] ?? "campaign-gaming";
 
-const JOURNAL_CARDS = ARTICLES.map((article) => `<a class="journal-card" href="/journal/${article.slug}"><div class="journal-card-image"><img src="/media/image?key=${articleMediaKey(article)}&amp;variant=card&amp;v=3" alt="${article.title}" loading="lazy" decoding="async" /></div><div class="journal-card-copy"><span class="journal-kicker">${article.section}</span><h3>${article.title}</h3><p>${article.excerpt}</p><span class="journal-link">Read the guide ↗</span></div></a>`).join("");
+const JOURNAL_CARDS = ARTICLES.map((article) => `<a class="journal-card" href="/journal/${article.slug}"><div class="journal-card-image"><img src="/media/image?key=${articleMediaKey(article)}&amp;variant=card&amp;v=3" alt="${article.title}" width="900" height="700" loading="lazy" decoding="async" /></div><div class="journal-card-copy"><span class="journal-kicker">${article.section}</span><h3>${article.title}</h3><p>${article.excerpt}</p><span class="journal-link">Read the guide ↗</span></div></a>`).join("");
 
 const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#ff4f5e"/><text x="32" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#19090e">HC</text></svg>`;
 const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}/</loc></url><url><loc>${SITE_URL}/quiz</loc></url><url><loc>${SITE_URL}/gallery</loc></url>${ARTICLES.map((article) => `<url><loc>${SITE_URL}/journal/${article.slug}</loc></url>`).join("")}</urlset>`;
@@ -835,7 +835,7 @@ const PAGE = `<!doctype html>
           <div class="hero-art" aria-label="HCG1 Pro Gaming Headset product photography" role="img">
             <div class="product-stage">
               <div class="stage-label"><strong>HCG1</strong> / FIELD TEST 001</div>
-              <img class="product-photo" src="/media/image?key=product-hero&amp;variant=product&amp;v=2" alt="Black and red HCG1 Pro Gaming Headset with detachable microphone" decoding="async" fetchpriority="high" />
+              <img class="product-photo" src="/media/image?key=product-hero&amp;variant=product&amp;v=2" alt="Black and red HCG1 Pro Gaming Headset with detachable microphone" width="1000" height="1000" decoding="async" fetchpriority="high" />
               <div class="stage-note"><div class="price-note"><strong>Sound that stays sharp</strong> Hear the moment before it happens.</div><div class="signal" aria-label="Three signal bars"><i></i><i></i><i></i></div></div>
               <div class="photo-credit">Official HCG1 product photography · 53mm drivers · wired 3.5mm</div>
             </div>
@@ -851,10 +851,10 @@ const PAGE = `<!doctype html>
         <section id="gallery">
           <div class="section-head"><div><div class="eyebrow">See the HCG1</div><h2>Built to look as sharp as it sounds.</h2></div><p>Official catalog photography, in-hand stills, and product videos. <a class="text-link" href="/gallery">Open the full gallery ↗</a></p></div>
           <div class="visual-product">
-            <article class="visual-main"><img src="/assets/gallery/catalog-hero.jpg" alt="HCG1 Pro Gaming Headset at a three-quarter angle with detachable microphone, cable, and inline controller" loading="lazy" decoding="async" /><div class="visual-caption"><h3>Focus on the play.</h3><p>The closed-back over-ear fit keeps the room out while the 53mm drivers keep the action clear.</p></div></article>
+            <article class="visual-main"><img src="/assets/gallery/catalog-hero.jpg" alt="HCG1 Pro Gaming Headset at a three-quarter angle with detachable microphone, cable, and inline controller" width="1500" height="1500" loading="lazy" decoding="async" /><div class="visual-caption"><h3>Focus on the play.</h3><p>The closed-back over-ear fit keeps the room out while the 53mm drivers keep the action clear.</p></div></article>
             <div class="visual-stack">
-              <article class="visual-card"><img src="/assets/gallery/catalog-inner.jpg" alt="HCG1 inner ear cushions with red gamepad plates and red stitching" loading="lazy" decoding="async" /><span>All-weekend comfort</span></article>
-              <article class="visual-card"><img src="/assets/gallery/catalog-inline.jpg" alt="HCG1 inline volume controller and PC adapter" loading="lazy" decoding="async" /><span>Clear comms, simple controls</span></article>
+              <article class="visual-card"><img src="/assets/gallery/catalog-inner.jpg" alt="HCG1 inner ear cushions with red gamepad plates and red stitching" width="1500" height="1500" loading="lazy" decoding="async" /><span>All-weekend comfort</span></article>
+              <article class="visual-card"><img src="/assets/gallery/catalog-inline.jpg" alt="HCG1 inline volume controller and PC adapter" width="1500" height="1500" loading="lazy" decoding="async" /><span>Clear comms, simple controls</span></article>
             </div>
           </div>
           <div class="spec-callout"><span class="spec-pip">53</span><div><strong>53mm stereo drivers</strong><span>20Hz–20kHz response, 32 ohms impedance, and an inline volume controller.</span></div></div>
@@ -863,18 +863,18 @@ const PAGE = `<!doctype html>
         <section id="scenes">
           <div class="section-head"><div><div class="eyebrow">HCG1 in session</div><h2>One jack. The devices that still have one.</h2></div><p>PC, DualSense, Xbox, PlayStation. The 3.5mm cable goes where the jack still lives. <a class="text-link" href="/gallery">See every still ↗</a></p></div>
           <div class="campaign-grid">
-            <figure class="campaign-card"><img src="/assets/gallery/ugc-pc.jpg" alt="College gamer wearing the HCG1 at a PC desk" decoding="async" /><figcaption><span>PC desk</span>Cable to the tower.</figcaption></figure>
-            <figure class="campaign-card"><img src="/assets/gallery/ugc-dualsense.jpg" alt="Ranked player wearing the HCG1 with a DualSense controller" decoding="async" /><figcaption><span>DualSense</span>The jack is on the pad.</figcaption></figure>
-            <figure class="campaign-card"><img src="/assets/gallery/ugc-creator.jpg" alt="Creator holding the HCG1 at a streaming desk" decoding="async" /><figcaption><span>Creator desk</span>One-hand hold.</figcaption></figure>
-            <figure class="campaign-card"><img src="/assets/gallery/ugc-xbox.jpg" alt="Parent with the HCG1 in his lap and an Xbox controller" decoding="async" /><figcaption><span>Xbox night</span>In the lap, pad on the table.</figcaption></figure>
-            <figure class="campaign-card"><img src="/assets/gallery/ugc-playstation.jpg" alt="Couch gamer putting on the HCG1 in front of a TV" decoding="async" /><figcaption><span>PlayStation</span>Putting it on.</figcaption></figure>
-            <figure class="campaign-card"><img src="/assets/gallery/studio-table.jpg" alt="HCG1 Pro Gaming Headset on a table" decoding="async" /><figcaption><span>Studio</span>The real headset, still.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/ugc-pc.jpg" alt="College gamer wearing the HCG1 at a PC desk" width="864" height="1152" decoding="async" /><figcaption><span>PC desk</span>Cable to the tower.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/ugc-dualsense.jpg" alt="Ranked player wearing the HCG1 with a DualSense controller" width="864" height="1152" decoding="async" /><figcaption><span>DualSense</span>The jack is on the pad.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/ugc-creator.jpg" alt="Creator holding the HCG1 at a streaming desk" width="864" height="1152" decoding="async" /><figcaption><span>Creator desk</span>One-hand hold.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/ugc-xbox.jpg" alt="Parent with the HCG1 in his lap and an Xbox controller" width="864" height="1152" decoding="async" /><figcaption><span>Xbox night</span>In the lap, pad on the table.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/ugc-playstation.jpg" alt="Couch gamer putting on the HCG1 in front of a TV" width="864" height="1152" decoding="async" /><figcaption><span>PlayStation</span>Putting it on.</figcaption></figure>
+            <figure class="campaign-card"><img src="/assets/gallery/studio-table.jpg" alt="HCG1 Pro Gaming Headset on a table" width="1600" height="900" decoding="async" /><figcaption><span>Studio</span>The real headset, still.</figcaption></figure>
           </div>
         </section>
 
         <section id="quiz-invite">
           <div class="featured-guide">
-            <div class="featured-guide-media"><img src="/assets/gallery/ugc-dualsense.jpg" alt="Ranked player wearing the HCG1 with a DualSense controller" loading="lazy" decoding="async" /></div>
+            <div class="featured-guide-media"><img src="/assets/gallery/ugc-dualsense.jpg" alt="Ranked player wearing the HCG1 with a DualSense controller" width="864" height="1152" loading="lazy" decoding="async" /></div>
             <div class="featured-guide-copy"><div class="eyebrow">Gamer Audio Profile</div><h2>Four taps. Your band. Then the HCG1 Pro.</h2><p>Platform, play style, session length, and the pain that ends a night early. Unlock Immersed, Climbing, or Ready for Pro — then a straight path to the wired headset with a two-year guarantee.</p><a class="text-link" href="/quiz">Take the quiz ↗</a></div>
           </div>
         </section>
@@ -896,7 +896,7 @@ const PAGE = `<!doctype html>
 
         <section id="featured-guide">
           <div class="featured-guide">
-            <div class="featured-guide-media"><img src="/assets/gallery/ugc-pc.jpg" alt="Player wearing the HCG1 at a PC desk" loading="lazy" decoding="async" /></div>
+            <div class="featured-guide-media"><img src="/assets/gallery/ugc-pc.jpg" alt="Player wearing the HCG1 at a PC desk" width="864" height="1152" loading="lazy" decoding="async" /></div>
             <div class="featured-guide-copy"><div class="eyebrow">Featured guide · Make the setup disappear</div><h2>Start with the habit, then choose the hardware.</h2><p>The best headset decision is rarely about the longest feature list. It is about the little friction you want to remove from every session: pairing menus, a microphone that sits too far away, a cable that catches on the chair, or cushions that make you quit early.</p><p>Our wired-versus-wireless guide turns those tradeoffs into a simple checklist. Read it before you shop, share it with a friend who is upgrading, or use it to tune the gear you already own.</p><a class="text-link" href="/journal/wired-vs-wireless-gaming-headsets">Read the featured guide ↗</a></div>
           </div>
         </section>
