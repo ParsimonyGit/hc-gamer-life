@@ -14,7 +14,7 @@ function paidSession(overrides: Partial<StripeCheckoutSession> = {}): StripeChec
     payment_intent: "pi_test_abc",
     customer_details: { email: "buyer@hcgamerlife.org", name: "Buyer One" },
     metadata: { quantity: "1", item_code: "HCG1-PRO" },
-    amount_total: 12999,
+    amount_total: 4000,
     currency: "usd",
     ...overrides
   };

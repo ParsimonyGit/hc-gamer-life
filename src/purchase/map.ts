@@ -2,8 +2,13 @@
 
 export const DEFAULT_ERP_URL = "https://admin.hcgamerlife.org";
 export const HCG1_ITEM_CODE = "HCG1-PRO";
-export const HCG1_UNIT_RATE = 129.99;
-export const HCG1_UNIT_CENTS = 12999;
+/** Current going-out-of-business selling price in USD. The former price ($129.99) is compare-at only. */
+export const HCG1_UNIT_RATE = 40;
+export const HCG1_UNIT_CENTS = 4000;
+/** Former / compare-at price in USD. Not the amount Checkout or the Sales Order should charge. */
+export const HCG1_COMPARE_AT_RATE = 129.99;
+/** Flat shipping in cents. Continental US only, charged on the Shopify checkout. */
+export const HCG1_SHIPPING_CENTS = 1200;
 export const PURCHASE_TAGS = ["hcgl-customer", "hcgl-purchased-hcg1"] as const;
 export const PURCHASE_GHL_SOURCE = "hcgl-stripe";
 export const FULFILL_EVENTS = ["checkout.session.completed", "checkout.session.async_payment_succeeded"] as const;
@@ -153,7 +158,9 @@ export function mapCheckoutSession(
     "Paid in full via Stripe Checkout on hcgamerlife.org.",
     `session=${stripeSessionId}`,
     stripePaymentIntentId ? `payment_intent=${stripePaymentIntentId}` : null,
-    `item=${itemCode} qty=${quantity} rate=${rate.toFixed(2)}`
+    `item=${itemCode} qty=${quantity} rate=${rate.toFixed(2)}`,
+    "sale=going-out-of-business",
+    `shipping_flat_usd=${(HCG1_SHIPPING_CENTS / 100).toFixed(2)} continental_us`
   ]
     .filter(Boolean)
     .join(" ");

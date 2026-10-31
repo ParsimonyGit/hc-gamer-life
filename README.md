@@ -4,7 +4,20 @@ An original, responsive product landing page for the HCG1 Pro Gaming Headset, se
 
 ## Customer avatar
 
-The page is written for the committed everyday gamer: a console or PC player who spends long sessions with friends, wants clear positional audio and dependable voice chat, and cares about comfort, cross-platform flexibility, and a warranty. The copy speaks to players first and leaves room for parents and gift buyers to feel confident about durability.
+The page is written for the committed everyday gamer: a console or PC player who spends long sessions with friends, wants clear positional audio and dependable voice chat, and cares about comfort and cross-platform flexibility. The copy speaks to players first and leaves room for parents and gift buyers to understand the current sale.
+
+## Going-out-of-business sale
+
+Customer-facing terms match https://www.hcgamerlife.com (the HCG1 and the HCG1 Pro are the same headset):
+
+- Price **$40** (compare-at / former price **$129.99**).
+- While supplies last. No fixed end date.
+- Sold without a warranty.
+- 30-day returns. The buyer pays return shipping unless the unit is defective.
+- Defective units are replaced within 90 days.
+- Shipping is **$12 flat**, continental United States only.
+
+Those facts are on the homepage (banner, specs, FAQ, purchase panel), the quiz, `/terms`, and `/privacy-policy`. The business address in the footer and legal pages is 1037 NE 65th St #80853, Seattle, WA 98115. Returns are not accepted at that mailbox; email support@hcgamerlife.com first.
 
 ## Run locally
 
@@ -15,7 +28,7 @@ npm run dev
 
 ## Deploy
 
-Authenticate Wrangler locally with `npx wrangler login`, then run `npm run deploy`. GitHub Actions is ready in `.github/workflows/deploy.yml`; add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository secrets before enabling it.
+Authenticate Wrangler locally with `npx wrangler login`, then run `npm run deploy`. GitHub Actions (`.github/workflows/deploy.yml`) deploys the Worker on every push to `main`, including a merge of a pull request, when repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are set. That deploy publishes `wrangler.jsonc` vars such as `ERP_ITEM_RATE=40`. Headset checkout does not use a Stripe Price. `/checkout` redirects to Shopify.
 
 The Worker serves the site at every route and exposes `/healthz` for a lightweight deployment check. A custom domain can be attached in Cloudflare later without changing the source.
 
@@ -45,75 +58,23 @@ Local `npm run dev` can complete the quiz UI without a PIT. The API then returns
 npm test
 ```
 
-## Stripe checkout → ERP + HighLevel
+## Checkout is Shopify
 
-On-site checkout is Stripe Checkout in `ui_mode=embedded_page` / `mode=payment` (see `createStripeCheckout` in `src/index.ts`). Completed payments are fulfilled by:
+Buy buttons and `/checkout` (any method) send the shopper to the live Shopify product, already priced at **$40** on Shopify Payments:
 
-`POST https://hcgamerlife.org/api/stripe/webhook`
+https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible
 
-In the Stripe Dashboard, add that URL as a webhook endpoint (same mode as the Checkout price: test or live) and enable:
+hcgamerlife.org does not create a Stripe Checkout session for this sale. The Stripe live Price is skipped. Do not point the buy button at `STRIPE_PRICE_ID`.
 
-- `checkout.session.completed` (the event this Worker fulfills)
-- `checkout.session.async_payment_succeeded` (delayed methods, if you enable any)
+`/checkout/config` returns `{ ready: false, checkout: "shopify", url }` and does not expose a Stripe publishable key.
 
-`payment_intent.succeeded` is ignored on purpose. Embedded Checkout already emits `checkout.session.completed` with customer email and metadata; handling both events would risk double work. Idempotency still keys on the Checkout Session id.
+The Worker still contains a Stripe webhook (`POST /api/stripe/webhook`) that can record an already-created Checkout session in ERPNext and HighLevel. That path is not how new headset orders are taken. New orders are Shopify’s.
 
-The Worker verifies `Stripe-Signature` with `STRIPE_WEBHOOK_SECRET`, then:
-
-1. Upserts an ERPNext **Customer** on https://admin.hcgamerlife.org by `email_id`.
-2. Creates a **Sales Order** for Item `HCG1-PRO` at **$129.99**, quantity from session metadata (set when `/checkout` starts), line items, or `amount_total / 12999`.
-3. Submits the Sales Order. Payment is recorded on the document (`po_no` + remarks). The Worker does **not** send ERP or marketing email.
-4. Upserts the HighLevel contact at location `STFgRxHbklvx2q1nDpi1` and applies tags `hcgl-customer` and `hcgl-purchased-hcg1` (same PIT / `contacts/upsert` pattern as `/api/quiz`).
-
-### Secrets and vars
-
-Do not commit values. Set Worker secrets:
+Quiz contacts still use the HighLevel secret:
 
 ```bash
-npx wrangler secret put STRIPE_SECRET_KEY
-npx wrangler secret put STRIPE_WEBHOOK_SECRET
-npx wrangler secret put ERP_API_KEY
-npx wrangler secret put ERP_API_SECRET
 npx wrangler secret put GHL_PIT
 ```
-
-Non-secret defaults in `wrangler.jsonc` / `.env.example`:
-
-| Name | Default | Role |
-| --- | --- | --- |
-| `ERP_URL` | `https://admin.hcgamerlife.org` | Parsimony ERPNext site |
-| `ERP_ITEM_CODE` | `HCG1-PRO` | Sales Order item |
-| `ERP_ITEM_RATE` | `129.99` | Unit rate when not overridden |
-| `GHL_LOCATION_ID` | `STFgRxHbklvx2q1nDpi1` | HighLevel location |
-| `ERP_COMPANY` | (site default) | Set if the ERP has more than one company |
-| `ERP_CUSTOMER_GROUP` | `All Customer Groups` | Customer create |
-| `ERP_TERRITORY` | `All Territories` | Customer create |
-| `ERP_DRY_RUN` / `PURCHASE_DRY_RUN` | unset | `1`/`true` maps the session and skips ERP/GHL writes |
-
-`STRIPE_PUBLISHABLE_KEY` and `STRIPE_PRICE_ID` are already required for `/checkout`.
-
-### ERP Item and custom fields (ops)
-
-Create these on admin.hcgamerlife.org if they are missing. The Worker can create documents without the custom fields (it retries after an “unknown field” error) but ops should add them so Stripe and GHL ids are queryable.
-
-| Doctype | Name / field | Type | Notes |
-| --- | --- | --- | --- |
-| Item | `HCG1-PRO` | Item code | HCG1 Pro Gaming Headset, USD 129.99. Sales Order does not update stock; a non-stock or stock Item both work. |
-| Customer | `custom_ghl_contact_id` | Data | HighLevel contact id |
-| Sales Order | `custom_stripe_session_id` | Data | Stripe Checkout Session id (`cs_…`). Mark Unique if you can. |
-| Sales Order | `custom_stripe_payment_id` | Data | PaymentIntent id (`pi_…`) |
-
-Idempotency does not depend on the custom fields. The Sales Order `po_no` is set to the Stripe Checkout Session id. A replay finds that order and will not insert a second one. A leftover draft is submitted instead of duplicated.
-
-Local dry-run (no ERP writes):
-
-```bash
-# .dev.vars
-ERP_DRY_RUN=1
-STRIPE_WEBHOOK_SECRET=whsec_...
-```
-
-`npm test` covers mapping, signature checks, and idempotency with in-memory ERP/GHL doubles.
 
 ## Media delivery
 
