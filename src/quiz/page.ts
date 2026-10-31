@@ -1,4 +1,5 @@
 import { clientConfig } from "./data.ts";
+import { SHOPIFY_PRODUCT_URL } from "../sale.ts";
 
 const SITE_URL = "https://hcgamerlife.org";
 const SEO_IMAGE = `${SITE_URL}/brand/og.jpg`;
@@ -532,8 +533,8 @@ const RUNTIME = `(() => {
           <ul class="promises">\${promises}</ul>
           <p class="saved">Profile unlocked. You are on the HCG1 list.</p>
           <div class="cta-row">
-            <a class="button" href="/#product">Meet the HCG1 Pro →</a>
-            <a class="button button-quiet" href="/#drop">Register your interest</a>
+            <a class="button" href="${SHOPIFY_PRODUCT_URL}">Buy the HCG1 Pro →</a>
+            <a class="button button-quiet" href="/#product">Meet the HCG1 Pro</a>
             <button class="back" type="button" data-action="retake">Retake quiz</button>
           </div>
         </div>

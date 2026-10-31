@@ -15,3 +15,18 @@ export const SHIPPING_LABEL = usd(HCG1_SHIPPING_CENTS / 100);
 
 /** Customer-facing sale sentence. Matches the live hcgamerlife.com product description. */
 export const GOB_SALE_TERMS = `Going-out-of-business sale: ${SALE_PRICE_LABEL} while supplies last. Sold without warranty. 30-day returns (buyer pays return shipping unless the unit is defective). Defective units replaced within 90 days. ${SHIPPING_LABEL} flat shipping, continental US only.`;
+
+/** Shopify product already priced at $40. hcgamerlife.org checkout sends buyers here. */
+export const SHOPIFY_PRODUCT_URL =
+  "https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible";
+
+export function shopifyCheckoutRedirect(): Response {
+  return new Response(null, {
+    status: 302,
+    headers: {
+      location: SHOPIFY_PRODUCT_URL,
+      "cache-control": "no-store",
+      "referrer-policy": "strict-origin-when-cross-origin"
+    }
+  });
+}

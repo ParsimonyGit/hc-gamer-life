@@ -1,4 +1,4 @@
-import { BUSINESS_ADDRESS, CONTACT_EMAIL, GOB_SALE_TERMS, SALE_PRICE_LABEL, COMPARE_AT_LABEL, SHIPPING_LABEL, SUPPORT_EMAIL } from "./sale.ts";
+import { BUSINESS_ADDRESS, CONTACT_EMAIL, COMPARE_AT_LABEL, GOB_SALE_TERMS, SALE_PRICE_LABEL, SHIPPING_LABEL, SHOPIFY_PRODUCT_URL, SUPPORT_EMAIL } from "./sale.ts";
 
 const SITE_URL = "https://hcgamerlife.org";
 
@@ -71,9 +71,9 @@ function termsBody(): string {
 <h2>1. Who can use the Site</h2>
 <p>You must be at least 18 years old, or the age of majority where you live, to buy from us. If you are younger, a parent or guardian must use the Site with you and place the order. You agree not to use the Site for anything unlawful, to interfere with its security, or to submit false information.</p>
 <h2>2. Products and pricing</h2>
-<p>We sell the HCG1 Pro wired gaming headset. The HCG1 and the HCG1 Pro are the same headset. The current going-out-of-business price is <strong>${SALE_PRICE_LABEL}</strong> (compare-at / former price ${COMPARE_AT_LABEL}). The sale runs while supplies last and has no fixed end date. We try to describe products, specifications, and photos accurately. Colors and details can look slightly different on different screens. Prices are in U.S. dollars and may change without notice, but a price change will not affect an order we have already accepted. If an item is listed at an obviously wrong price, we may cancel the order and refund you in full.</p>
+<p>We sell the HCG1 Pro wired gaming headset. The HCG1 and the HCG1 Pro are the same headset. The current going-out-of-business price is <strong>${SALE_PRICE_LABEL}</strong> (compare-at / former price ${COMPARE_AT_LABEL}). The sale runs while supplies last and has no fixed end date. Buy it at <a href="${SHOPIFY_PRODUCT_URL}">hcgamerlife.com</a>. This Site links there and does not charge your card. We try to describe products, specifications, and photos accurately. Colors and details can look slightly different on different screens. Prices are in U.S. dollars and may change without notice, but a price change will not affect an order we have already accepted. If an item is listed at an obviously wrong price, we may cancel the order and refund you in full.</p>
 <h2>3. Orders and payment</h2>
-<p>Your order is an offer to buy. We accept it when we ship it or confirm it. We may limit quantities or cancel an order, for example because of suspected fraud, pricing errors, an address outside the continental United States, or stock problems. If we cancel, we refund any amount charged. Payments are processed by Stripe. You agree to give accurate billing and shipping details. Applicable sales tax is added at checkout.</p>
+<p>Your order is placed on <a href="${SHOPIFY_PRODUCT_URL}">hcgamerlife.com</a>. We accept it when that store ships it or confirms it. We may limit quantities or cancel an order, for example because of suspected fraud, pricing errors, an address outside the continental United States, or stock problems. If we cancel, we refund any amount charged. Payments are processed by Shopify Payments on hcgamerlife.com. hcgamerlife.org does not charge your card. You agree to give accurate billing and shipping details on that checkout. Applicable sales tax is added there.</p>
 <h2>4. Shipping</h2>
 <p>Shipping is <strong>${SHIPPING_LABEL} flat</strong>. We ship to the continental United States only. Alaska, Hawaii, and U.S. territories are outside this sale. Orders to those places may be canceled and refunded. The Site does not ship outside the United States. Delivery estimates are not guaranteed. Title and risk of loss pass to you when the carrier delivers the order. If your package arrives damaged or never arrives, email <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>.</p>
 <h2>5. Going-out-of-business sale terms</h2>
@@ -94,9 +94,9 @@ function termsBody(): string {
 <h2>10. Intellectual property</h2>
 <p>The Site's content, including text, photos, logos, the HC GamerLife and HCG1 names, and the quiz, belongs to HC GamerLife or its licensors. You may not copy or reuse it for commercial purposes without our written permission.</p>
 <h2>11. Third-party services and links</h2>
-<p>The Site uses third-party services such as Stripe and may link to other websites. We are not responsible for their content or practices, and their own terms apply.</p>
+<p>The Site links to our store on Shopify (hcgamerlife.com) and may link to other websites. We are not responsible for their content or practices, and their own terms apply.</p>
 <h2>12. Marketing communications</h2>
-<p>If you opt in through the quiz or at checkout, we may email you offers and updates. You can unsubscribe at any time.</p>
+<p>If you opt in through the quiz, we may email you offers and updates. You can unsubscribe at any time. Checkout on hcgamerlife.com follows Shopify’s own choices.</p>
 <h2>13. Governing law and disputes</h2>
 <p>These Terms are governed by the laws of the State of Washington, without regard to its conflict-of-law rules. Before filing any claim, please contact us so we can try to resolve it informally. Any dispute that is not resolved will be heard in the state or federal courts in King County, Washington. You may also bring a claim in small claims court where you live. This section does not take away any consumer protections you have under your local law.</p>
 <h2>14. Changes</h2>
@@ -111,11 +111,11 @@ function privacyBody(): string {
 <p><strong>Information you give us</strong></p>
 <ul>
 <li><strong>Quiz:</strong> If you finish the Gamer Audio Profile quiz, we collect your email address, your first name (optional), your quiz answers (such as platform, play style, session length, and comfort or audio issues), and whether you checked the box to get marketing emails.</li>
-<li><strong>Orders:</strong> When you buy, we collect your name, email address, shipping and billing address, phone number (if you give it), and the items and quantity you order.</li>
+<li><strong>Orders:</strong> When you buy on hcgamerlife.com, Shopify collects your name, email address, shipping and billing address, phone number (if you give it), and the items and quantity you order. We receive those details from Shopify to ship and support the order.</li>
 <li><strong>Support:</strong> If you email us, we keep your message and any details you include, such as your order number, to help with returns, defective-unit replacements, and questions.</li>
 </ul>
-<p><strong>Payment information.</strong> Checkout is handled by Stripe, Inc. Your card details go directly to Stripe and are never stored on our servers. We get limited payment details from Stripe, such as the payment status, card brand, and last four digits. Stripe's privacy policy is at <a href="https://stripe.com/privacy">https://stripe.com/privacy</a>.</p>
-<p><strong>Information collected automatically.</strong> Like most websites, our servers and hosting provider log technical details when you visit, such as your IP address, browser type, device, pages viewed, referring page, and the time of the visit. Stripe may set cookies or use similar technologies during checkout for fraud prevention and security.</p>
+<p><strong>Payment information.</strong> Checkout is handled by Shopify on hcgamerlife.com. Your card details go to Shopify and are never stored on hcgamerlife.org. Shopify’s privacy policy is at <a href="https://www.shopify.com/legal/privacy">https://www.shopify.com/legal/privacy</a>.</p>
+<p><strong>Information collected automatically.</strong> Like most websites, our servers and hosting provider log technical details when you visit, such as your IP address, browser type, device, pages viewed, referring page, and the time of the visit. Shopify may set cookies on hcgamerlife.com during checkout.</p>
 <h2>2. How we use your information</h2>
 <ul>
 <li>To provide your quiz results and recommend products.</li>
@@ -128,14 +128,14 @@ function privacyBody(): string {
 <h2>3. How we share your information</h2>
 <p>We do not sell your personal information. We do not share it for cross-context behavioral advertising. We share it only with:</p>
 <ul>
-<li><strong>Service providers</strong> that work for us. These include Stripe (payments), our website host, HighLevel (GoHighLevel), our email and customer-relationship provider, which stores quiz responses and sends emails, our fulfillment warehouse IWS Fulfillment (Pocatello, Idaho) for shipping orders, and shipping carriers.</li>
+<li><strong>Service providers</strong> that work for us. These include Shopify (checkout and payments on hcgamerlife.com), our website host, HighLevel (GoHighLevel), our email and customer-relationship provider, which stores quiz responses and sends emails, our fulfillment warehouse IWS Fulfillment (Pocatello, Idaho) for shipping orders, and shipping carriers.</li>
 <li><strong>Legal and safety:</strong> to comply with the law, respond to lawful requests, or protect our rights, customers, or others.</li>
 <li><strong>Business transfers:</strong> if our business is sold or merged, along with the business assets.</li>
 </ul>
 <h2>4. Data retention</h2>
 <p>We keep order records for as long as we need them for support, tax, and accounting purposes (generally 7 years). We keep quiz and marketing data until you unsubscribe or ask us to delete it. We keep server logs for a limited time.</p>
 <h2>5. Cookies</h2>
-<p>The Site itself does not use advertising cookies. Stripe may use cookies that are needed for secure checkout. You can block cookies in your browser settings, but checkout may not work without them.</p>
+<p>The Site itself does not use advertising cookies. Shopify may use cookies on hcgamerlife.com that are needed for checkout. You can block cookies in your browser settings, but checkout on that store may not work without them.</p>
 <h2>6. Your choices and rights</h2>
 <ul>
 <li><strong>Marketing emails:</strong> unsubscribe at any time.</li>

@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
-  applySaleCheckoutFields,
   decideFulfillment,
   isDryRun,
   isFulfillEventType,
@@ -11,7 +10,6 @@ import {
   shouldFulfillCheckoutEvent,
   splitCustomerName,
   HCG1_ITEM_CODE,
-  HCG1_SHIPPING_CENTS,
   HCG1_UNIT_CENTS,
   HCG1_UNIT_RATE,
   PURCHASE_TAGS,
@@ -121,21 +119,6 @@ describe("idempotency decision", () => {
       action: "submit_existing",
       salesOrder: "SAL-ORD-0002"
     });
-  });
-});
-
-describe("checkout sale fields", () => {
-  it("charges the configured Stripe Price and a $12 continental-US shipping rate", () => {
-    const params = new URLSearchParams();
-    applySaleCheckoutFields(params, "price_configured_by_ops", 2);
-    assert.equal(params.get("line_items[0][price]"), "price_configured_by_ops");
-    assert.equal(params.get("line_items[0][quantity]"), "2");
-    assert.equal(params.get("shipping_address_collection[allowed_countries][0]"), "US");
-    assert.equal(params.get("shipping_options[0][shipping_rate_data][type]"), "fixed_amount");
-    assert.equal(params.get("shipping_options[0][shipping_rate_data][fixed_amount][amount]"), String(HCG1_SHIPPING_CENTS));
-    assert.equal(params.get("shipping_options[0][shipping_rate_data][fixed_amount][currency]"), "usd");
-    assert.equal(params.get("shipping_options[0][shipping_rate]"), null);
-    assert.equal(HCG1_SHIPPING_CENTS, 1200);
   });
 });
 

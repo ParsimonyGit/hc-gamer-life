@@ -28,7 +28,7 @@ npm run dev
 
 ## Deploy
 
-Authenticate Wrangler locally with `npx wrangler login`, then run `npm run deploy`. GitHub Actions (`.github/workflows/deploy.yml`) deploys the Worker on every push to `main`, including a merge of a pull request, when repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are set. That deploy publishes `wrangler.jsonc` vars such as `ERP_ITEM_RATE=40`. It does not rotate `STRIPE_PRICE_ID`; update that in Cloudflare if it still points at the old Price.
+Authenticate Wrangler locally with `npx wrangler login`, then run `npm run deploy`. GitHub Actions (`.github/workflows/deploy.yml`) deploys the Worker on every push to `main`, including a merge of a pull request, when repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are set. That deploy publishes `wrangler.jsonc` vars such as `ERP_ITEM_RATE=40`. Headset checkout does not use a Stripe Price. `/checkout` redirects to Shopify.
 
 The Worker serves the site at every route and exposes `/healthz` for a lightweight deployment check. A custom domain can be attached in Cloudflare later without changing the source.
 
@@ -58,85 +58,23 @@ Local `npm run dev` can complete the quiz UI without a PIT. The API then returns
 npm test
 ```
 
-## Stripe checkout → ERP + HighLevel
+## Checkout is Shopify
 
-On-site checkout is Stripe Checkout in `ui_mode=embedded_page` / `mode=payment` (see `createStripeCheckout` in `src/index.ts`). Completed payments are fulfilled by:
+Buy buttons and `/checkout` (any method) send the shopper to the live Shopify product, already priced at **$40** on Shopify Payments:
 
-`POST https://hcgamerlife.org/api/stripe/webhook`
+https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible
 
-In the Stripe Dashboard, add that URL as a webhook endpoint (same mode as the Checkout price: test or live) and enable:
+hcgamerlife.org does not create a Stripe Checkout session for this sale. The Stripe live Price is skipped. Do not point the buy button at `STRIPE_PRICE_ID`.
 
-- `checkout.session.completed` (the event this Worker fulfills)
-- `checkout.session.async_payment_succeeded` (delayed methods, if you enable any)
+`/checkout/config` returns `{ ready: false, checkout: "shopify", url }` and does not expose a Stripe publishable key.
 
-`payment_intent.succeeded` is ignored on purpose. Embedded Checkout already emits `checkout.session.completed` with customer email and metadata; handling both events would risk double work. Idempotency still keys on the Checkout Session id.
+The Worker still contains a Stripe webhook (`POST /api/stripe/webhook`) that can record an already-created Checkout session in ERPNext and HighLevel. That path is not how new headset orders are taken. New orders are Shopify’s.
 
-The Worker verifies `Stripe-Signature` with `STRIPE_WEBHOOK_SECRET`, then:
-
-1. Upserts an ERPNext **Customer** on https://admin.hcgamerlife.org by `email_id`.
-2. Creates a **Sales Order** for Item `HCG1-PRO` at **$40** (the sale price, not the $129.99 compare-at), quantity from session metadata (set when `/checkout` starts), line items, or `amount_total / 4000`. Checkout also adds **$12** flat shipping for a US address via inline `shipping_rate_data` (no Shipping Rate ID). The Sales Order line is the headset only; remarks record `shipping_flat_usd=12.00`. Quantity metadata is the source of truth because `amount_total` can include shipping and tax.
-3. Submits the Sales Order. Payment is recorded on the document (`po_no` + remarks). The Worker does **not** send ERP or marketing email.
-4. Upserts the HighLevel contact at location `STFgRxHbklvx2q1nDpi1` and applies tags `hcgl-customer` and `hcgl-purchased-hcg1` (same PIT / `contacts/upsert` pattern as `/api/quiz`).
-
-### Secrets and vars
-
-Do not commit values. Set Worker secrets:
+Quiz contacts still use the HighLevel secret:
 
 ```bash
-npx wrangler secret put STRIPE_SECRET_KEY
-npx wrangler secret put STRIPE_WEBHOOK_SECRET
-npx wrangler secret put ERP_API_KEY
-npx wrangler secret put ERP_API_SECRET
 npx wrangler secret put GHL_PIT
 ```
-
-Non-secret defaults in `wrangler.jsonc` / `.env.example`:
-
-| Name | Default | Role |
-| --- | --- | --- |
-| `ERP_URL` | `https://admin.hcgamerlife.org` | Parsimony ERPNext site |
-| `ERP_ITEM_CODE` | `HCG1-PRO` | Sales Order item |
-| `ERP_ITEM_RATE` | `40` | Unit rate when not overridden. This is the sale price. |
-| `GHL_LOCATION_ID` | `STFgRxHbklvx2q1nDpi1` | HighLevel location |
-| `ERP_COMPANY` | (site default) | Set if the ERP has more than one company |
-| `ERP_CUSTOMER_GROUP` | `All Customer Groups` | Customer create |
-| `ERP_TERRITORY` | `All Territories` | Customer create |
-| `ERP_DRY_RUN` / `PURCHASE_DRY_RUN` | unset | `1`/`true` maps the session and skips ERP/GHL writes |
-
-`STRIPE_PUBLISHABLE_KEY` and `STRIPE_PRICE_ID` are already required for `/checkout`.
-
-### Stripe Price (manual — Dennis / ops)
-
-Checkout charges whatever Stripe Price `STRIPE_PRICE_ID` points at. This repo does not create Stripe Prices and does not contain a Price ID.
-
-**TODO:** In the Stripe Dashboard, in the same mode as `STRIPE_SECRET_KEY` (test or live), create a one-time Price for the HCG1 Pro at **USD 40.00**. Set that Price’s ID as the Worker `STRIPE_PRICE_ID` (`npx wrangler secret put STRIPE_PRICE_ID`, or update the existing var). Until that ID is the $40 Price, embedded checkout still charges the Price stored today. The previous selling price was $129.99. Do not paste a guessed Price ID into source.
-
-Shipping does not need a dashboard ID. `applySaleCheckoutFields` sends a $12 fixed amount (`1200` cents), display name “Flat rate (continental US)”, and limits `shipping_address_collection` to the US. Stripe’s country list cannot exclude Alaska or Hawaii. Terms say those orders are outside the sale and may be canceled and refunded.
-
-`ERP_ITEM_RATE` is `40` in `wrangler.jsonc`. A deploy from `main` publishes that var. If a Cloudflare plain-text var was still `129.99`, the next deploy overwrites it. A secret with the same name would still win over the var; this rate is not a secret.
-
-### ERP Item and custom fields (ops)
-
-Create these on admin.hcgamerlife.org if they are missing. The Worker can create documents without the custom fields (it retries after an “unknown field” error) but ops should add them so Stripe and GHL ids are queryable.
-
-| Doctype | Name / field | Type | Notes |
-| --- | --- | --- | --- |
-| Item | `HCG1-PRO` | Item code | HCG1 Pro Gaming Headset. Sales Order unit rate is the **$40** sale price (compare-at $129.99 is not the rate). Sales Order does not update stock; a non-stock or stock Item both work. Shipping is collected by Stripe, not as a second ERP item. |
-| Customer | `custom_ghl_contact_id` | Data | HighLevel contact id |
-| Sales Order | `custom_stripe_session_id` | Data | Stripe Checkout Session id (`cs_…`). Mark Unique if you can. |
-| Sales Order | `custom_stripe_payment_id` | Data | PaymentIntent id (`pi_…`) |
-
-Idempotency does not depend on the custom fields. The Sales Order `po_no` is set to the Stripe Checkout Session id. A replay finds that order and will not insert a second one. A leftover draft is submitted instead of duplicated.
-
-Local dry-run (no ERP writes):
-
-```bash
-# .dev.vars
-ERP_DRY_RUN=1
-STRIPE_WEBHOOK_SECRET=whsec_...
-```
-
-`npm test` covers mapping, signature checks, and idempotency with in-memory ERP/GHL doubles.
 
 ## Media delivery
 

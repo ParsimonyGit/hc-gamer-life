@@ -1,11 +1,11 @@
 /// <reference types="@cloudflare/workers-types" />
 
 import { legalKind, renderLegalPage } from "./legal.ts";
-import { applySaleCheckoutFields, HCG1_SHIPPING_CENTS, HCG1_UNIT_RATE } from "./purchase/map.ts";
+import { HCG1_SHIPPING_CENTS, HCG1_UNIT_RATE } from "./purchase/map.ts";
 import { handleStripeWebhook } from "./purchase/webhook.ts";
 import { handleQuizApi } from "./quiz/api.ts";
 import { renderQuizPage } from "./quiz/page.ts";
-import { BUSINESS_ADDRESS, COMPARE_AT_LABEL, GOB_SALE_TERMS, SALE_PRICE_LABEL, SHIPPING_LABEL } from "./sale.ts";
+import { BUSINESS_ADDRESS, COMPARE_AT_LABEL, GOB_SALE_TERMS, SALE_PRICE_LABEL, SHIPPING_LABEL, SHOPIFY_PRODUCT_URL, shopifyCheckoutRedirect } from "./sale.ts";
 
 const MEDIA_SOURCES: Record<string, string> = {
   "product-hero": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-hero",
@@ -137,7 +137,7 @@ const HOME_JSON_LD = safeJsonLd({
         price: HCG1_UNIT_RATE.toFixed(2),
         priceCurrency: "USD",
         availability: "https://schema.org/InStock",
-        url: `${SITE_URL}/#product`,
+        url: SHOPIFY_PRODUCT_URL,
         shippingDetails: {
           "@type": "OfferShippingDetails",
           shippingRate: {
@@ -950,7 +950,7 @@ const PAGE = `<!doctype html>
             <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 5v7a5 5 0 0 0 10 0V5"/><path d="M4 10v2a8 8 0 0 0 16 0v-2M12 20v-3m-3 3h6"/></svg></div><h3>Comfort for the “last game”</h3><p>Soft over-ear cushions and a flexible fit stay easy through long queues, long flights, and long nights with friends.</p></article>
             <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 5 6v5c0 4.5 2.9 8.2 7 10 4.1-1.8 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Ready when you are</h3><p>A detachable boom mic, inline controls, and broad device compatibility keep the setup simple and the focus where it belongs.</p></article>
           </div>
-          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Going-out-of-business sale</div><h3>HCG1 Pro · ${SALE_PRICE_LABEL}</h3><p>${GOB_SALE_TERMS} There is no fixed end date. The HCG1 and the HCG1 Pro are the same headset. Checkout is handled by Stripe.</p></div><form id="stripe-checkout-form" action="/checkout" method="post"><input type="hidden" name="product" value="hcg1" /><label class="quantity-label" for="quantity">Quantity<select id="quantity" name="quantity"><option value="1">1 headset</option><option value="2">2 headsets</option><option value="3">3 headsets</option><option value="4">4 headsets</option></select></label><button class="button button-primary" type="submit">Checkout securely <span aria-hidden="true">↗</span></button></form><p id="checkout-message" class="checkout-message" role="status" aria-live="polite"></p><div id="embedded-checkout" class="embedded-checkout" hidden></div></div>
+          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Going-out-of-business sale</div><h3>HCG1 Pro · ${SALE_PRICE_LABEL}</h3><p>${GOB_SALE_TERMS} There is no fixed end date. The HCG1 and the HCG1 Pro are the same headset. Checkout is on hcgamerlife.com.</p></div><a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">Buy the HCG1 Pro <span aria-hidden="true">↗</span></a></div>
         </section>
       </div>
 
@@ -964,45 +964,13 @@ const PAGE = `<!doctype html>
     </main>
 
     <div class="shell"><footer><div class="footer-row"><a class="brand" href="#top"><span class="brand-mark">HC</span> GAMERLIFE</a><span><a href="/terms">Terms</a> · <a href="/privacy-policy">Privacy</a> · <a href="/quiz">Take the quiz</a></span></div><p class="footer-legal">HC GamerLife · ${BUSINESS_ADDRESS}</p></footer></div>
-    <script src="https://js.stripe.com/dahlia/stripe.js"></script>
-    <script>
-      (() => {
-        const form = document.getElementById("stripe-checkout-form");
-        const panel = document.getElementById("purchase-panel");
-        const mount = document.getElementById("embedded-checkout");
-        const message = document.getElementById("checkout-message");
-        const button = form?.querySelector("button");
-        if (!form || !panel || !mount || !message || !button || !window.Stripe) return;
-        form.addEventListener("submit", async (event) => {
-          event.preventDefault();
-          button.disabled = true;
-          message.className = "checkout-message";
-          message.textContent = "Preparing your secure checkout…";
-          try {
-            const response = await fetch("/checkout", { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
-            const payload = await response.json();
-            if (!response.ok || typeof payload.clientSecret !== "string" || typeof payload.publishableKey !== "string") throw new Error(payload.message || "Checkout could not be started.");
-            const stripe = window.Stripe(payload.publishableKey);
-            const checkout = await stripe.createEmbeddedCheckoutPage({ fetchClientSecret: async () => payload.clientSecret });
-            panel.classList.add("embedded-open");
-            mount.hidden = false;
-            message.textContent = "";
-            checkout.mount("#embedded-checkout");
-          } catch (error) {
-            button.disabled = false;
-            message.className = "checkout-message error";
-            message.textContent = error instanceof Error ? error.message : "Checkout could not be started. Please try again.";
-          }
-        });
-      })();
-    </script>
   </body>
 </html>`;
 
 const HEADERS = {
   "content-type": "text/html; charset=UTF-8",
   "cache-control": "public, max-age=0, must-revalidate",
-  "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' https://www.hcgamerlife.com https://hcgamerlife.com https://raw.githubusercontent.com data:; media-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; connect-src 'self' https://api.stripe.com https://js.stripe.com https://r.stripe.com; frame-src https://checkout.stripe.com https://*.stripe.com; base-uri 'none'; frame-ancestors 'none'",
+  "content-security-policy": "default-src 'self'; style-src 'unsafe-inline'; img-src 'self' https://www.hcgamerlife.com https://hcgamerlife.com https://raw.githubusercontent.com data:; media-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'",
   "referrer-policy": "strict-origin-when-cross-origin",
   "x-content-type-options": "nosniff",
   "x-frame-options": "DENY",
@@ -1398,67 +1366,6 @@ async function serveOptimizedImage(request: Request, url: URL): Promise<Response
   return response;
 }
 
-function checkoutStatusPage(title: string, message: string, status: number): Response {
-  const page = `<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex, nofollow" /><link rel="icon" href="/favicon.svg" type="image/svg+xml" /><title>${title} | HC GamerLife</title><style>:root{color-scheme:dark;--ink:#f5efe4;--muted:#b4ac9f;--line:rgba(245,239,228,.16);--bg:#14110f;--panel:#201b18;--red:#ff4f5e;--secondary:#6bc9ff}*{box-sizing:border-box}body{align-items:center;background:radial-gradient(circle at 90% 10%,rgba(255,118,92,.13),transparent 22rem),var(--bg);color:var(--ink);display:flex;font-family:"Avenir Next","Century Gothic","Trebuchet MS",sans-serif;justify-content:center;line-height:1.6;margin:0;min-height:100vh;padding:24px}.card{background:rgba(32,27,24,.9);border:1px solid var(--line);border-radius:4px 30px 4px 30px;max-width:620px;padding:42px;box-shadow:0 22px 70px rgba(0,0,0,.28)}.eyebrow{color:var(--secondary);font-family:"IBM Plex Mono","Courier New",monospace;font-size:.78rem;font-weight:800;letter-spacing:.16em;line-height:1.4;text-transform:uppercase}h1{font-family:"Bodoni 72",Didot,"Iowan Old Style",Baskerville,Georgia,serif;font-size:clamp(2.5rem,7vw,4.8rem);font-weight:500;letter-spacing:-.08em;line-height:.95;margin:12px 0 18px}p{color:var(--muted);font-size:1.08rem;line-height:1.65}.button{background:var(--red);border-radius:3px;color:#210a10;display:inline-flex;font-family:"IBM Plex Mono","Courier New",monospace;font-size:.78rem;font-weight:800;letter-spacing:.08em;margin-top:12px;padding:14px 19px;text-decoration:none;text-transform:uppercase}</style></head><body><main class="card"><div class="eyebrow">HC GamerLife checkout</div><h1>${title}</h1><p>${message}</p><a class="button" href="/#product">Back to the HCG1</a></main></body></html>`;
-  const headers = new Headers(HEADERS);
-  headers.set("cache-control", "no-store");
-  return new Response(page, { status, headers });
-}
-
-async function createStripeCheckout(request: Request, env: Env): Promise<Response> {
-  if (request.method !== "POST") return checkoutStatusPage("Checkout is ready", "Use the checkout button on the product section to start a test order.", 405);
-  const form = await request.formData();
-  if (form.get("product") !== "hcg1") return checkoutStatusPage("Product not found", "That cart item is no longer available.", 400);
-  const parsedQuantity = Number.parseInt(String(form.get("quantity") ?? "1"), 10);
-  const quantity = Number.isFinite(parsedQuantity) ? Math.min(Math.max(parsedQuantity, 1), 4) : 1;
-  const priceId = env.STRIPE_PRICE_ID;
-  if (!env.STRIPE_SECRET_KEY || !priceId) {
-    if (request.headers.get("accept")?.includes("application/json")) return new Response(JSON.stringify({ message: "The test checkout is not configured yet." }), { status: 503, headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" } });
-    return checkoutStatusPage("Test checkout is not configured yet", "The site is ready for Stripe test mode. Add the test price ID and server-side Stripe secret to the Worker, then this button will open a real test checkout.", 503);
-  }
-
-  const params = new URLSearchParams();
-  params.set("mode", "payment");
-  applySaleCheckoutFields(params, priceId, quantity);
-  params.set("ui_mode", "embedded_page");
-  params.set("return_url", `${SITE_URL}/?checkout=return&session_id={CHECKOUT_SESSION_ID}#drop`);
-  params.set("redirect_on_completion", "if_required");
-  params.set("billing_address_collection", "auto");
-  params.set("allow_promotion_codes", "true");
-  params.set("metadata[product]", "hcg1");
-  params.set("metadata[item_code]", "HCG1-PRO");
-  params.set("metadata[quantity]", String(quantity));
-
-  let upstream: Response;
-  try {
-    upstream = await fetch("https://api.stripe.com/v1/checkout/sessions", {
-      method: "POST",
-      headers: { authorization: `Bearer ${env.STRIPE_SECRET_KEY}`, "content-type": "application/x-www-form-urlencoded" },
-      body: params.toString()
-    });
-  } catch {
-    if (request.headers.get("accept")?.includes("application/json")) return new Response(JSON.stringify({ message: "The test checkout service did not respond. Try again in a moment." }), { status: 502, headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" } });
-    return checkoutStatusPage("Stripe could not be reached", "The test checkout service did not respond. Try again in a moment.", 502);
-  }
-  if (!upstream.ok) {
-    const errorPayload = await upstream.json().catch(() => undefined) as { error?: { message?: unknown } } | undefined;
-    const errorMessage = typeof errorPayload?.error?.message === "string" ? errorPayload.error.message : "Stripe rejected the test checkout request. Check the Worker’s test configuration.";
-    if (request.headers.get("accept")?.includes("application/json")) return new Response(JSON.stringify({ message: errorMessage }), { status: 502, headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" } });
-    return checkoutStatusPage("Stripe test checkout needs attention", errorMessage, 502);
-  }
-  const payload = await upstream.json() as { client_secret?: unknown };
-  if (typeof payload.client_secret !== "string" || !env.STRIPE_PUBLISHABLE_KEY) {
-    if (request.headers.get("accept")?.includes("application/json")) return new Response(JSON.stringify({ message: "The test session was created without the embedded checkout details." }), { status: 502, headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" } });
-    return checkoutStatusPage("Stripe returned no checkout link", "The test session was created without the embedded checkout details. Check the Stripe test-mode configuration.", 502);
-  }
-  if (request.headers.get("accept")?.includes("application/json")) {
-    return new Response(JSON.stringify({ clientSecret: payload.client_secret, publishableKey: env.STRIPE_PUBLISHABLE_KEY }), {
-      headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
-    });
-  }
-  return checkoutStatusPage("Checkout is ready", "Return to the product page to open the secure checkout on-site.", 200);
-}
-
 function withHsts(response: Response): Response {
   const headers = new Headers(response.headers);
   headers.set("strict-transport-security", "max-age=31536000");
@@ -1523,12 +1430,12 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   if (url.pathname === "/favicon.svg") {
     return new Response(FAVICON, { headers: { "content-type": "image/svg+xml; charset=UTF-8", "cache-control": "public, max-age=31536000, immutable" } });
   }
-  if (url.pathname === "/checkout/config" && request.method === "GET") {
-    return new Response(JSON.stringify({ publishableKey: env.STRIPE_PUBLISHABLE_KEY ?? null, ready: Boolean(env.STRIPE_SECRET_KEY && env.STRIPE_PRICE_ID) }), {
+  if (url.pathname === "/checkout/config") {
+    return new Response(JSON.stringify({ ready: false, checkout: "shopify", url: SHOPIFY_PRODUCT_URL }), {
       headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" }
     });
   }
-  if (url.pathname === "/checkout") return createStripeCheckout(request, env);
+  if (url.pathname === "/checkout" || url.pathname === "/checkout/") return shopifyCheckoutRedirect();
   const legal = legalKind(url.pathname);
   if (legal) {
     if (request.method === "HEAD") return htmlHead(200);
