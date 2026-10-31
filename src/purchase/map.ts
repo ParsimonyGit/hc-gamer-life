@@ -2,8 +2,14 @@
 
 export const DEFAULT_ERP_URL = "https://admin.hcgamerlife.org";
 export const HCG1_ITEM_CODE = "HCG1-PRO";
-export const HCG1_UNIT_RATE = 129.99;
-export const HCG1_UNIT_CENTS = 12999;
+/** Current going-out-of-business selling price in USD. The former price ($129.99) is compare-at only. */
+export const HCG1_UNIT_RATE = 40;
+export const HCG1_UNIT_CENTS = 4000;
+/** Former / compare-at price in USD. Not the amount Checkout or the Sales Order should charge. */
+export const HCG1_COMPARE_AT_RATE = 129.99;
+/** Flat shipping in cents. Continental US only; Stripe country allowlists cannot exclude AK/HI. */
+export const HCG1_SHIPPING_CENTS = 1200;
+export const CHECKOUT_SHIPPING_LABEL = "Flat rate (continental US)";
 export const PURCHASE_TAGS = ["hcgl-customer", "hcgl-purchased-hcg1"] as const;
 export const PURCHASE_GHL_SOURCE = "hcgl-stripe";
 export const FULFILL_EVENTS = ["checkout.session.completed", "checkout.session.async_payment_succeeded"] as const;
@@ -153,7 +159,9 @@ export function mapCheckoutSession(
     "Paid in full via Stripe Checkout on hcgamerlife.org.",
     `session=${stripeSessionId}`,
     stripePaymentIntentId ? `payment_intent=${stripePaymentIntentId}` : null,
-    `item=${itemCode} qty=${quantity} rate=${rate.toFixed(2)}`
+    `item=${itemCode} qty=${quantity} rate=${rate.toFixed(2)}`,
+    "sale=going-out-of-business",
+    `shipping_flat_usd=${(HCG1_SHIPPING_CENTS / 100).toFixed(2)} continental_us`
   ]
     .filter(Boolean)
     .join(" ");
@@ -184,6 +192,24 @@ export function decideFulfillment(existing: ExistingSalesOrder | null): FulfillD
   if (!existing?.name) return { action: "create" };
   if (existing.docstatus === 0) return { action: "submit_existing", salesOrder: existing.name };
   return { action: "duplicate", salesOrder: existing.name };
+}
+
+/**
+ * Price and shipping fields for embedded Checkout.
+ * TODO(ops): `priceId` must be a Stripe Price for USD 40.00 in the same mode as
+ * STRIPE_SECRET_KEY. The Worker does not create Prices and must not hardcode a
+ * Price ID. Until STRIPE_PRICE_ID is that $40 Price, Checkout still charges
+ * whatever Price is stored (previously the $129.99 selling price).
+ * Shipping uses inline shipping_rate_data ($12) so no Shipping Rate ID is required.
+ */
+export function applySaleCheckoutFields(params: URLSearchParams, priceId: string, quantity: number): void {
+  params.set("line_items[0][price]", priceId);
+  params.set("line_items[0][quantity]", String(quantity));
+  params.set("shipping_address_collection[allowed_countries][0]", "US");
+  params.set("shipping_options[0][shipping_rate_data][display_name]", CHECKOUT_SHIPPING_LABEL);
+  params.set("shipping_options[0][shipping_rate_data][type]", "fixed_amount");
+  params.set("shipping_options[0][shipping_rate_data][fixed_amount][amount]", String(HCG1_SHIPPING_CENTS));
+  params.set("shipping_options[0][shipping_rate_data][fixed_amount][currency]", "usd");
 }
 
 export function isDryRun(env: { ERP_DRY_RUN?: string; PURCHASE_DRY_RUN?: string }): boolean {

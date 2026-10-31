@@ -215,6 +215,8 @@ h1 { font-size: clamp(3.1rem, 8vw, 6.2rem); margin: 18px 0 16px; max-width: 11ch
   letter-spacing: .12em;
   text-transform: uppercase;
 }
+.legal-foot { color: #b4ac9f; font-size: .82rem; padding: 8px 0 40px; }
+.legal-foot a { text-decoration: underline; text-underline-offset: .16em; }
 .mosaic-panel { background: var(--panel); display: flex; flex-direction: column; }
 .mosaic {
   display: grid;
@@ -444,7 +446,7 @@ const RUNTIME = `(() => {
       <section class="hero-panel">
         <div class="chip">60-second audio profile</div>
         <h1>Find the headset energy you already play with.</h1>
-        <p class="lede">Four taps. Your Gamer Audio Profile. Then the HCG1 Pro — wired, universal, and backed for two years.</p>
+        <p class="lede">Four taps. Your Gamer Audio Profile. Then the HCG1 Pro — wired, universal, $40 while supplies last.</p>
         <div class="cta-row">
           <button class="button" type="button" data-action="start">Take the quiz →</button>
           <a class="button button-quiet" href="/#product">Meet the HCG1 Pro</a>
@@ -452,7 +454,7 @@ const RUNTIME = `(() => {
         <div class="intro-stats">
           <div><strong>4</strong><span>quick questions</span></div>
           <div><strong>3</strong><span>profile bands</span></div>
-          <div><strong>2 yr</strong><span>guarantee</span></div>
+          <div><strong>$40</strong><span>while supplies last</span></div>
         </div>
       </section>
       <aside class="mosaic-panel">
@@ -694,6 +696,7 @@ export function renderQuizPage(): Response {
     <main class="shell stage">
       <div id="quiz-app"></div>
     </main>
+    <footer class="shell legal-foot">HC GamerLife · 1037 NE 65th St #80853, Seattle, WA 98115 · <a href="/terms">Terms</a> · <a href="/privacy-policy">Privacy</a></footer>
     <script type="application/json" id="quiz-data">${escapeScript(JSON.stringify(clientConfig()))}</script>
     <script>${RUNTIME}</script>
   </body>

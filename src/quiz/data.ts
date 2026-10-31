@@ -217,14 +217,14 @@ export const BANDS: Record<BandId, Band> = {
     title: "Immersed",
     tagline: "You play to disappear into the world.",
     story:
-      "Story nights, handheld sessions, and couches that do not need a rank. The HCG1 Pro is a wired over-ear that stays easy through long campaigns — 53mm stereo, a boom you can take off, and a two-year guarantee so the gear is not the drama.",
+      "Story nights, handheld sessions, and couches that do not need a rank. The HCG1 Pro is a wired over-ear that stays easy through long campaigns — 53mm stereo and a boom you can take off. The going-out-of-business price is $40 while supplies last.",
     accent: "#6bc9ff",
     quote: "Comfort first. Then the world gets louder.",
     promise: [
       "Closed-back seal for story and music",
       "Soft cups that last past the first hour",
       "Works on Switch, mobile, console, and PC",
-      "2-year no-questions guarantee"
+      "$40 while supplies last · sold without warranty"
     ]
   },
   climbing: {
@@ -232,14 +232,14 @@ export const BANDS: Record<BandId, Band> = {
     title: "Climbing",
     tagline: "You are building a cleaner session.",
     story:
-      "Better comms, a tighter mix, maybe a stream. The HCG1 Pro is universal 3.5mm — PC, PlayStation, Xbox, Switch, mobile — with a detachable boom that stays clear when the lobby gets loud and a two-year warranty behind it.",
+      "Better comms, a tighter mix, maybe a stream. The HCG1 Pro is universal 3.5mm — PC, PlayStation, Xbox, Switch, mobile — with a detachable boom that stays clear when the lobby gets loud. $40 while supplies last, sold without a warranty.",
     accent: "#ff765c",
     quote: "Clearer callouts. Fewer excuses.",
     promise: [
       "Detachable boom for party and content",
       "Inline mute and volume in the cable",
       "One jack across the devices you already own",
-      "2-year no-questions guarantee"
+      "$40 while supplies last · 30-day returns"
     ]
   },
   "ready-for-pro": {
@@ -247,14 +247,14 @@ export const BANDS: Record<BandId, Band> = {
     title: "Ready for Pro",
     tagline: "You queue to hear the play before it happens.",
     story:
-      "Footsteps, flanks, the call that wins the round. The HCG1 Pro is tuned for positional stereo and a mic your squad can actually hear — wired so there is no battery between you and the next set, backed by a two-year warranty.",
+      "Footsteps, flanks, the call that wins the round. The HCG1 Pro is tuned for positional stereo and a mic your squad can actually hear — wired so there is no battery between you and the next set. $40 while supplies last.",
     accent: "#ff4f5e",
     quote: "Hear the flank. Call the play.",
     promise: [
       "53mm stereo for footsteps and position",
       "Mic that stays intelligible in a loud lobby",
       "Always-on wired 3.5mm — no charge cycle",
-      "2-year no-questions guarantee"
+      "$40 while supplies last · 90-day defect replacement"
     ]
   }
 };

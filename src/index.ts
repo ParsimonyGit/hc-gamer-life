@@ -1,8 +1,11 @@
 /// <reference types="@cloudflare/workers-types" />
 
+import { legalKind, renderLegalPage } from "./legal.ts";
+import { applySaleCheckoutFields, HCG1_SHIPPING_CENTS, HCG1_UNIT_RATE } from "./purchase/map.ts";
 import { handleStripeWebhook } from "./purchase/webhook.ts";
 import { handleQuizApi } from "./quiz/api.ts";
 import { renderQuizPage } from "./quiz/page.ts";
+import { BUSINESS_ADDRESS, COMPARE_AT_LABEL, GOB_SALE_TERMS, SALE_PRICE_LABEL, SHIPPING_LABEL } from "./sale.ts";
 
 const MEDIA_SOURCES: Record<string, string> = {
   "product-hero": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-hero",
@@ -103,7 +106,16 @@ const HOME_JSON_LD = safeJsonLd({
       name: "HC GamerLife",
       url: SITE_URL,
       logo: `${SITE_URL}/favicon.svg`,
-      description: "Practical gaming gear, setup advice, and long-session guides for everyday players."
+      description: "Practical gaming gear, setup advice, and long-session guides for everyday players.",
+      email: "dennis@hcgamerlife.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "1037 NE 65th St #80853",
+        addressLocality: "Seattle",
+        addressRegion: "WA",
+        postalCode: "98115",
+        addressCountry: "US"
+      }
     },
     {
       "@type": "WebSite",
@@ -117,9 +129,25 @@ const HOME_JSON_LD = safeJsonLd({
       "@type": "Product",
       name: "HCG1 Pro Gaming Headset",
       image: [SEO_IMAGE_URL],
-      description: "A wired over-ear gaming headset with 53mm stereo drivers, detachable microphone, inline controls, and broad device compatibility.",
+      description: `A wired over-ear gaming headset with 53mm stereo drivers, a detachable microphone, inline controls, and broad device compatibility. The HCG1 and the HCG1 Pro are the same headset. ${GOB_SALE_TERMS}`,
       brand: { "@type": "Brand", name: "HC GamerLife" },
       category: "Gaming headset",
+      offers: {
+        "@type": "Offer",
+        price: HCG1_UNIT_RATE.toFixed(2),
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        url: `${SITE_URL}/#product`,
+        shippingDetails: {
+          "@type": "OfferShippingDetails",
+          shippingRate: {
+            "@type": "MonetaryAmount",
+            value: (HCG1_SHIPPING_CENTS / 100).toFixed(2),
+            currency: "USD"
+          },
+          shippingDestination: { "@type": "DefinedRegion", addressCountry: "US" }
+        }
+      },
       additionalProperty: [
         { "@type": "PropertyValue", name: "Connection", value: "Wired 3.5mm" },
         { "@type": "PropertyValue", name: "Microphone", value: "Detachable boom" },
@@ -131,7 +159,8 @@ const HOME_JSON_LD = safeJsonLd({
       mainEntity: [
         { "@type": "Question", name: "Is the microphone removable?", acceptedAnswer: { "@type": "Answer", text: "Yes. Remove the boom microphone for solo play or listening on the go." } },
         { "@type": "Question", name: "Does it work across consoles?", acceptedAnswer: { "@type": "Answer", text: "The wired 3.5mm connection works with PC, PlayStation, Xbox, Nintendo Switch, and compatible mobile devices." } },
-        { "@type": "Question", name: "Does it use active noise cancellation?", acceptedAnswer: { "@type": "Answer", text: "No. The closed-back design provides passive isolation without a battery or software." } }
+        { "@type": "Question", name: "Does it use active noise cancellation?", acceptedAnswer: { "@type": "Answer", text: "No. The closed-back design provides passive isolation without a battery or software." } },
+        { "@type": "Question", name: "How is it supported?", acceptedAnswer: { "@type": "Answer", text: `${GOB_SALE_TERMS} There is no fixed end date.` } }
       ]
     }
   ]
@@ -228,7 +257,7 @@ const ARTICLES: Article[] = [
     section: "Buyer’s guide",
     title: "A first gaming headset guide for gift buyers",
     excerpt: "When you do not know every detail of someone’s setup, choose the features that create the fewest compatibility surprises.",
-    body: `<p>A first headset should be comfortable, easy to connect, and useful across more than one device. Ask what platform the player uses most, then look for a connection that matches that setup.</p><h2>Prioritize fit and microphone quality</h2><p>Players notice an uncomfortable headset immediately. A removable or adjustable microphone also makes the gift more flexible for music, travel, and solo games.</p><h2>Do not overbuy features</h2><p>Extra modes and software can be useful, but they also add setup. For a first headset, reliable stereo audio, simple controls, and a clear warranty are often better value.</p><h2>Make the gift easy to use</h2><p>Include a short setup note with the connection type and the first three steps. The best gift is one that can be used the same day it is opened.</p>`
+    body: `<p>A first headset should be comfortable, easy to connect, and useful across more than one device. Ask what platform the player uses most, then look for a connection that matches that setup.</p><h2>Prioritize fit and microphone quality</h2><p>Players notice an uncomfortable headset immediately. A removable or adjustable microphone also makes the gift more flexible for music, travel, and solo games.</p><h2>Do not overbuy features</h2><p>Extra modes and software can be useful, but they also add setup. For a first headset, reliable stereo audio and simple controls are often better value.</p><h2>Make the gift easy to use</h2><p>Include a short setup note with the connection type and the first three steps. The best gift is one that can be used the same day it is opened.</p>`
   },
   {
     slug: "weekend-squad-night",
@@ -250,7 +279,7 @@ const articleMediaKey = (article: Article): string => ARTICLE_MEDIA_KEYS[Math.ma
 const JOURNAL_CARDS = ARTICLES.map((article) => `<a class="journal-card" href="/journal/${article.slug}"><div class="journal-card-image"><img src="/media/image?key=${articleMediaKey(article)}&amp;variant=card&amp;v=3" alt="${article.title}" width="900" height="700" loading="lazy" decoding="async" /></div><div class="journal-card-copy"><span class="journal-kicker">${article.section}</span><h3>${article.title}</h3><p>${article.excerpt}</p><span class="journal-link">Read the guide ↗</span></div></a>`).join("");
 
 const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#ff4f5e"/><text x="32" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="800" fill="#19090e">HC</text></svg>`;
-const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}/</loc></url><url><loc>${SITE_URL}/quiz</loc></url><url><loc>${SITE_URL}/gallery</loc></url>${ARTICLES.map((article) => `<url><loc>${SITE_URL}/journal/${article.slug}</loc></url>`).join("")}</urlset>`;
+const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}/</loc></url><url><loc>${SITE_URL}/quiz</loc></url><url><loc>${SITE_URL}/gallery</loc></url><url><loc>${SITE_URL}/terms</loc></url><url><loc>${SITE_URL}/privacy-policy</loc></url>${ARTICLES.map((article) => `<url><loc>${SITE_URL}/journal/${article.slug}</loc></url>`).join("")}</urlset>`;
 const MANIFEST_JSON = JSON.stringify({ name: "HC GamerLife", short_name: "HC GamerLife", start_url: "/", display: "standalone", background_color: "#0a0e16", theme_color: "#0a0e16", icons: [{ src: "/favicon.svg", sizes: "any", type: "image/svg+xml" }] });
 
 const PAGE = `<!doctype html>
@@ -515,6 +544,7 @@ const PAGE = `<!doctype html>
       .manifesto p { font-size: 1.06rem; margin: 25px 0 0; max-width: 560px; }
       .details { display: grid; gap: 60px; grid-template-columns: .8fr 1.2fr; }
       .details-copy p { color: var(--muted); max-width: 430px; }
+      .details-copy p.sale-terms { max-width: 38rem; }
       .specs { border-top: 1px solid var(--line); }
       .spec-row { align-items: baseline; border-bottom: 1px solid var(--line); display: flex; gap: 20px; justify-content: space-between; padding: 17px 0; }
       .spec-row span { color: var(--muted); font-size: .85rem; }
@@ -533,6 +563,8 @@ const PAGE = `<!doctype html>
       footer { border-top: 1px solid var(--line); color: var(--muted); font-size: .8rem; padding: 25px 0 35px; }
       .footer-row { align-items: center; display: flex; justify-content: space-between; }
       .footer-row .brand { color: var(--ink); }
+      .footer-legal { line-height: 1.5; margin: 14px 0 0; max-width: 46rem; }
+      footer a { text-decoration: underline; text-underline-offset: .16em; }
       :focus-visible { outline: 2px solid var(--secondary); outline-offset: 4px; }
       @media (max-width: 820px) {
         .shell { width: min(var(--max), calc(100% - 28px)); }
@@ -804,7 +836,7 @@ const PAGE = `<!doctype html>
     </style>
   </head>
   <body>
-    <div class="topline"><strong>FIELD NOTE 001</strong> Wired audio for the long session · clear comms · zero drama.</div>
+    <div class="topline"><strong>GOING-OUT-OF-BUSINESS SALE</strong> HCG1 Pro ${SALE_PRICE_LABEL} · was ${COMPARE_AT_LABEL} · while supplies last · ${SHIPPING_LABEL} flat shipping, continental US</div>
     <div class="shell">
       <header>
         <a class="brand" href="#top" aria-label="HC GamerLife home"><span class="brand-mark">HC</span> GAMERLIFE</a>
@@ -836,7 +868,7 @@ const PAGE = `<!doctype html>
             <div class="product-stage">
               <div class="stage-label"><strong>HCG1</strong> / FIELD TEST 001</div>
               <img class="product-photo" src="/media/image?key=product-hero&amp;variant=product&amp;v=2" alt="Black and red HCG1 Pro Gaming Headset with detachable microphone" width="1000" height="1000" decoding="async" fetchpriority="high" />
-              <div class="stage-note"><div class="price-note"><strong>Sound that stays sharp</strong> Hear the moment before it happens.</div><div class="signal" aria-label="Three signal bars"><i></i><i></i><i></i></div></div>
+              <div class="stage-note"><div class="price-note"><strong>${SALE_PRICE_LABEL}</strong> Was ${COMPARE_AT_LABEL} · while supplies last.</div><div class="signal" aria-label="Three signal bars"><i></i><i></i><i></i></div></div>
               <div class="photo-credit">Official HCG1 product photography · 53mm drivers · wired 3.5mm</div>
             </div>
           </div>
@@ -845,7 +877,7 @@ const PAGE = `<!doctype html>
         <div class="stats" aria-label="Product highlights">
           <div class="stat"><strong>53mm drivers</strong><span>Hear footsteps, movement, and music in detail.</span></div>
           <div class="stat"><strong>Detachable mic</strong><span>Clear callouts when the match gets loud.</span></div>
-          <div class="stat"><strong>2-year warranty</strong><span>Backed for the sessions ahead.</span></div>
+          <div class="stat"><strong>${SALE_PRICE_LABEL}</strong><span>Was ${COMPARE_AT_LABEL} · while supplies last.</span></div>
         </div>
 
         <section id="gallery">
@@ -875,7 +907,7 @@ const PAGE = `<!doctype html>
         <section id="quiz-invite">
           <div class="featured-guide">
             <div class="featured-guide-media"><img src="/assets/gallery/ugc-dualsense.jpg" alt="Ranked player wearing the HCG1 with a DualSense controller" width="864" height="1152" loading="lazy" decoding="async" /></div>
-            <div class="featured-guide-copy"><div class="eyebrow">Gamer Audio Profile</div><h2>Four taps. Your band. Then the HCG1 Pro.</h2><p>Platform, play style, session length, and the pain that ends a night early. Unlock Immersed, Climbing, or Ready for Pro — then a straight path to the wired headset with a two-year guarantee.</p><a class="text-link" href="/quiz">Take the quiz ↗</a></div>
+            <div class="featured-guide-copy"><div class="eyebrow">Gamer Audio Profile</div><h2>Four taps. Your band. Then the HCG1 Pro.</h2><p>Platform, play style, session length, and the pain that ends a night early. Unlock Immersed, Climbing, or Ready for Pro — then a straight path to the wired headset, ${SALE_PRICE_LABEL} while supplies last.</p><a class="text-link" href="/quiz">Take the quiz ↗</a></div>
           </div>
         </section>
 
@@ -918,20 +950,20 @@ const PAGE = `<!doctype html>
             <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 5v7a5 5 0 0 0 10 0V5"/><path d="M4 10v2a8 8 0 0 0 16 0v-2M12 20v-3m-3 3h6"/></svg></div><h3>Comfort for the “last game”</h3><p>Soft over-ear cushions and a flexible fit stay easy through long queues, long flights, and long nights with friends.</p></article>
             <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 5 6v5c0 4.5 2.9 8.2 7 10 4.1-1.8 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Ready when you are</h3><p>A detachable boom mic, inline controls, and broad device compatibility keep the setup simple and the focus where it belongs.</p></article>
           </div>
-          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Secure Stripe checkout</div><h3>Put the HCG1 in your cart.</h3><p>Complete your test order securely without leaving HC GamerLife. Your payment details are handled by Stripe.</p></div><form id="stripe-checkout-form" action="/checkout" method="post"><input type="hidden" name="product" value="hcg1" /><label class="quantity-label" for="quantity">Quantity<select id="quantity" name="quantity"><option value="1">1 headset</option><option value="2">2 headsets</option><option value="3">3 headsets</option><option value="4">4 headsets</option></select></label><button class="button button-primary" type="submit">Checkout securely <span aria-hidden="true">↗</span></button></form><p id="checkout-message" class="checkout-message" role="status" aria-live="polite"></p><div id="embedded-checkout" class="embedded-checkout" hidden></div></div>
+          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Going-out-of-business sale</div><h3>HCG1 Pro · ${SALE_PRICE_LABEL}</h3><p>${GOB_SALE_TERMS} There is no fixed end date. The HCG1 and the HCG1 Pro are the same headset. Checkout is handled by Stripe.</p></div><form id="stripe-checkout-form" action="/checkout" method="post"><input type="hidden" name="product" value="hcg1" /><label class="quantity-label" for="quantity">Quantity<select id="quantity" name="quantity"><option value="1">1 headset</option><option value="2">2 headsets</option><option value="3">3 headsets</option><option value="4">4 headsets</option></select></label><button class="button button-primary" type="submit">Checkout securely <span aria-hidden="true">↗</span></button></form><p id="checkout-message" class="checkout-message" role="status" aria-live="polite"></p><div id="embedded-checkout" class="embedded-checkout" hidden></div></div>
         </section>
       </div>
 
       <section class="manifesto"><div class="shell"><div class="eyebrow">The player mindset</div><h2>Bring your whole self to the session.</h2><p>For the players who chase a cleaner callout, a closer finish, and the kind of comfort that lets the night unfold. HC GamerLife is gear for showing up again tomorrow.</p></div></section>
 
       <div class="shell">
-        <section id="setup"><div class="details"><div class="details-copy"><div class="eyebrow">Your setup</div><h2>One jack. Every lobby.</h2><p>Use the included 3.5mm connection with the devices you already play on. The HCG1 is designed to move with you from desk to couch to wherever the next match starts.</p></div><div class="specs" aria-label="HCG1 specifications"><div class="spec-row"><span>Connection</span><strong>Wired 3.5mm · inline controls</strong></div><div class="spec-row"><span>Microphone</span><strong>Detachable boom · inline mute</strong></div><div class="spec-row"><span>Fit</span><strong>Closed-back over-ear</strong></div><div class="spec-row"><span>Compatibility</span><strong>PC · PlayStation · Xbox · Switch · mobile</strong></div><div class="spec-row"><span>Coverage</span><strong>Two-year warranty</strong></div></div></div></section>
-        <section id="faq"><div class="section-head"><div><div class="eyebrow">Quick answers</div><h2>Before you queue up.</h2></div><p>Keep the setup moving. Here are the details players ask about most.</p></div><div class="faq"><details><summary>Is the microphone removable?</summary><p>Yes. Remove the boom mic when you are playing solo or listening on the go.</p></details><details><summary>Does it work across consoles?</summary><p>Yes. The wired 3.5mm connection works with PC, PlayStation, Xbox, Nintendo Switch, and compatible mobile devices. Some setups may need the included adapter.</p></details><details><summary>Does it use active noise cancellation?</summary><p>No. The closed-back design offers passive isolation so you can stay focused without a battery or software.</p></details><details><summary>How is it supported?</summary><p>Every HCG1 comes with a two-year, no-questions-asked warranty for extra confidence in your gear.</p></details></div></section>
+        <section id="setup"><div class="details"><div class="details-copy"><div class="eyebrow">Your setup</div><h2>One jack. Every lobby.</h2><p>Use the included 3.5mm connection with the devices you already play on. The HCG1 is designed to move with you from desk to couch to wherever the next match starts.</p><p class="sale-terms">${GOB_SALE_TERMS} There is no fixed end date.</p></div><div class="specs" aria-label="HCG1 specifications"><div class="spec-row"><span>Connection</span><strong>Wired 3.5mm · inline controls</strong></div><div class="spec-row"><span>Microphone</span><strong>Detachable boom · inline mute</strong></div><div class="spec-row"><span>Fit</span><strong>Closed-back over-ear</strong></div><div class="spec-row"><span>Compatibility</span><strong>PC · PlayStation · Xbox · Switch · mobile</strong></div><div class="spec-row"><span>Sale</span><strong>${SALE_PRICE_LABEL} · was ${COMPARE_AT_LABEL}</strong></div><div class="spec-row"><span>Shipping</span><strong>${SHIPPING_LABEL} flat · continental US</strong></div><div class="spec-row"><span>Coverage</span><strong>No warranty · 30-day returns</strong></div></div></div></section>
+        <section id="faq"><div class="section-head"><div><div class="eyebrow">Quick answers</div><h2>Before you queue up.</h2></div><p>Keep the setup moving. Here are the details players ask about most.</p></div><div class="faq"><details><summary>Is the microphone removable?</summary><p>Yes. Remove the boom mic when you are playing solo or listening on the go.</p></details><details><summary>Does it work across consoles?</summary><p>Yes. The wired 3.5mm connection works with PC, PlayStation, Xbox, Nintendo Switch, and compatible mobile devices. Some setups may need the included adapter.</p></details><details><summary>Does it use active noise cancellation?</summary><p>No. The closed-back design offers passive isolation so you can stay focused without a battery or software.</p></details><details><summary>How is it supported?</summary><p>${GOB_SALE_TERMS} There is no fixed end date. The HCG1 and the HCG1 Pro are the same headset.</p></details></div></section>
         <section id="drop"><div class="closing"><div class="eyebrow">Your next main character arc</div><h2>Hear the play. Call the play. Own the moment.</h2><p>Four taps unlock your Gamer Audio Profile — Immersed, Climbing, or Ready for Pro — then a straight path to the HCG1 Pro.</p><a class="button button-primary" href="/quiz">Take the quiz <span aria-hidden="true">↗</span></a></div></section>
       </div>
     </main>
 
-    <div class="shell"><footer><div class="footer-row"><a class="brand" href="#top"><span class="brand-mark">HC</span> GAMERLIFE</a><span>Original concept site · Built for the long session. · <a href="/quiz">Take the quiz</a></span></div></footer></div>
+    <div class="shell"><footer><div class="footer-row"><a class="brand" href="#top"><span class="brand-mark">HC</span> GAMERLIFE</a><span><a href="/terms">Terms</a> · <a href="/privacy-policy">Privacy</a> · <a href="/quiz">Take the quiz</a></span></div><p class="footer-legal">HC GamerLife · ${BUSINESS_ADDRESS}</p></footer></div>
     <script src="https://js.stripe.com/dahlia/stripe.js"></script>
     <script>
       (() => {
@@ -1114,7 +1146,7 @@ function renderGallery(): Response {
           <div class="grid">${galleryFigures(GALLERY_UGC)}</div>
         </section>
       </main>
-      <footer>HC GamerLife · HCG1 Pro Gaming Headset · wired 3.5mm</footer>
+      <footer>HC GamerLife · ${BUSINESS_ADDRESS} · <a href="/terms">Terms</a> · <a href="/privacy-policy">Privacy</a></footer>
     </div>
     <dialog id="lightbox" aria-label="Photograph">
       <img alt="" />
@@ -1279,7 +1311,7 @@ function renderArticle(article: Article): Response {
   <body>
     <div class="wrap"><header><a class="brand" href="/"><span class="brand-mark">HC</span> GAMERLIFE</a><a class="back" href="/#journal">Back to the journal ↗</a></header></div>
     <main><div class="wrap"><section class="hero"><div class="kicker">${article.section}</div><h1>${article.title}</h1><p class="dek">${article.excerpt}</p></section><figure class="feature"><img src="/media/image?key=${imageKey}&amp;variant=hero&amp;v=3" alt="${article.title}" decoding="async" fetchpriority="high" /></figure><article class="prose">${article.body}<div class="callout"><strong>Make the next session easier.</strong><br />Save this guide, share it with your squad, and explore the HCG1 setup when you are ready for a simple, wired connection.</div></article><section class="more"><h2>Keep exploring</h2><p><a href="/#product">Meet the HCG1 Pro Gaming Headset</a> · <a href="/#setup">See the setup guide</a> · <a href="/#journal">Browse every guide</a></p></section></div></main>
-    <div class="wrap"><footer><a class="brand" href="/"><span class="brand-mark">HC</span> GAMERLIFE</a></footer></div>
+    <div class="wrap"><footer><a class="brand" href="/"><span class="brand-mark">HC</span> GAMERLIFE</a> · <a href="/terms">Terms</a> · <a href="/privacy-policy">Privacy</a></footer></div>
   </body>
 </html>`;
   return new Response(page, { headers: HEADERS });
@@ -1379,15 +1411,15 @@ async function createStripeCheckout(request: Request, env: Env): Promise<Respons
   if (form.get("product") !== "hcg1") return checkoutStatusPage("Product not found", "That cart item is no longer available.", 400);
   const parsedQuantity = Number.parseInt(String(form.get("quantity") ?? "1"), 10);
   const quantity = Number.isFinite(parsedQuantity) ? Math.min(Math.max(parsedQuantity, 1), 4) : 1;
-  if (!env.STRIPE_SECRET_KEY || !env.STRIPE_PRICE_ID) {
+  const priceId = env.STRIPE_PRICE_ID;
+  if (!env.STRIPE_SECRET_KEY || !priceId) {
     if (request.headers.get("accept")?.includes("application/json")) return new Response(JSON.stringify({ message: "The test checkout is not configured yet." }), { status: 503, headers: { "content-type": "application/json; charset=UTF-8", "cache-control": "no-store" } });
     return checkoutStatusPage("Test checkout is not configured yet", "The site is ready for Stripe test mode. Add the test price ID and server-side Stripe secret to the Worker, then this button will open a real test checkout.", 503);
   }
 
   const params = new URLSearchParams();
   params.set("mode", "payment");
-  params.set("line_items[0][price]", env.STRIPE_PRICE_ID);
-  params.set("line_items[0][quantity]", String(quantity));
+  applySaleCheckoutFields(params, priceId, quantity);
   params.set("ui_mode", "embedded_page");
   params.set("return_url", `${SITE_URL}/?checkout=return&session_id={CHECKOUT_SESSION_ID}#drop`);
   params.set("redirect_on_completion", "if_required");
@@ -1497,6 +1529,11 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     });
   }
   if (url.pathname === "/checkout") return createStripeCheckout(request, env);
+  const legal = legalKind(url.pathname);
+  if (legal) {
+    if (request.method === "HEAD") return htmlHead(200);
+    return renderLegalPage(legal);
+  }
   if (url.pathname.startsWith("/journal/")) {
     const slug = decodeURIComponent(url.pathname.slice("/journal/".length)).replace(/\/+$/, "");
     const article = ARTICLES.find((candidate) => candidate.slug === slug);

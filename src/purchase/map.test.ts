@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  applySaleCheckoutFields,
   decideFulfillment,
   isDryRun,
   isFulfillEventType,
@@ -10,6 +11,8 @@ import {
   shouldFulfillCheckoutEvent,
   splitCustomerName,
   HCG1_ITEM_CODE,
+  HCG1_SHIPPING_CENTS,
+  HCG1_UNIT_CENTS,
   HCG1_UNIT_RATE,
   PURCHASE_TAGS,
   type StripeCheckoutSession
@@ -28,7 +31,7 @@ function paidSession(overrides: Partial<StripeCheckoutSession> = {}): StripeChec
       phone: "+15555550199"
     },
     metadata: { product: "hcg1", item_code: "HCG1-PRO", quantity: "2" },
-    amount_total: 25998,
+    amount_total: 8000,
     currency: "usd",
     ...overrides
   };
@@ -59,7 +62,7 @@ describe("checkout event selection", () => {
 });
 
 describe("mapCheckoutSession", () => {
-  it("maps a paid session to HCG1-PRO at $129.99 with purchase tags", () => {
+  it("maps a paid session to HCG1-PRO at the $40 sale price with purchase tags", () => {
     const mapped = mapCheckoutSession(paidSession());
     assert.equal(mapped.ok, true);
     if (!mapped.ok) return;
@@ -70,6 +73,10 @@ describe("mapCheckoutSession", () => {
     assert.equal(mapped.plan.quantity, 2);
     assert.equal(mapped.plan.itemCode, HCG1_ITEM_CODE);
     assert.equal(mapped.plan.rate, HCG1_UNIT_RATE);
+    assert.equal(HCG1_UNIT_RATE, 40);
+    assert.equal(HCG1_UNIT_CENTS, 4000);
+    assert.match(mapped.plan.remarks, /sale=going-out-of-business/);
+    assert.match(mapped.plan.remarks, /shipping_flat_usd=12.00/);
     assert.equal(mapped.plan.poNo, "cs_test_123");
     assert.equal(mapped.plan.stripePaymentIntentId, "pi_test_456");
     assert.deepEqual(mapped.plan.tags, [...PURCHASE_TAGS]);
@@ -85,8 +92,8 @@ describe("mapCheckoutSession", () => {
     );
   });
 
-  it("falls back to amount_total / $129.99 when quantity metadata is missing", () => {
-    assert.equal(quantityFromSession(paidSession({ metadata: {}, amount_total: 38997, line_items: null })), 3);
+  it("falls back to amount_total / $40 when quantity metadata is missing", () => {
+    assert.equal(quantityFromSession(paidSession({ metadata: {}, amount_total: 12000, line_items: null })), 3);
     assert.equal(quantityFromSession({ line_items: { data: [{ quantity: 4 }] } }), 4);
     assert.equal(sessionEmail({ customer_email: "Player@Site.ORG" }), "player@site.org");
   });
@@ -114,6 +121,21 @@ describe("idempotency decision", () => {
       action: "submit_existing",
       salesOrder: "SAL-ORD-0002"
     });
+  });
+});
+
+describe("checkout sale fields", () => {
+  it("charges the configured Stripe Price and a $12 continental-US shipping rate", () => {
+    const params = new URLSearchParams();
+    applySaleCheckoutFields(params, "price_configured_by_ops", 2);
+    assert.equal(params.get("line_items[0][price]"), "price_configured_by_ops");
+    assert.equal(params.get("line_items[0][quantity]"), "2");
+    assert.equal(params.get("shipping_address_collection[allowed_countries][0]"), "US");
+    assert.equal(params.get("shipping_options[0][shipping_rate_data][type]"), "fixed_amount");
+    assert.equal(params.get("shipping_options[0][shipping_rate_data][fixed_amount][amount]"), String(HCG1_SHIPPING_CENTS));
+    assert.equal(params.get("shipping_options[0][shipping_rate_data][fixed_amount][currency]"), "usd");
+    assert.equal(params.get("shipping_options[0][shipping_rate]"), null);
+    assert.equal(HCG1_SHIPPING_CENTS, 1200);
   });
 });
 
