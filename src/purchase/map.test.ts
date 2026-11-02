@@ -74,7 +74,7 @@ describe("mapCheckoutSession", () => {
     assert.equal(HCG1_UNIT_RATE, 40);
     assert.equal(HCG1_UNIT_CENTS, 4000);
     assert.match(mapped.plan.remarks, /sale=going-out-of-business/);
-    assert.match(mapped.plan.remarks, /shipping_flat_usd=12.00/);
+    assert.match(mapped.plan.remarks, /shipping_flat_usd=0.00/);
     assert.equal(mapped.plan.poNo, "cs_test_123");
     assert.equal(mapped.plan.stripePaymentIntentId, "pi_test_456");
     assert.deepEqual(mapped.plan.tags, [...PURCHASE_TAGS]);

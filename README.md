@@ -15,7 +15,7 @@ Customer-facing terms match https://www.hcgamerlife.com (the HCG1 and the HCG1 P
 - Sold without a warranty.
 - 30-day returns. The buyer pays return shipping unless the unit is defective.
 - Defective units are replaced within 90 days.
-- Shipping is **$12 flat**, continental United States only.
+- Shipping is **free**, continental United States only.
 
 Those facts are on the homepage (banner, specs, FAQ, purchase panel), the quiz, `/terms`, and `/privacy-policy`. The business address in the footer and legal pages is 1037 NE 65th St #80853, Seattle, WA 98115. Returns are not accepted at that mailbox; email support@hcgamerlife.com first.
 

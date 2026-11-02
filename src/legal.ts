@@ -1,4 +1,4 @@
-import { BUSINESS_ADDRESS, CONTACT_EMAIL, COMPARE_AT_LABEL, GOB_SALE_TERMS, SALE_PRICE_LABEL, SHIPPING_LABEL, SHOPIFY_PRODUCT_URL, SUPPORT_EMAIL } from "./sale.ts";
+import { BUSINESS_ADDRESS, CONTACT_EMAIL, COMPARE_AT_LABEL, GOB_SALE_TERMS, SALE_PRICE_LABEL, SHOPIFY_PRODUCT_URL, SUPPORT_EMAIL } from "./sale.ts";
 
 const SITE_URL = "https://hcgamerlife.org";
 
@@ -75,7 +75,7 @@ function termsBody(): string {
 <h2>3. Orders and payment</h2>
 <p>Your order is placed on <a href="${SHOPIFY_PRODUCT_URL}">hcgamerlife.com</a>. We accept it when that store ships it or confirms it. We may limit quantities or cancel an order, for example because of suspected fraud, pricing errors, an address outside the continental United States, or stock problems. If we cancel, we refund any amount charged. Payments are processed by Shopify Payments on hcgamerlife.com. hcgamerlife.org does not charge your card. You agree to give accurate billing and shipping details on that checkout. Applicable sales tax is added there.</p>
 <h2>4. Shipping</h2>
-<p>Shipping is <strong>${SHIPPING_LABEL} flat</strong>. We ship to the continental United States only. Alaska, Hawaii, and U.S. territories are outside this sale. Orders to those places may be canceled and refunded. The Site does not ship outside the United States. Delivery estimates are not guaranteed. Title and risk of loss pass to you when the carrier delivers the order. If your package arrives damaged or never arrives, email <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>.</p>
+<p>Shipping is <strong>free</strong>. We ship to the continental United States only. Alaska, Hawaii, and U.S. territories are outside this sale. Orders to those places may be canceled and refunded. The Site does not ship outside the United States. Delivery estimates are not guaranteed. Title and risk of loss pass to you when the carrier delivers the order. If your package arrives damaged or never arrives, email <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>.</p>
 <h2>5. Going-out-of-business sale terms</h2>
 <p>Headsets in this sale are <strong>sold without a warranty</strong>.</p>
 <ul>
