@@ -33,6 +33,10 @@ describe("going-out-of-business sale copy", () => {
     assert.match(home, new RegExp(GOB_SALE_TERMS.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
     assert.match(home, /There is no fixed end date/);
     assert.match(home, /\$129\.99/);
+    assert.match(home, /free shipping, continental US/);
+    assert.match(home, /Shipping<\/span><strong>Free · continental US<\/strong>/);
+    assert.match(home, /"shippingRate":\{"@type":"MonetaryAmount","value":"0\.00","currency":"USD"\}/);
+    assert.doesNotMatch(home, /\$12(?!\d)/);
     assert.match(home, /53mm/);
     assert.match(home, /Wired 3\.5mm/);
     assert.match(home, /Detachable boom/);
@@ -40,7 +44,8 @@ describe("going-out-of-business sale copy", () => {
     assert.match(terms, /Sold without warranty/);
     assert.match(terms, /30-day returns/);
     assert.match(terms, /within 90 days/);
-    assert.match(terms, /\$12 flat/);
+    assert.match(terms, /Shipping is <strong>free<\/strong>/);
+    assert.doesNotMatch(terms, /\$12(?!\d)/);
     assert.match(terms, /continental United States only/);
     assert.match(privacy, /30-day returns/);
     assert.match(privacy, /defective units within 90 days/);

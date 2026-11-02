@@ -7,8 +7,8 @@ export const HCG1_UNIT_RATE = 40;
 export const HCG1_UNIT_CENTS = 4000;
 /** Former / compare-at price in USD. Not the amount Checkout or the Sales Order should charge. */
 export const HCG1_COMPARE_AT_RATE = 129.99;
-/** Flat shipping in cents. Continental US only, charged on the Shopify checkout. */
-export const HCG1_SHIPPING_CENTS = 1200;
+/** Shipping in cents. Free (0) to the continental US on the Shopify checkout (Dennis, 2026-11-02). */
+export const HCG1_SHIPPING_CENTS = 0;
 export const PURCHASE_TAGS = ["hcgl-customer", "hcgl-purchased-hcg1"] as const;
 export const PURCHASE_GHL_SOURCE = "hcgl-stripe";
 export const FULFILL_EVENTS = ["checkout.session.completed", "checkout.session.async_payment_succeeded"] as const;
