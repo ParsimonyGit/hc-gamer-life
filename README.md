@@ -12,12 +12,13 @@ Customer-facing terms match https://www.hcgamerlife.com (the HCG1 and the HCG1 P
 
 - Price **$40** (compare-at / former price **$129.99**).
 - While supplies last. No fixed end date.
+- Final stock. We are not restocking.
 - Sold without a warranty.
 - 30-day returns. The buyer pays return shipping unless the unit is defective.
 - Defective units are replaced within 90 days.
 - Shipping is **free**, continental United States only.
 
-Those facts are on the homepage (banner, specs, FAQ, purchase panel), the quiz, `/terms`, and `/privacy-policy`. The business address in the footer and legal pages is 1037 NE 65th St #80853, Seattle, WA 98115. Returns are not accepted at that mailbox; email support@hcgamerlife.com first.
+Those facts are on the homepage above the fold (banner, hero, and Buy button), in the specs, FAQ, and purchase panel, on the quiz, and on `/terms` and `/privacy-policy`. The business address in the footer and legal pages is 1037 NE 65th St #80853, Seattle, WA 98115. Returns are not accepted at that mailbox; email support@hcgamerlife.com first.
 
 ## Run locally
 

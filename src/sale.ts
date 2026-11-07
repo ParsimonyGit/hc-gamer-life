@@ -13,7 +13,7 @@ export const SALE_PRICE_LABEL = usd(HCG1_UNIT_RATE);
 export const COMPARE_AT_LABEL = usd(HCG1_COMPARE_AT_RATE);
 
 /** Customer-facing sale sentence. Matches the live hcgamerlife.com product description. */
-export const GOB_SALE_TERMS = `Going-out-of-business sale: ${SALE_PRICE_LABEL} while supplies last. Sold without warranty. 30-day returns (buyer pays return shipping unless the unit is defective). Defective units replaced within 90 days. Free shipping, continental US only.`;
+export const GOB_SALE_TERMS = `Going-out-of-business sale: ${SALE_PRICE_LABEL} while supplies last. Final stock. We are not restocking. Sold without warranty. 30-day returns (buyer pays return shipping unless the unit is defective). Defective units replaced within 90 days. Free shipping, continental US only.`;
 
 /** Shopify product already priced at $40. hcgamerlife.org checkout sends buyers here. */
 export const SHOPIFY_PRODUCT_URL =
