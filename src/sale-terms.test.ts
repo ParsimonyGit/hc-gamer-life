@@ -34,6 +34,26 @@ describe("going-out-of-business sale copy", () => {
     assert.match(home, /There is no fixed end date/);
     assert.match(home, /\$129\.99/);
     assert.match(home, /free shipping, continental US/);
+    assert.match(home, /We are not restocking/);
+    assert.doesNotMatch(home, /countdown|ends tonight|ends today|hours left|days left/i);
+
+    const aboveGallery = home.slice(0, home.indexOf('id="gallery"'));
+    assert.match(aboveGallery, /Going out of business/);
+    assert.match(aboveGallery, /Now is the<br \/><span>best time\.<\/span>/);
+    assert.match(aboveGallery, /53mm drivers, a detachable mic/);
+    assert.match(aboveGallery, /for \$40 instead of \$129\.99/);
+    assert.match(aboveGallery, /Free shipping<\/strong><span>Continental US/);
+    assert.match(aboveGallery, /Final stock<\/strong><span>We are not restocking/);
+    assert.match(aboveGallery, /While supplies last<\/strong><span>No fixed end date/);
+    assert.match(aboveGallery, /Sold without warranty/);
+    assert.match(aboveGallery, /30-day returns \(you pay return shipping unless the unit is defective\)/);
+    assert.match(aboveGallery, /Defective units replaced within 90 days/);
+    assert.match(aboveGallery, new RegExp(`href="${SHOPIFY_PRODUCT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
+    const actions = aboveGallery.slice(aboveGallery.indexOf('class="actions"'));
+    const buyInActions = actions.indexOf("Buy the HCG1 Pro");
+    const quizInActions = actions.indexOf("Take the quiz");
+    assert.ok(buyInActions > 0 && quizInActions > buyInActions, "Buy is the first hero action");
+    assert.match(terms, /This is final stock\. We are not restocking\./);
     assert.match(home, /Shipping<\/span><strong>Free · continental US<\/strong>/);
     assert.match(home, /"shippingRate":\{"@type":"MonetaryAmount","value":"0\.00","currency":"USD"\}/);
     assert.doesNotMatch(home, /\$12(?!\d)/);

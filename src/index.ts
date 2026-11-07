@@ -822,6 +822,26 @@ const PAGE = `<!doctype html>
       .visual-card img { height: 220px; min-height: 0; object-fit: cover; object-position: center; }
       .topline { font-size: .78rem; }
       nav a, .nav-cta { font-size: .8rem; }
+      .hero { min-height: 0; padding: 42px 0 28px; }
+      .hero h1 { font-size: clamp(3.15rem, 6.2vw, 6.15rem); line-height: .88; margin-bottom: 14px; }
+      .hero .actions { margin-top: 18px; }
+      header { gap: 16px; }
+      nav { flex-wrap: wrap; gap: 12px 18px; justify-content: flex-end; }
+      .header-buy { flex: 0 0 auto; white-space: nowrap; }
+      .sale-facts { display: grid; gap: 10px 18px; grid-template-columns: 1fr 1fr; list-style: none; margin: 6px 0 0; max-width: 460px; padding: 0; }
+      .sale-facts li { border-top: 1px solid var(--line); padding-top: 8px; }
+      .sale-facts strong { color: var(--ink); display: block; font-size: 1.02rem; letter-spacing: -.02em; }
+      .sale-facts span { color: var(--muted); display: block; font-size: .88rem; line-height: 1.35; }
+      .hero-terms { font-size: .84rem; line-height: 1.45; margin: 14px 0 0; max-width: 36rem; }
+      @media (max-width: 820px) {
+        .header-buy { margin-left: auto; }
+        .hero { padding: 26px 0 12px; }
+        .hero h1 { font-size: clamp(2.8rem, 12vw, 3.8rem); }
+      }
+      @media (max-width: 580px) {
+        .sale-facts { gap: 8px 12px; }
+        .hero-terms { font-size: .8rem; }
+      }
       .eyebrow, .section-kicker, .journal-kicker, .stage-label, .method-label, .purchase-panel .eyebrow { font-size: .78rem; }
       .microproof, .photo-credit { font-size: .76rem; }
       .button { font-size: .82rem; }
@@ -836,7 +856,7 @@ const PAGE = `<!doctype html>
     </style>
   </head>
   <body>
-    <div class="topline"><strong>GOING-OUT-OF-BUSINESS SALE</strong> HCG1 Pro ${SALE_PRICE_LABEL} · was ${COMPARE_AT_LABEL} · while supplies last · free shipping, continental US</div>
+    <div class="topline"><strong>GOING OUT OF BUSINESS</strong> Now is the best time to buy · HCG1 Pro ${SALE_PRICE_LABEL} · was ${COMPARE_AT_LABEL} · final stock, no restock · free shipping, continental US · while supplies last</div>
     <div class="shell">
       <header>
         <a class="brand" href="#top" aria-label="HC GamerLife home"><span class="brand-mark">HC</span> GAMERLIFE</a>
@@ -846,8 +866,9 @@ const PAGE = `<!doctype html>
           <a href="#journal">Journal</a>
           <a href="#setup">Your setup</a>
           <a href="#faq">FAQ</a>
-          <a class="nav-cta" href="/quiz">Take the quiz</a>
+          <a href="/quiz">Take the quiz</a>
         </nav>
+        <a class="nav-cta header-buy" href="${SHOPIFY_PRODUCT_URL}">Buy the HCG1 Pro</a>
       </header>
     </div>
 
@@ -855,20 +876,26 @@ const PAGE = `<!doctype html>
       <div class="shell">
         <section class="hero">
           <div class="hero-copy">
-            <div class="eyebrow">HCG1 Pro Gaming Headset</div>
-            <h1>Hear more.<br /><span>Stay longer.</span></h1>
-            <p>Crystal-clear game audio, a mic that keeps your squad close, and comfort that holds up when “one more match” turns into an all-nighter.</p>
+            <div class="eyebrow">Going out of business</div>
+            <h1>Now is the<br /><span>best time.</span></h1>
+            <p>Buy the HCG1 Pro while this stock lasts. It is the same wired headset — 53mm drivers, a detachable mic, and comfort for the long session — for ${SALE_PRICE_LABEL} instead of ${COMPARE_AT_LABEL}.</p>
+            <ul class="sale-facts" aria-label="Going-out-of-business sale">
+              <li><strong>${SALE_PRICE_LABEL}</strong><span>Was ${COMPARE_AT_LABEL}</span></li>
+              <li><strong>Free shipping</strong><span>Continental US</span></li>
+              <li><strong>Final stock</strong><span>We are not restocking</span></li>
+              <li><strong>While supplies last</strong><span>No fixed end date</span></li>
+            </ul>
             <div class="actions">
-              <a class="button button-primary" href="/quiz">Take the quiz <span aria-hidden="true">↗</span></a>
-              <a class="button button-quiet" href="#product">Meet the HCG1</a>
+              <a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">Buy the HCG1 Pro <span aria-hidden="true">↗</span></a>
+              <a class="button button-quiet" href="/quiz">Take the quiz</a>
             </div>
-            <p class="microproof">For after-hours players · console / PC / mobile.</p>
+            <p class="hero-terms">Sold without warranty. 30-day returns (you pay return shipping unless the unit is defective). Defective units replaced within 90 days.</p>
           </div>
           <div class="hero-art" aria-label="HCG1 Pro Gaming Headset product photography" role="img">
             <div class="product-stage">
-              <div class="stage-label"><strong>HCG1</strong> / FIELD TEST 001</div>
+              <div class="stage-label"><strong>HCG1 PRO</strong> / FINAL STOCK</div>
               <img class="product-photo" src="/media/image?key=product-hero&amp;variant=product&amp;v=2" alt="Black and red HCG1 Pro Gaming Headset with detachable microphone" width="1000" height="1000" decoding="async" fetchpriority="high" />
-              <div class="stage-note"><div class="price-note"><strong>${SALE_PRICE_LABEL}</strong> Was ${COMPARE_AT_LABEL} · while supplies last.</div><div class="signal" aria-label="Three signal bars"><i></i><i></i><i></i></div></div>
+              <div class="stage-note"><div class="price-note"><strong>${SALE_PRICE_LABEL}</strong> Was ${COMPARE_AT_LABEL} · no restock.</div><div class="signal" aria-label="Three signal bars"><i></i><i></i><i></i></div></div>
               <div class="photo-credit">Official HCG1 product photography · 53mm drivers · wired 3.5mm</div>
             </div>
           </div>
@@ -877,7 +904,7 @@ const PAGE = `<!doctype html>
         <div class="stats" aria-label="Product highlights">
           <div class="stat"><strong>53mm drivers</strong><span>Hear footsteps, movement, and music in detail.</span></div>
           <div class="stat"><strong>Detachable mic</strong><span>Clear callouts when the match gets loud.</span></div>
-          <div class="stat"><strong>${SALE_PRICE_LABEL}</strong><span>Was ${COMPARE_AT_LABEL} · while supplies last.</span></div>
+          <div class="stat"><strong>${SALE_PRICE_LABEL}</strong><span>Was ${COMPARE_AT_LABEL}. Final stock. We are not restocking.</span></div>
         </div>
 
         <section id="gallery">
@@ -950,14 +977,14 @@ const PAGE = `<!doctype html>
             <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 5v7a5 5 0 0 0 10 0V5"/><path d="M4 10v2a8 8 0 0 0 16 0v-2M12 20v-3m-3 3h6"/></svg></div><h3>Comfort for the “last game”</h3><p>Soft over-ear cushions and a flexible fit stay easy through long queues, long flights, and long nights with friends.</p></article>
             <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 5 6v5c0 4.5 2.9 8.2 7 10 4.1-1.8 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Ready when you are</h3><p>A detachable boom mic, inline controls, and broad device compatibility keep the setup simple and the focus where it belongs.</p></article>
           </div>
-          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Going-out-of-business sale</div><h3>HCG1 Pro · ${SALE_PRICE_LABEL}</h3><p>${GOB_SALE_TERMS} There is no fixed end date. The HCG1 and the HCG1 Pro are the same headset. Checkout is on hcgamerlife.com.</p></div><a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">Buy the HCG1 Pro <span aria-hidden="true">↗</span></a></div>
+          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Going-out-of-business sale</div><h3>Now is the best time to buy</h3><p>${GOB_SALE_TERMS} There is no fixed end date. The HCG1 and the HCG1 Pro are the same headset. Checkout is on hcgamerlife.com.</p></div><a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">Buy the HCG1 Pro <span aria-hidden="true">↗</span></a></div>
         </section>
       </div>
 
       <section class="manifesto"><div class="shell"><div class="eyebrow">The player mindset</div><h2>Bring your whole self to the session.</h2><p>For the players who chase a cleaner callout, a closer finish, and the kind of comfort that lets the night unfold. HC GamerLife is gear for showing up again tomorrow.</p></div></section>
 
       <div class="shell">
-        <section id="setup"><div class="details"><div class="details-copy"><div class="eyebrow">Your setup</div><h2>One jack. Every lobby.</h2><p>Use the included 3.5mm connection with the devices you already play on. The HCG1 is designed to move with you from desk to couch to wherever the next match starts.</p><p class="sale-terms">${GOB_SALE_TERMS} There is no fixed end date.</p></div><div class="specs" aria-label="HCG1 specifications"><div class="spec-row"><span>Connection</span><strong>Wired 3.5mm · inline controls</strong></div><div class="spec-row"><span>Microphone</span><strong>Detachable boom · inline mute</strong></div><div class="spec-row"><span>Fit</span><strong>Closed-back over-ear</strong></div><div class="spec-row"><span>Compatibility</span><strong>PC · PlayStation · Xbox · Switch · mobile</strong></div><div class="spec-row"><span>Sale</span><strong>${SALE_PRICE_LABEL} · was ${COMPARE_AT_LABEL}</strong></div><div class="spec-row"><span>Shipping</span><strong>Free · continental US</strong></div><div class="spec-row"><span>Coverage</span><strong>No warranty · 30-day returns</strong></div></div></div></section>
+        <section id="setup"><div class="details"><div class="details-copy"><div class="eyebrow">Your setup</div><h2>One jack. Every lobby.</h2><p>Use the included 3.5mm connection with the devices you already play on. The HCG1 is designed to move with you from desk to couch to wherever the next match starts.</p><p class="sale-terms">${GOB_SALE_TERMS} There is no fixed end date.</p></div><div class="specs" aria-label="HCG1 specifications"><div class="spec-row"><span>Connection</span><strong>Wired 3.5mm · inline controls</strong></div><div class="spec-row"><span>Microphone</span><strong>Detachable boom · inline mute</strong></div><div class="spec-row"><span>Fit</span><strong>Closed-back over-ear</strong></div><div class="spec-row"><span>Compatibility</span><strong>PC · PlayStation · Xbox · Switch · mobile</strong></div><div class="spec-row"><span>Sale</span><strong>${SALE_PRICE_LABEL} · was ${COMPARE_AT_LABEL}</strong></div><div class="spec-row"><span>Stock</span><strong>Final stock · no restock</strong></div><div class="spec-row"><span>Shipping</span><strong>Free · continental US</strong></div><div class="spec-row"><span>Coverage</span><strong>No warranty · 30-day returns</strong></div></div></div></section>
         <section id="faq"><div class="section-head"><div><div class="eyebrow">Quick answers</div><h2>Before you queue up.</h2></div><p>Keep the setup moving. Here are the details players ask about most.</p></div><div class="faq"><details><summary>Is the microphone removable?</summary><p>Yes. Remove the boom mic when you are playing solo or listening on the go.</p></details><details><summary>Does it work across consoles?</summary><p>Yes. The wired 3.5mm connection works with PC, PlayStation, Xbox, Nintendo Switch, and compatible mobile devices. Some setups may need the included adapter.</p></details><details><summary>Does it use active noise cancellation?</summary><p>No. The closed-back design offers passive isolation so you can stay focused without a battery or software.</p></details><details><summary>How is it supported?</summary><p>${GOB_SALE_TERMS} There is no fixed end date. The HCG1 and the HCG1 Pro are the same headset.</p></details></div></section>
         <section id="drop"><div class="closing"><div class="eyebrow">Your next main character arc</div><h2>Hear the play. Call the play. Own the moment.</h2><p>Four taps unlock your Gamer Audio Profile — Immersed, Climbing, or Ready for Pro — then a straight path to the HCG1 Pro.</p><a class="button button-primary" href="/quiz">Take the quiz <span aria-hidden="true">↗</span></a></div></section>
       </div>
