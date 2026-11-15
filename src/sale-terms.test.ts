@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import worker from "./index.ts";
-import { GOB_SALE_TERMS, SHOPIFY_PRODUCT_URL } from "./sale.ts";
+import { BANDS } from "./quiz/data.ts";
+import { GOB_SALE_TERMS, HOME_META_DESCRIPTION, OFFER_PRICE, QUIZ_META_DESCRIPTION, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL } from "./sale.ts";
 
 const env = {
   ASSETS: { fetch: async () => new Response(null, { status: 404 }) }
@@ -14,8 +15,13 @@ async function page(path: string): Promise<string> {
 }
 
 const forbidden = [/2-year/i, /two-year/i, /two year/i, /no-questions/i, /no questions asked/i];
+const retiredPriceClaim = "$" + "40";
 
-describe("going-out-of-business sale copy", () => {
+function assertNoRetiredPrice(text: string): void {
+  assert.equal(text.includes(retiredPriceClaim), false);
+}
+
+describe("Black Friday going-out-of-business sale copy", () => {
   it("states the live sale terms on the homepage, quiz, terms, and privacy pages", async () => {
     const home = await page("/");
     const quiz = await page("/quiz");
@@ -28,33 +34,60 @@ describe("going-out-of-business sale copy", () => {
       for (const pattern of forbidden) {
         assert.doesNotMatch(html, pattern);
       }
+      assertNoRetiredPrice(html);
+      assert.doesNotMatch(html, /no fixed end date/i);
+      assert.doesNotMatch(html, /while supplies last/i);
     }
 
+    assert.match(GOB_SALE_TERMS, /Regular price \$129\.99/);
+    assert.match(GOB_SALE_TERMS, /60% off with code BF60 \(about \$52\)/);
+    assert.match(GOB_SALE_TERMS, /70% off orders of 5 or more with code BF70 \(about \$39 each\)/);
+    assert.match(GOB_SALE_TERMS, /Enter the code at Shopify checkout/);
+    assert.match(GOB_SALE_TERMS, /Codes end Nov 30, 2026/);
+    assert.match(GOB_SALE_TERMS, /Final stock\. We are not restocking/);
+    assert.match(GOB_SALE_TERMS, /Sold without warranty/);
+    assertNoRetiredPrice(GOB_SALE_TERMS);
+    assert.equal(OFFER_PRICE, "129.99");
+
     assert.match(home, new RegExp(GOB_SALE_TERMS.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-    assert.match(home, /There is no fixed end date/);
     assert.match(home, /\$129\.99/);
     assert.match(home, /free shipping, continental US/);
     assert.match(home, /We are not restocking/);
+    assert.match(home, new RegExp(HOME_META_DESCRIPTION.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(home, /property="og:description" content="[^"]*BF60/);
+    assert.match(home, /name="twitter:description" content="[^"]*BF70/);
     assert.doesNotMatch(home, /countdown|ends tonight|ends today|hours left|days left/i);
 
     const aboveGallery = home.slice(0, home.indexOf('id="gallery"'));
-    assert.match(aboveGallery, /Going out of business/);
+    assert.match(aboveGallery, /Going out of business/i);
     assert.match(aboveGallery, /Now is the<br \/><span>best time\.<\/span>/);
     assert.match(aboveGallery, /53mm drivers, a detachable mic/);
-    assert.match(aboveGallery, /for \$40 instead of \$129\.99/);
+    assert.match(aboveGallery, /Regular price \$129\.99/);
+    assert.match(aboveGallery, /BF60<\/strong><span>60% off · about \$52/);
+    assert.match(aboveGallery, /BF70<\/strong><span>70% off on 5 or more · about \$39 each/);
+    assert.match(aboveGallery, /Enter the code at Shopify checkout/);
+    assert.match(aboveGallery, /Codes end Nov 30, 2026/);
     assert.match(aboveGallery, /Free shipping<\/strong><span>Continental US/);
     assert.match(aboveGallery, /Final stock<\/strong><span>We are not restocking/);
-    assert.match(aboveGallery, /While supplies last<\/strong><span>No fixed end date/);
     assert.match(aboveGallery, /Sold without warranty/);
     assert.match(aboveGallery, /30-day returns \(you pay return shipping unless the unit is defective\)/);
     assert.match(aboveGallery, /Defective units replaced within 90 days/);
-    assert.match(aboveGallery, new RegExp(`href="${SHOPIFY_PRODUCT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
+    const shopifyHref = SHOPIFY_PRODUCT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    assert.match(aboveGallery, new RegExp(`href="${shopifyHref}"`));
     const actions = aboveGallery.slice(aboveGallery.indexOf('class="actions"'));
-    const buyInActions = actions.indexOf("Buy the HCG1 Pro");
+    const buyInActions = actions.indexOf(SHOP_CTA_LABEL);
     const quizInActions = actions.indexOf("Take the quiz");
-    assert.ok(buyInActions > 0 && quizInActions > buyInActions, "Buy is the first hero action");
+    assert.ok(buyInActions > 0 && quizInActions > buyInActions, "Shop Black Friday is the first hero action");
     assert.match(terms, /This is final stock\. We are not restocking\./);
+    assert.match(terms, /regular price is <strong>\$129\.99<\/strong>/);
+    assert.match(terms, /60% off with code BF60 \(about \$52\)/);
+    assert.match(terms, /70% off orders of 5 or more with code BF70 \(about \$39 each\)/);
+    assert.match(terms, /Codes end Nov 30, 2026/);
+    assert.match(home, /How does the Black Friday price work\?/);
+    assert.match(home, /Black Friday<\/span><strong>BF60 · 60% off · BF70 on 5\+/);
     assert.match(home, /Shipping<\/span><strong>Free · continental US<\/strong>/);
+    assert.match(home, /"price":"129\.99"/);
+    assert.doesNotMatch(home, /"price":"40\.00"/);
     assert.match(home, /"shippingRate":\{"@type":"MonetaryAmount","value":"0\.00","currency":"USD"\}/);
     assert.doesNotMatch(home, /\$12(?!\d)/);
     assert.match(home, /53mm/);
@@ -69,11 +102,27 @@ describe("going-out-of-business sale copy", () => {
     assert.match(terms, /continental United States only/);
     assert.match(privacy, /30-day returns/);
     assert.match(privacy, /defective units within 90 days/);
+    assert.match(privacy, /BF60/);
     assert.match(privacy, /1037 NE 65th St #80853/);
-    assert.match(quiz, /\$40 while supplies last/);
-    assert.match(home, new RegExp(SHOPIFY_PRODUCT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-    assert.match(home, /Buy the HCG1 Pro/);
-    assert.match(quiz, /Buy the HCG1 Pro/);
+    assert.match(quiz, /BF60<\/strong><span>60% off · about \$52/);
+    assert.match(quiz, /70% off orders of 5 or more with code BF70 \(about \$39 each\)/);
+    assert.match(quiz, /Codes end Nov 30, 2026/);
+    assert.match(quiz, new RegExp(QUIZ_META_DESCRIPTION.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(quiz, /"price":"129\.99"/);
+    for (const band of Object.values(BANDS)) {
+      const text = `${band.story} ${band.promise.join(" ")}`;
+      assert.match(text, /BF60/);
+      assert.match(text, /BF70/);
+      assert.match(text, /about \$52/);
+      assert.match(text, /about \$39 each/);
+      assertNoRetiredPrice(text);
+      assert.match(quiz, new RegExp(band.story.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    }
+    assert.match(home, new RegExp(shopifyHref));
+    assert.equal(home.match(new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`, "g"))?.length, 3);
+    assert.match(quiz, new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`));
+    assert.doesNotMatch(home, /Buy the HCG1 Pro/);
+    assert.doesNotMatch(quiz, /Buy the HCG1 Pro/);
     assert.match(quiz, /gaming-headset-xbox-one-ps4-pc-mobile-compatible/);
     assert.doesNotMatch(home, /js\.stripe\.com/);
     assert.doesNotMatch(home, /stripe-checkout-form/);

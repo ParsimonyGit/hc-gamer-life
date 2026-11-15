@@ -1,5 +1,7 @@
 /** Shared quiz content, scoring, and CRM field mapping for HC Gamer Life. */
 
+import { BF60_CODE, BF70_CODE, QUIZ_RESULT_OFFER } from "../sale.ts";
+
 export type BandId = "immersed" | "climbing" | "ready-for-pro";
 
 export type QuestionId = "platform" | "style" | "session" | "pain";
@@ -217,14 +219,14 @@ export const BANDS: Record<BandId, Band> = {
     title: "Immersed",
     tagline: "You play to disappear into the world.",
     story:
-      "Story nights, handheld sessions, and couches that do not need a rank. The HCG1 Pro is a wired over-ear that stays easy through long campaigns — 53mm stereo and a boom you can take off. The going-out-of-business price is $40 while supplies last.",
+      `Story nights, handheld sessions, and couches that do not need a rank. The HCG1 Pro is a wired over-ear that stays easy through long campaigns — 53mm stereo and a boom you can take off. ${QUIZ_RESULT_OFFER}`,
     accent: "#6bc9ff",
     quote: "Comfort first. Then the world gets louder.",
     promise: [
       "Closed-back seal for story and music",
       "Soft cups that last past the first hour",
       "Works on Switch, mobile, console, and PC",
-      "$40 while supplies last · sold without warranty"
+      `${BF60_CODE} · 60% off · ${BF70_CODE} on 5 or more · sold without warranty`
     ]
   },
   climbing: {
@@ -232,14 +234,14 @@ export const BANDS: Record<BandId, Band> = {
     title: "Climbing",
     tagline: "You are building a cleaner session.",
     story:
-      "Better comms, a tighter mix, maybe a stream. The HCG1 Pro is universal 3.5mm — PC, PlayStation, Xbox, Switch, mobile — with a detachable boom that stays clear when the lobby gets loud. $40 while supplies last, sold without a warranty.",
+      `Better comms, a tighter mix, maybe a stream. The HCG1 Pro is universal 3.5mm — PC, PlayStation, Xbox, Switch, mobile — with a detachable boom that stays clear when the lobby gets loud. ${QUIZ_RESULT_OFFER} Sold without a warranty.`,
     accent: "#ff765c",
     quote: "Clearer callouts. Fewer excuses.",
     promise: [
       "Detachable boom for party and content",
       "Inline mute and volume in the cable",
       "One jack across the devices you already own",
-      "$40 while supplies last · 30-day returns"
+      `${BF60_CODE} · 60% off · ${BF70_CODE} on 5 or more · 30-day returns`
     ]
   },
   "ready-for-pro": {
@@ -247,14 +249,14 @@ export const BANDS: Record<BandId, Band> = {
     title: "Ready for Pro",
     tagline: "You queue to hear the play before it happens.",
     story:
-      "Footsteps, flanks, the call that wins the round. The HCG1 Pro is tuned for positional stereo and a mic your squad can actually hear — wired so there is no battery between you and the next set. $40 while supplies last.",
+      `Footsteps, flanks, the call that wins the round. The HCG1 Pro is tuned for positional stereo and a mic your squad can actually hear — wired so there is no battery between you and the next set. ${QUIZ_RESULT_OFFER}`,
     accent: "#ff4f5e",
     quote: "Hear the flank. Call the play.",
     promise: [
       "53mm stereo for footsteps and position",
       "Mic that stays intelligible in a loud lobby",
       "Always-on wired 3.5mm — no charge cycle",
-      "$40 while supplies last · 90-day defect replacement"
+      `${BF60_CODE} · 60% off · ${BF70_CODE} on 5 or more · 90-day defect replacement`
     ]
   }
 };

@@ -60,7 +60,7 @@ describe("checkout event selection", () => {
 });
 
 describe("mapCheckoutSession", () => {
-  it("maps a paid session to HCG1-PRO at the $40 sale price with purchase tags", () => {
+  it("maps a paid session to HCG1-PRO at the Stripe unit rate with purchase tags", () => {
     const mapped = mapCheckoutSession(paidSession());
     assert.equal(mapped.ok, true);
     if (!mapped.ok) return;
@@ -90,7 +90,7 @@ describe("mapCheckoutSession", () => {
     );
   });
 
-  it("falls back to amount_total / $40 when quantity metadata is missing", () => {
+  it("falls back to amount_total divided by the unit rate when quantity metadata is missing", () => {
     assert.equal(quantityFromSession(paidSession({ metadata: {}, amount_total: 12000, line_items: null })), 3);
     assert.equal(quantityFromSession({ line_items: { data: [{ quantity: 4 }] } }), 4);
     assert.equal(sessionEmail({ customer_email: "Player@Site.ORG" }), "player@site.org");
