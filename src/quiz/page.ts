@@ -1,5 +1,5 @@
 import { clientConfig } from "./data.ts";
-import { SHOPIFY_PRODUCT_URL } from "../sale.ts";
+import { BF60_CODE, BF70_CODE, BF_ENDS_LABEL, OFFER_PRICE, QUIZ_LEDE, QUIZ_META_DESCRIPTION, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL } from "../sale.ts";
 
 const SITE_URL = "https://hcgamerlife.org";
 const SEO_IMAGE = `${SITE_URL}/brand/og.jpg`;
@@ -12,9 +12,19 @@ const QUIZ_JSON_LD = JSON.stringify({
   "@type": "WebPage",
   name: "Gamer Audio Profile Quiz | HC GamerLife",
   url: `${SITE_URL}/quiz`,
-  description: "A 60-second on-site quiz that maps your platform, play style, and headset pain to an HCG1 Pro audio profile.",
+  description: QUIZ_META_DESCRIPTION,
   isPartOf: { "@type": "WebSite", name: "HC GamerLife", url: SITE_URL },
-  about: { "@type": "Product", name: "HCG1 Pro Gaming Headset" }
+  about: {
+    "@type": "Product",
+    name: "HCG1 Pro Gaming Headset",
+    offers: {
+      "@type": "Offer",
+      price: OFFER_PRICE,
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      url: SHOPIFY_PRODUCT_URL
+    }
+  }
 }).replace(/</g, "\\u003c");
 
 const STYLES = `
@@ -447,7 +457,7 @@ const RUNTIME = `(() => {
       <section class="hero-panel">
         <div class="chip">60-second audio profile</div>
         <h1>Find the headset energy you already play with.</h1>
-        <p class="lede">Four taps. Your Gamer Audio Profile. Then the HCG1 Pro — wired, universal, $40 while supplies last.</p>
+        <p class="lede">${QUIZ_LEDE}</p>
         <div class="cta-row">
           <button class="button" type="button" data-action="start">Take the quiz →</button>
           <a class="button button-quiet" href="/#product">Meet the HCG1 Pro</a>
@@ -455,7 +465,7 @@ const RUNTIME = `(() => {
         <div class="intro-stats">
           <div><strong>4</strong><span>quick questions</span></div>
           <div><strong>3</strong><span>profile bands</span></div>
-          <div><strong>$40</strong><span>while supplies last</span></div>
+          <div><strong>${BF60_CODE}</strong><span>60% off · about $52</span></div>
         </div>
       </section>
       <aside class="mosaic-panel">
@@ -533,7 +543,7 @@ const RUNTIME = `(() => {
           <ul class="promises">\${promises}</ul>
           <p class="saved">Profile unlocked. You are on the HCG1 list.</p>
           <div class="cta-row">
-            <a class="button" href="${SHOPIFY_PRODUCT_URL}">Buy the HCG1 Pro →</a>
+            <a class="button" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} →</a>
             <a class="button button-quiet" href="/#product">Meet the HCG1 Pro</a>
             <button class="back" type="button" data-action="retake">Retake quiz</button>
           </div>
@@ -664,18 +674,18 @@ export function renderQuizPage(): Response {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0d0b0a" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="Take the HC GamerLife audio profile quiz. Four taps, a named band, and a soft path to the HCG1 Pro." />
+    <meta name="description" content="${QUIZ_META_DESCRIPTION}" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="${SITE_URL}/quiz" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="HC GamerLife" />
     <meta property="og:url" content="${SITE_URL}/quiz" />
     <meta property="og:title" content="Gamer Audio Profile Quiz | HC GamerLife" />
-    <meta property="og:description" content="Four questions. Your Immersed, Climbing, or Ready for Pro band. Then the HCG1 Pro." />
+    <meta property="og:description" content="${QUIZ_META_DESCRIPTION}" />
     <meta property="og:image" content="${SEO_IMAGE}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Gamer Audio Profile Quiz | HC GamerLife" />
-    <meta name="twitter:description" content="Find your HCG1 audio profile in sixty seconds." />
+    <meta name="twitter:description" content="${QUIZ_META_DESCRIPTION}" />
     <meta name="twitter:image" content="${SEO_IMAGE}" />
     <link rel="manifest" href="/site.webmanifest" />
     <script type="application/ld+json">${QUIZ_JSON_LD}</script>
@@ -683,7 +693,7 @@ export function renderQuizPage(): Response {
     <style>${STYLES}</style>
   </head>
   <body>
-    <div class="topline"><strong>FIELD NOTE 002</strong> On-site quiz · 60 seconds · HCG1 Pro audio profile</div>
+    <div class="topline"><strong>GOING OUT OF BUSINESS</strong> Black Friday · code ${BF60_CODE} 60% off · code ${BF70_CODE} 70% off on 5+ · codes end ${BF_ENDS_LABEL}</div>
     <div class="shell">
       <header>
         <a class="brand" href="/" aria-label="HC GamerLife home"><span class="brand-mark">HC</span> GAMERLIFE</a>

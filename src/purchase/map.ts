@@ -2,10 +2,10 @@
 
 export const DEFAULT_ERP_URL = "https://admin.hcgamerlife.org";
 export const HCG1_ITEM_CODE = "HCG1-PRO";
-/** Current going-out-of-business selling price in USD. The former price ($129.99) is compare-at only. */
+/** Legacy Stripe Checkout unit rate in USD. Webhook sales orders still use this rate. Not shown on the site. */
 export const HCG1_UNIT_RATE = 40;
 export const HCG1_UNIT_CENTS = 4000;
-/** Former / compare-at price in USD. Not the amount Checkout or the Sales Order should charge. */
+/** Regular Shopify list price in USD. Do not use this as the Stripe sales-order rate. */
 export const HCG1_COMPARE_AT_RATE = 129.99;
 /** Shipping in cents. Free (0) to the continental US on the Shopify checkout (Dennis, 2026-11-02). */
 export const HCG1_SHIPPING_CENTS = 0;

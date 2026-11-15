@@ -8,17 +8,19 @@ The page is written for the committed everyday gamer: a console or PC player who
 
 ## Going-out-of-business sale
 
-Customer-facing terms match https://www.hcgamerlife.com (the HCG1 and the HCG1 Pro are the same headset):
+Customer-facing terms match https://www.hcgamerlife.com as of November 15, 2026 (the HCG1 and the HCG1 Pro are the same headset):
 
-- Price **$40** (compare-at / former price **$129.99**).
-- While supplies last. No fixed end date.
+- Regular price **$129.99**.
+- Black Friday: **60% off** with code **BF60** (about $52).
+- **70% off** orders of 5 or more with code **BF70** (about $39 each).
+- Codes are entered at Shopify checkout and end **Nov 30, 2026**.
 - Final stock. We are not restocking.
 - Sold without a warranty.
 - 30-day returns. The buyer pays return shipping unless the unit is defective.
 - Defective units are replaced within 90 days.
 - Shipping is **free**, continental United States only.
 
-Those facts are on the homepage above the fold (banner, hero, and Buy button), in the specs, FAQ, and purchase panel, on the quiz, and on `/terms` and `/privacy-policy`. The business address in the footer and legal pages is 1037 NE 65th St #80853, Seattle, WA 98115. Returns are not accepted at that mailbox; email support@hcgamerlife.com first.
+Those facts are on the homepage above the fold (banner, hero, and Shop Black Friday button), in the specs, FAQ, and purchase panel, on the quiz, and on `/terms` and `/privacy-policy`. The business address in the footer and legal pages is 1037 NE 65th St #80853, Seattle, WA 98115. Returns are not accepted at that mailbox; email support@hcgamerlife.com first.
 
 ## Run locally
 
@@ -29,7 +31,7 @@ npm run dev
 
 ## Deploy
 
-Authenticate Wrangler locally with `npx wrangler login`, then run `npm run deploy`. GitHub Actions (`.github/workflows/deploy.yml`) deploys the Worker on every push to `main`, including a merge of a pull request, when repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are set. That deploy publishes `wrangler.jsonc` vars such as `ERP_ITEM_RATE=40`. Headset checkout does not use a Stripe Price. `/checkout` redirects to Shopify.
+Authenticate Wrangler locally with `npx wrangler login`, then run `npm run deploy`. GitHub Actions (`.github/workflows/deploy.yml`) deploys the Worker on every push to `main`, including a merge of a pull request, when repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are set. That deploy publishes `wrangler.jsonc` vars such as `ERP_ITEM_RATE=40` for the legacy Stripe webhook path. That rate is not the advertised price. Headset checkout does not use a Stripe Price. `/checkout` redirects to Shopify.
 
 The Worker serves the site at every route and exposes `/healthz` for a lightweight deployment check. A custom domain can be attached in Cloudflare later without changing the source.
 
@@ -61,7 +63,7 @@ npm test
 
 ## Checkout is Shopify
 
-Buy buttons and `/checkout` (any method) send the shopper to the live Shopify product, already priced at **$40** on Shopify Payments:
+Buy buttons labeled **Shop Black Friday** and `/checkout` (any method) send the shopper to the live Shopify product, listed at the regular price **$129.99**. Enter **BF60** or **BF70** at Shopify checkout:
 
 https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible
 

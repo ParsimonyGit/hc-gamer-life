@@ -1,4 +1,4 @@
-import { BUSINESS_ADDRESS, CONTACT_EMAIL, COMPARE_AT_LABEL, GOB_SALE_TERMS, SALE_PRICE_LABEL, SHOPIFY_PRODUCT_URL, SUPPORT_EMAIL } from "./sale.ts";
+import { BF60_OFFER, BF70_OFFER, BF_ENDS_LABEL, BUSINESS_ADDRESS, CONTACT_EMAIL, GOB_SALE_TERMS, REGULAR_PRICE_LABEL, SHOPIFY_PRODUCT_URL, SUPPORT_EMAIL } from "./sale.ts";
 
 const SITE_URL = "https://hcgamerlife.org";
 
@@ -55,7 +55,7 @@ function layout(kind: LegalKind, title: string, body: string): string {
         <a class="back" href="/">Back home</a>
       </header>
       <main class="prose">
-        <p class="updated">Last updated October 31, 2026</p>
+        <p class="updated">Last updated November 15, 2026</p>
         <h1>${title}</h1>
         ${body}
       </main>
@@ -67,11 +67,11 @@ function layout(kind: LegalKind, title: string, body: string): string {
 
 function termsBody(): string {
   return `<p>These Terms and Conditions ("Terms") apply to your use of hcgamerlife.org (the "Site") and to any purchase from HC GamerLife ("HC GamerLife," "we," "us," or "our"), a Washington business. By using the Site or placing an order, you agree to these Terms and to our <a href="/privacy-policy">Privacy Policy</a>.</p>
-<p class="sale"><strong>${GOB_SALE_TERMS}</strong> There is no fixed end date. The HCG1 and the HCG1 Pro are the same headset.</p>
+<p class="sale"><strong>${GOB_SALE_TERMS}</strong> The HCG1 and the HCG1 Pro are the same headset.</p>
 <h2>1. Who can use the Site</h2>
 <p>You must be at least 18 years old, or the age of majority where you live, to buy from us. If you are younger, a parent or guardian must use the Site with you and place the order. You agree not to use the Site for anything unlawful, to interfere with its security, or to submit false information.</p>
 <h2>2. Products and pricing</h2>
-<p>We sell the HCG1 Pro wired gaming headset. The HCG1 and the HCG1 Pro are the same headset. The current going-out-of-business price is <strong>${SALE_PRICE_LABEL}</strong> (compare-at / former price ${COMPARE_AT_LABEL}). The sale runs while supplies last and has no fixed end date. This is final stock. We are not restocking. Buy it at <a href="${SHOPIFY_PRODUCT_URL}">hcgamerlife.com</a>. This Site links there and does not charge your card. We try to describe products, specifications, and photos accurately. Colors and details can look slightly different on different screens. Prices are in U.S. dollars and may change without notice, but a price change will not affect an order we have already accepted. If an item is listed at an obviously wrong price, we may cancel the order and refund you in full.</p>
+<p>We sell the HCG1 Pro wired gaming headset. The HCG1 and the HCG1 Pro are the same headset. The regular price is <strong>${REGULAR_PRICE_LABEL}</strong>. Black Friday: ${BF60_OFFER}. ${BF70_OFFER}. Enter the code at Shopify checkout. Codes end ${BF_ENDS_LABEL}. This is final stock. We are not restocking. Buy it at <a href="${SHOPIFY_PRODUCT_URL}">hcgamerlife.com</a>. This Site links there and does not charge your card. We try to describe products, specifications, and photos accurately. Colors and details can look slightly different on different screens. Prices are in U.S. dollars and may change without notice, but a price change will not affect an order we have already accepted. If an item is listed at an obviously wrong price, we may cancel the order and refund you in full.</p>
 <h2>3. Orders and payment</h2>
 <p>Your order is placed on <a href="${SHOPIFY_PRODUCT_URL}">hcgamerlife.com</a>. We accept it when that store ships it or confirms it. We may limit quantities or cancel an order, for example because of suspected fraud, pricing errors, an address outside the continental United States, or stock problems. If we cancel, we refund any amount charged. Payments are processed by Shopify Payments on hcgamerlife.com. hcgamerlife.org does not charge your card. You agree to give accurate billing and shipping details on that checkout. Applicable sales tax is added there.</p>
 <h2>4. Shipping</h2>
