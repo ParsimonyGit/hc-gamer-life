@@ -82,6 +82,9 @@ Suggested invite copy:
 | 1701921 | Jocelyn Aspa | Instagram | [profile](https://www.instagram.com/coolgalreading) | Canada | Arts & Entertainment; Electronics | 80K | C+ | candidate |
 | 1258542 | Lyn Katada | Instagram | [profile](https://www.instagram.com/small.vroom) | United States | Arts & Entertainment; Beauty; Electronics; Technology; Vehicles | 146K | B- | candidate |
 
+| 2657276 | Retronaut Gaming | Not shown | Not shown in result | United States | Arts & Entertainment; Electronics; Photography; Technology; Toys & Gaming | Not shown | A- | candidate |
+| 2341033 | Patrick Cushing | TikTok | [profile](https://www.tiktok.com/@cushgaming) | United States | Not shown | 35K | A- | candidate |
+
 ## Operating note
 
 This is a research and dedupe tracker, not proof that an invitation was sent. Update the row only after checking Shopify Collabs and record the date, exact status, and any response. The next operational pass should prioritize Fit A/A- creators, then broader Electronics/Technology creators, while preserving this list as the source of truth.
