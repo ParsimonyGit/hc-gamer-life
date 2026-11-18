@@ -2,6 +2,8 @@
 
 This folder is for the HCGL Growth Grok bot. It should open its own branch and pull request for each plan (Gleam, Lettergrowth, Branduo, Shopify Email). Do not edit hcgamerlife.org storefront files from Growth PRs unless the storefront agent reviews that change.
 
+**Do not send or submit until** [PR #17](https://github.com/ParsimonyGit/hc-gamer-life/pull/17) is on `main` and `/go/` links 302. Follow [`../ORCHESTRATOR.md`](../ORCHESTRATOR.md). Do not recreate BF60/BF70. Do not publish `DennisSimonson/hc-gamer-life-game`.
+
 ## What this agent should replace immediately
 
 Growth drafts written before Nov 18, 2026 still quote **$40** and **4.4★ / 486 Amazon ratings**. The live offer is BF60 (~$52) and BF70 (~$39 each on 5+). Amazon, checked Nov 18, 2026, showed **4.2★ from 485 ratings**.

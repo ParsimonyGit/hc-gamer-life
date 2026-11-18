@@ -2,6 +2,8 @@
 
 Holiday and growth work for HC GamerLife is reviewed in GitHub, not in a bot store or a chat transcript.
 
+**Publish order (orchestrator):** read [`ORCHESTRATOR.md`](ORCHESTRATOR.md) before merging or sending anything. `main` auto-deploys the Cloudflare Worker. Shopify theme and discounts are not git repos. HCGL Growth does not publish a repo; it waits for PR #17, then sends.
+
 ## How to version a proposal
 
 1. Open a branch named `cursor/<short-name>-b974`.

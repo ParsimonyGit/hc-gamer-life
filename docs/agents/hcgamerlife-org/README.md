@@ -2,7 +2,7 @@
 
 Cloud Agent run: [bc-084a1adf-7453-581a-9c6f-5355554bb974](https://cursor.com/agents/bc-084a1adf-7453-581a-9c6f-5355554bb974)
 
-Storefront code lives in `src/`. Proposals for traffic, copy, and Shopify-adjacent work that are not yet in `src/` live in this folder as dated markdown.
+Storefront code lives in `src/`. Proposals for traffic, copy, and Shopify-adjacent work that are not yet in `src/` live in this folder as dated markdown. This agent is the holiday **orchestrator**: other agents follow [`../ORCHESTRATOR.md`](../ORCHESTRATOR.md) for publish order.
 
 ## Open proposals
 
