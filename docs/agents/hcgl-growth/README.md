@@ -55,7 +55,11 @@ Do not say "$40", "two-year", "2-year", "guarantee", "no questions", "detachable
 
 ## Links
 
-Use `https://hcgamerlife.org/go/<channel>` from the copy kit. Checked Nov 18, 2026 (America/Chicago): `https://hcgamerlife.org/go/email` returned HTTP 302 to the Shopify HCG1 product with `utm_campaign=gob-bf-2026`. Check the exact link again on the day it is used. PR #17 is on `main`.
+Buyers go to the Shopify product. hcgamerlife.org has no cart. Do not send them to the .org homepage, the quiz, or the journal.
+
+`https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=<channel>&utm_medium=<medium>&utm_campaign=gob-bf-2026`
+
+The channel URLs are in the send plan. They match the copy kit on `cursor/shopify-destinations-b974`. A `/go/<channel>` short link still 302s to Shopify with `utm_campaign=gob-bf-2026` if one was already used. New outbound does not use it.
 
 ## Index
 

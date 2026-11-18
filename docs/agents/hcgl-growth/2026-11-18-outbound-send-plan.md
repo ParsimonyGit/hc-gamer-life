@@ -14,28 +14,56 @@ All three, every time:
 
 1. Dennis's explicit yes for that send or submission.
 2. Duplicate check against ERP task notes, so a task already marked sent does not go out again.
-3. The `/go/` link checked again that day. It must return HTTP 302 to the Shopify HCG1 product with `utm_campaign=gob-bf-2026`.
+3. The destination is the Shopify product URL for that channel, with `utm_campaign=gob-bf-2026`. Do not send buyers to hcgamerlife.org, `/quiz`, or the journal. A `/go/` short link still 302s if one was already published. New copy does not use it.
 
-Checked Nov 18, 2026 (America/Chicago), HEAD requests only. Each URL below did that. Medium varies by channel (`email`, `coupon-site`, `social`, `creator`, `outreach`, or `referral`). Do not treat this paragraph as tomorrow's check.
-
-Paste from the copy kit. Where the kit's first line is a closing line, use the replacement in flag (a) instead. Black Friday leads. Final stock stays in the sale terms.
+Paste from the copy kit on `cursor/shopify-destinations-b974`. Where the kit's first line is a closing line, use the replacement in flag (a) instead. Black Friday leads, except Email 3, which leads with free shipping and the reviews. Final stock stays in the sale terms.
 
 ## Sequence
 
 | # | Channel | Copy-kit section | Owner | Target (America/Chicago) | Link |
 |---|---|---|---|---|---|
-| — | Shopify Email 1 | Retired. Do not send. | Nobody | — | Do not use https://hcgamerlife.org/go/email?c=bf-launch for a new blast |
-| 1 | Shopify Email 3 | Shopify Email 3 | HCGL Growth, in Shopify Email. Not sent yet. See below. | Nov 18, 2026, as soon as someone can open Shopify Email | https://hcgamerlife.org/go/email?c=reviews-shipping |
-| 2 | Gleam post-entry | Gleam post-entry | Growth pastes into Gleam. Dennis says yes. | Nov 18, 2026. The sell-through brief says campaign xhGWu closes Nov 19. Confirm that date inside Gleam before relying on it. | https://hcgamerlife.org/go/gleam |
-| 3 | Coupon sites | Coupon listing | Growth fills the forms. Dennis says yes per site. | Nov 19, 2026. | RetailMeNot https://hcgamerlife.org/go/retailmenot · CouponBirds https://hcgamerlife.org/go/couponbirds · Dealspotr https://hcgamerlife.org/go/dealspotr · Knoji https://hcgamerlife.org/go/knoji · WeThrift https://hcgamerlife.org/go/wethrift |
-| 4 | Honey | Honey email | Already sent. Do not send again. | Done Nov 18 by the orchestrator, from tezlin007@gmail.com to deals@joinhoney.com. | https://hcgamerlife.org/go/honey |
-| 5 | Reddit | Reddit | Growth drafts. Dennis posts. One sub at a time. | Nov 19 or Nov 20, 2026, after the sub's rules are read. | https://hcgamerlife.org/go/reddit?c=buildapcsales |
-| 6 | Creator Collabs | Creator Collabs (15%) | Growth prepares invites. Dennis approves the install, turns open access off, and approves each invite. | Nov 20, 2026. | https://hcgamerlife.org/go/creator-{handle} |
-| 7 | Coaches and clubs | Coaches and clubs | Growth builds the list and the note. Dennis approves each batch. | Nov 21, 2026, or as soon as the list is deduped. Schools go quiet in mid-December. | https://hcgamerlife.org/go/coach?c=bf70 |
-| 8 | Lettergrowth | Lettergrowth / newsletter pitch | Growth drafts. Dennis sends. | Nov 20, 2026. | https://hcgamerlife.org/go/lettergrowth |
-| 9 | Branduo | Branduo / partner swap blurb | Growth drafts. Dennis sends or posts the swap. | Nov 20, 2026. | https://hcgamerlife.org/go/branduo |
-| 10 | Shopify Email 2, last call | Shopify Email 2 | Growth pastes into Shopify Email. Dennis says yes. | Nov 30, 2026, morning CT. Not a second email on Nov 20. | https://hcgamerlife.org/go/email?c=lastcall |
-| 11 | SMS | SMS | Nobody, unless a compliant opted-in list already exists. | No date until that list is confirmed. If it does not exist, skip. | https://hcgamerlife.org/go/email?c=sms |
+| — | Shopify Email 1 | Retired. Do not send. | Nobody | — | No new destination |
+| 1 | Shopify Email 3 | Shopify Email 3 | HCGL Growth, in Shopify Email. Not sent yet. See below. | Nov 18, 2026, as soon as someone can open Shopify Email | Email 3 below |
+| 2 | Gleam post-entry | Gleam post-entry | Growth pastes into Gleam. Dennis says yes. | Nov 18, 2026. The sell-through brief says campaign xhGWu closes Nov 19. Confirm that date inside Gleam before relying on it. | Gleam |
+| 3 | Coupon sites | Coupon listing | Growth fills the forms. Dennis says yes per site. | Nov 19, 2026. | One URL per site, below |
+| 4 | Honey | Honey email | Already sent. Do not send again. | Done Nov 18 by the orchestrator, from tezlin007@gmail.com to deals@joinhoney.com. | Honey, only if a listing is edited. Do not resend the email. |
+| 5 | Reddit | Reddit | Growth drafts. Dennis posts. One sub at a time. | Nov 19 or Nov 20, 2026, after the sub's rules are read. | Reddit |
+| 6 | Creator Collabs | Creator Collabs (15%) | Growth prepares invites. Dennis approves the install, turns open access off, and approves each invite. | Nov 20, 2026. | Creator |
+| 7 | Coaches and clubs | Coaches and clubs | Growth builds the list and the note. Dennis approves each batch. | Nov 21, 2026, or as soon as the list is deduped. Schools go quiet in mid-December. | Coaches |
+| 8 | Lettergrowth | Lettergrowth / newsletter pitch | Growth drafts. Dennis sends. | Nov 20, 2026. | Lettergrowth |
+| 9 | Branduo | Branduo / partner swap blurb | Growth drafts. Dennis sends or posts the swap. | Nov 20, 2026. | Branduo |
+| 10 | Shopify Email 2, last call | Shopify Email 2 | Growth pastes into Shopify Email. Dennis says yes. | Nov 30, 2026, morning CT. Not a second email on Nov 20. | Email 2 |
+| 11 | SMS | SMS | Nobody, unless a compliant opted-in list already exists. | No date until that list is confirmed. If it does not exist, skip. | SMS |
+
+## Destinations
+
+hcgamerlife.org has no cart. Every new outbound link is the Shopify product. Do not link the .org homepage, `/quiz`, or the journal. URLs are from the copy kit on `cursor/shopify-destinations-b974`. `/go/<channel>` still 302s to Shopify if a short link was already used. Do not put a new short link in copy.
+
+Product: `https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible`
+
+- **Email 3:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=reviews-shipping
+- **Email 2:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=lastcall
+- **Gleam:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=gleam&utm_medium=giveaway&utm_campaign=gob-bf-2026
+- **RetailMeNot:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=retailmenot&utm_medium=coupon-site&utm_campaign=gob-bf-2026
+- **CouponBirds:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=couponbirds&utm_medium=coupon-site&utm_campaign=gob-bf-2026
+- **Dealspotr:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=dealspotr&utm_medium=coupon-site&utm_campaign=gob-bf-2026
+- **Knoji:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=knoji&utm_medium=coupon-site&utm_campaign=gob-bf-2026
+- **WeThrift:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=wethrift&utm_medium=coupon-site&utm_campaign=gob-bf-2026
+- **Honey:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=honey&utm_medium=coupon-site&utm_campaign=gob-bf-2026
+- **Reddit:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=reddit&utm_medium=social&utm_campaign=gob-bf-2026&utm_content=buildapcsales
+- **Creator:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=creator-{handle}&utm_medium=creator&utm_campaign=gob-bf-2026
+- **Coaches:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=coach&utm_medium=outreach&utm_campaign=gob-bf-2026&utm_content=bf70
+- **Lettergrowth:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=lettergrowth&utm_medium=newsletter&utm_campaign=gob-bf-2026
+- **Branduo:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=branduo&utm_medium=partner&utm_campaign=gob-bf-2026
+- **SMS:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=sms
+- **Google free listings:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=google&utm_medium=shopping&utm_campaign=gob-bf-2026
+
+Messaging automations, same product, not in that kit:
+
+- **Welcome:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=welcome
+- **Abandoned checkout:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=abandoned-checkout
+- **Abandoned cart:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=abandoned-cart
+- **Browse:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=browse
 
 ## Shopify Email 3 (assigned, not sent)
 
@@ -43,12 +71,10 @@ Dennis assigned this send to HCGL Growth on Nov 18, 2026. Do not send Email 1. T
 
 Checked Nov 18, 2026 (America/Chicago):
 
-- `https://hcgamerlife.org/go/email?c=reviews-shipping` returned HTTP 302 to the Shopify HCG1 product with `utm_campaign=gob-bf-2026` and `utm_content=reviews-shipping`.
-- `https://hcgamerlife.org/quiz` returned HTTP 200.
-- Email subscribers (`email_subscription_status = 'SUBSCRIBED'`, segment "Email subscribers"): **813**. The older ~710 figure is stale. No segment named for quiz contacts showed up. Use the Email subscribers segment.
+- Email subscribers (`email_subscription_status = 'SUBSCRIBED'`, segment "Email subscribers"): **813**. The older ~710 figure is stale. Use the Email subscribers segment.
 - Admin GraphQL cannot deliver a Shopify Email campaign. `marketingActivityCreate` only records an external marketing activity. It does not mail anyone. Gmail was not used. The connected app's marketing-activity list was empty, which does not prove whether Shopify Email itself has a draft.
 
-The campaign still has to be created in Shopify admin → Marketing → Shopify Email, to the Email subscribers segment. Paste the kit's Email 3. The October price in the squad sentence is the kit's comparison to the email they already received. It is not the current one-unit price.
+The campaign still has to be created in Shopify admin → Marketing → Shopify Email, to the Email subscribers segment. Paste the kit's Email 3. The CTA is the Shopify product. There is no quiz link. The October price in the squad sentence is the kit's comparison to the email they already received. It is not the current one-unit price.
 
 **Subject:** Shipping is free now. Here's what 485 Amazon reviews actually said.
 
@@ -67,9 +93,7 @@ If you are gearing a squad of 5 or more, code BF70 is about $39 each — lower t
 
 Codes end Nov 30, 2026 at 11:59 PM CT. BF60 and BF70 cannot be combined with other codes. Final stock. Sold without warranty. 30-day returns (you pay return shipping unless the unit is defective). Defective units replaced within 90 days.
 
-[See the reviews](https://hcgamerlife.org/go/email?c=reviews-shipping)
-
-Not sure if it fits your nights? [Four taps](https://hcgamerlife.org/quiz).
+[See the reviews](https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=reviews-shipping)
 
 Dennis
 HC GamerLife
@@ -83,7 +107,7 @@ Two flags before the send button:
 
 Coupon forms from the kit: https://www.retailmenot.com/submit · https://www.couponbirds.com/submit-coupon · https://marketplace.dealspotr.com/join/merchants · https://www.wethrift.com/submit
 
-Dealspotr's site returned HTTP 410/403 on Nov 18 (sell-through brief). The `/go/dealspotr` redirect works. Open the merchant form before submitting, and skip the site if it is still down. The kit does not list a Knoji form URL. Find the live submit page that day or skip Knoji. Do not self-post on Slickdeals.
+Dealspotr's site returned HTTP 410/403 on Nov 18 (sell-through brief). Open the merchant form before submitting, and skip the site if it is still down. The destination, if the form is up, is the Shopify URL above. The kit does not list a Knoji form URL. Find the live submit page that day or skip Knoji. Do not self-post on Slickdeals.
 
 Reddit: disclose "I work with HC GamerLife" in the first comment. Read the rules first. Possible subs in the kit: r/buildapcsales, r/headphones, r/BudgetAudiophile, r/GameSale. Skip any sub that bans vendor posts. Use flag (a) for the opener and flag (b) before the ratings sentence.
 
@@ -99,7 +123,7 @@ The kit itself stays as it is. These are the fixes to apply at send time.
 
 The Reddit draft opens with "We're closing, so this is final stock." That fights the Black Friday rule. Closing language belongs in the sale terms only.
 
-Do not use that opener. Use this instead, then the kit's spec, price, and terms paragraphs:
+Do not use that opener. Use this instead, then the kit's spec, price, and terms paragraphs. The buy link is the Shopify Reddit URL in Destinations, not a hcgamerlife.org short link.
 
 > I work with HC GamerLife.
 >
@@ -125,13 +149,13 @@ Growth does not edit the kit and does not click these on. Dennis pastes the repl
 
 These automations are a small lever. The checkout audit (Shopify `abandonedCheckouts`, Nov 18) found only 2 abandoned checkouts with contact info in 30 days, both for a $24.99 charging stand. Headset abandoners mostly never typed an email. Fix the words anyway.
 
-Checked Nov 18, 2026: each link below returned HTTP 302 with `utm_campaign=gob-bf-2026` and the content tag in the query string.
+Each link below is the Shopify product. Do not use a hcgamerlife.org short link in these automations.
 
 #### Welcome
 
 - **Subject:** Black Friday: HCG1 Pro about $52 with code BF60
 - **Preheader:** 60% off. 70% off 5 or more with BF70. Codes end Nov 30, 11:59 PM CT.
-- **Link:** https://hcgamerlife.org/go/email?c=welcome
+- **Link:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=welcome
 
 Hi {first_name},
 
@@ -147,7 +171,7 @@ Final stock. We are not restocking.
 
 Sold without warranty. 30-day returns (you pay return shipping unless the unit is defective, damaged, or wrong). Defective units replaced within 90 days.
 
-[Shop Black Friday](https://hcgamerlife.org/go/email?c=welcome)
+[Shop Black Friday](https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=welcome)
 
 HC GamerLife
 support@hcgamerlife.com
@@ -156,7 +180,7 @@ support@hcgamerlife.com
 
 - **Subject:** Your HCG1 Pro checkout is still open
 - **Preheader:** Black Friday: about $52 with BF60. Codes end Nov 30, 11:59 PM CT.
-- **Link:** https://hcgamerlife.org/go/email?c=abandoned-checkout
+- **Link:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=abandoned-checkout
 
 Hi {first_name},
 
@@ -168,7 +192,7 @@ Free shipping in the continental US (48 states and DC). Final stock. We are not 
 
 Sold without warranty. 30-day returns (you pay return shipping unless the unit is defective, damaged, or wrong). Defective units replaced within 90 days.
 
-[Finish checkout](https://hcgamerlife.org/go/email?c=abandoned-checkout)
+[Finish checkout](https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=abandoned-checkout)
 
 Questions: support@hcgamerlife.com
 
@@ -176,7 +200,7 @@ Questions: support@hcgamerlife.com
 
 - **Subject:** Your HCG1 Pro is still in the cart
 - **Preheader:** Black Friday code BF60 is about $52. BF70 is about $39 each on 5 or more.
-- **Link:** https://hcgamerlife.org/go/email?c=abandoned-cart
+- **Link:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=abandoned-cart
 
 Hi {first_name},
 
@@ -188,7 +212,7 @@ Free shipping in the continental US (48 states and DC). Final stock. We are not 
 
 Sold without warranty. 30-day returns (you pay return shipping unless the unit is defective, damaged, or wrong). Defective units replaced within 90 days.
 
-[Return to your cart](https://hcgamerlife.org/go/email?c=abandoned-cart)
+[Return to your cart](https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=abandoned-cart)
 
 Questions: support@hcgamerlife.com
 
@@ -196,7 +220,7 @@ Questions: support@hcgamerlife.com
 
 - **Subject:** Black Friday: the HCG1 Pro is about $52
 - **Preheader:** Code BF60. Five or more is about $39 each with BF70. Ends Nov 30, 11:59 PM CT.
-- **Link:** https://hcgamerlife.org/go/email?c=browse
+- **Link:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=browse
 
 Hi {first_name},
 
@@ -210,6 +234,6 @@ Final stock. We are not restocking.
 
 Sold without warranty. 30-day returns (you pay return shipping unless the unit is defective, damaged, or wrong). Defective units replaced within 90 days.
 
-[Shop Black Friday](https://hcgamerlife.org/go/email?c=browse)
+[Shop Black Friday](https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=email&utm_medium=email&utm_campaign=gob-bf-2026&utm_content=browse)
 
 Questions: support@hcgamerlife.com

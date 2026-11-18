@@ -61,7 +61,7 @@ Last 30 days, all traffic: desktop 227 sessions and 1 sale. Mobile 75 sessions a
 | Email | 10 | 2 | 20% |
 | Social | 4 | 0 | 0 |
 
-hcgamerlife.org was sending people to the .com product page without a UTM, so that traffic most likely sat in direct or unknown. Tracked `/go/` links are the fix, and they were live later on Nov 18. This table is from before that. Do not read it as the result of the new links.
+hcgamerlife.org was sending people to the .com product page without a UTM, so that traffic most likely sat in direct or unknown. This table is from before tracked links. New outbound uses the Shopify product URL with `utm_campaign=gob-bf-2026` directly. A `/go/` short link still 302s there if one was already used. Do not read this table as the result of those links.
 
 ### Suspicious international and bot traffic, 30 days
 
@@ -134,7 +134,7 @@ There is one checkout: native Shopify. The .org site is a landing page. The test
 - B: .com product page directly.
 - C, later: a cart permalink that skips the product page.
 
-`/go/<channel>` already adds `utm_source`, `utm_medium`, and `utm_campaign=gob-bf-2026`. Read it weekly:
+New buyer links are the Shopify product URL with `utm_source`, `utm_medium`, and `utm_campaign=gob-bf-2026`. Read those weekly:
 
 ```
 FROM sessions

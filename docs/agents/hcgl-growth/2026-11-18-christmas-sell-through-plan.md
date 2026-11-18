@@ -144,7 +144,7 @@ Estimates, not forecasts. Cost is dollars out of pocket, not free product.
 - **First three steps:**
   1. Dennis approves the install and the rate (the copy kit uses 15%).
   2. Turn open access off. Use the invite program only.
-  3. Invite streamers from idea 7. Landing link: `https://hcgamerlife.org/go/creator-{handle}`.
+  3. Invite streamers from idea 7. Landing link: `https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=creator-{handle}&utm_medium=creator&utm_campaign=gob-bf-2026`.
 - **Sources:** https://apps.shopify.com/collabs · https://help.shopify.com/en/manual/promoting-marketing/collabs · https://help.shopify.com/en/manual/promoting-marketing/collabs/merchants/recruiting-creators
 
 ### 9. Google free listings
@@ -155,7 +155,7 @@ Estimates, not forecasts. Cost is dollars out of pocket, not free product.
 - **First three steps:**
   1. Dennis confirms.
   2. Set GMC shipping to free for the continental US.
-  3. Create the promotion with destination free listings. Landing link: `https://hcgamerlife.org/go/google`.
+  3. Create the promotion with destination free listings. Landing link: `https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=google&utm_medium=shopping&utm_campaign=gob-bf-2026`.
 - **Sources:** https://support.google.com/merchants/answer/13422697 · https://support.google.com/merchants/answer/2906014
 
 ### 10. Source of Sources
@@ -198,7 +198,7 @@ Estimates, not forecasts. Cost is dollars out of pocket, not free product.
 - **Effort:** Low. **Risk:** Live viewers may be few. No product tags.
 - **First three steps:**
   1. Dennis picks a time and approves a Black Friday script.
-  2. Use `https://hcgamerlife.org/go/email?c=bf-launch` or a facebook content tag he approves. Checked pattern: `/go/email` 302s.
+  2. Put this in the comments: `https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible?utm_source=facebook&utm_medium=social&utm_campaign=gob-bf-2026`. Do not link hcgamerlife.org.
   3. Pin the comment with the code and the link.
 - **Sources:** Live Shopping shutdown: https://techcrunch.com/2022/08/03/facebook-shutting-down-live-shopping-feature-october/ · Follower figure: `2026-11-17-social-following.md`
 
