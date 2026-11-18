@@ -42,6 +42,41 @@ export const QUIZ_RESULT_OFFER = `The going-out-of-business sale is final stock.
 export const SHOPIFY_PRODUCT_URL =
   "https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible";
 
+/** Matches the campaign tag HCGL Growth uses in email and partner links. */
+export const GROWTH_CAMPAIGN = "gob-bf-2026";
+
+const CHANNEL_MEDIUM: Record<string, string> = {
+  slickdeals: "deal-site",
+  dealnews: "deal-site",
+  retailmenot: "coupon-site",
+  dealspotr: "coupon-site",
+  knoji: "coupon-site",
+  reddit: "social",
+  facebook: "social",
+  discord: "community",
+  google: "shopping",
+  ebay: "marketplace",
+  coach: "outreach",
+  club: "outreach",
+  press: "pr",
+  email: "email",
+  newsletter: "newsletter"
+};
+
+/** Tracked short link: /go/<channel>[?c=<content>] sends the shopper to Shopify with UTMs. */
+export function trackedShopifyUrl(channel: string, content?: string | null): string | null {
+  const source = channel.toLowerCase();
+  if (!/^[a-z0-9][a-z0-9-]{0,39}$/.test(source)) return null;
+  const medium = CHANNEL_MEDIUM[source] ?? (source.startsWith("creator-") ? "creator" : "referral");
+  const url = new URL(SHOPIFY_PRODUCT_URL);
+  url.searchParams.set("utm_source", source);
+  url.searchParams.set("utm_medium", medium);
+  url.searchParams.set("utm_campaign", GROWTH_CAMPAIGN);
+  const cleanContent = content?.toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 40);
+  if (cleanContent) url.searchParams.set("utm_content", cleanContent);
+  return url.toString();
+}
+
 export function shopifyCheckoutRedirect(): Response {
   return new Response(null, {
     status: 302,

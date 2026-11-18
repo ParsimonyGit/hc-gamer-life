@@ -6,7 +6,7 @@ import { handleStripeWebhook } from "./purchase/webhook.ts";
 import { handleQuizApi } from "./quiz/api.ts";
 import { renderQuizPage } from "./quiz/page.ts";
 import { AMAZON_EXCERPTS, AMAZON_LISTING_URL, AMAZON_RATING, AMAZON_RATING_COUNT, AMAZON_SNAPSHOT_LABEL, NAMED_REVIEWS } from "./proof.ts";
-import { BF60_CODE, BF70_CODE, BF_ENDS_LABEL, BUSINESS_ADDRESS, FAQ_PRICE_ANSWER, FAQ_PRICE_QUESTION, FAQ_SUPPORT_ANSWER, GOB_SALE_TERMS, HOME_META_DESCRIPTION, OFFER_PRICE, REGULAR_PRICE_LABEL, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL, shopifyCheckoutRedirect } from "./sale.ts";
+import { BF60_CODE, BF70_CODE, BF_ENDS_LABEL, BUSINESS_ADDRESS, FAQ_PRICE_ANSWER, FAQ_PRICE_QUESTION, FAQ_SUPPORT_ANSWER, GOB_SALE_TERMS, HOME_META_DESCRIPTION, OFFER_PRICE, REGULAR_PRICE_LABEL, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL, CONTACT_EMAIL, shopifyCheckoutRedirect, trackedShopifyUrl } from "./sale.ts";
 
 const MEDIA_SOURCES: Record<string, string> = {
   "product-hero": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-hero",
@@ -868,6 +868,8 @@ const PAGE = `<!doctype html>
       .review-grid { display: grid; gap: 15px; grid-template-columns: repeat(3, 1fr); }
       .review-card { background: var(--panel); border: 1px solid var(--line); border-radius: 4px 22px 4px 22px; margin: 0; padding: 22px; }
       .review-card figcaption { margin-bottom: 10px; }
+      .squad-title { font-size: clamp(2rem, 4vw, 3rem); margin: 0 0 12px; }
+      #squads { padding-top: 0; }
       .review-cta { align-items: center; display: flex; flex-wrap: wrap; gap: 20px; margin-top: 26px; }
       @media (max-width: 820px) {
         .buy-proof, .review-grid { grid-template-columns: 1fr; }
@@ -1048,6 +1050,21 @@ const PAGE = `<!doctype html>
             </tbody>
           </table></div>
           <p class="compare-note">HyperX includes more connection options and has a larger review base. Recon 70 usually costs less. Choose HCG1 when you want full-size drivers, a mic you can take off, and controls on the cord without paying for features you will not use. Comparing with a listening headphone like the Sennheiser HD 518? It is open-back with no built-in mic or controls. HCG1 includes both. Competitor specs from their Amazon product pages, ${AMAZON_SNAPSHOT_LABEL}.</p>
+        </section>
+
+        <section id="squads">
+          <div class="buy-proof">
+            <div class="buy-box">
+              <div class="eyebrow">Esports clubs · LAN nights · the whole squad</div>
+              <p class="buy-price"><strong>About $39 each</strong> with code ${BF70_CODE}</p>
+              <p class="buy-sub">Order 5 or more and code ${BF70_CODE} takes 70% off at Shopify checkout. Codes end ${BF_ENDS_LABEL}. Free shipping, continental US.</p>
+              <a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="proof-box">
+              <h2 class="squad-title">Gear up the whole team.</h2>
+              <p class="proof-note">One wired headset for every seat: 53mm drivers, a detachable mic for comms, and inline mute. No batteries to charge before practice. Ordering for a school team, club, or youth group and need more than our cart allows, or an invoice? Email <a class="text-link" href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>.</p>
+            </div>
+          </div>
         </section>
 
         <section id="reviews">
@@ -1514,6 +1531,14 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     /^\/[0-9a-f]{32}\.txt$/.test(url.pathname)
   ) {
     return servePublicAsset(request, env, url.pathname);
+  }
+  if (url.pathname.startsWith("/go/")) {
+    const target = trackedShopifyUrl(url.pathname.slice(4).replace(/\/+$/, ""), url.searchParams.get("c"));
+    if (!target) return new Response("Not found", { status: 404, headers: { "cache-control": "no-store" } });
+    return new Response(null, {
+      status: 302,
+      headers: { location: target, "cache-control": "no-store", "referrer-policy": "strict-origin-when-cross-origin" }
+    });
   }
   if (url.pathname === "/healthz") {
     return new Response(JSON.stringify({ ok: true, service: "hc-gamer-life" }), {

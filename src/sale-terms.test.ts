@@ -120,7 +120,7 @@ describe("Black Friday going-out-of-business sale copy", () => {
       assert.match(quiz, new RegExp(band.story.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
     }
     assert.match(home, new RegExp(shopifyHref));
-    assert.equal(home.match(new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`, "g"))?.length, 5);
+    assert.equal(home.match(new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`, "g"))?.length, 6);
     assert.match(quiz, new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`));
     assert.doesNotMatch(home, /Buy the HCG1 Pro/);
     assert.doesNotMatch(quiz, /Buy the HCG1 Pro/);
@@ -147,6 +147,24 @@ describe("Black Friday going-out-of-business sale copy", () => {
     assert.doesNotMatch(product + home.slice(home.indexOf('id="compare"'), home.indexOf('id="setup"')), /noise.cancel/i);
     const shopifyHref = SHOPIFY_PRODUCT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     assert.ok((home.match(new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`, "g"))?.length ?? 0) >= 5);
+  });
+
+  it("sends /go/<channel> links to Shopify with gob-bf-2026 UTMs", async () => {
+    const go = async (path: string) => worker.fetch(new Request(`https://hcgamerlife.org${path}`), env);
+    const deal = await go("/go/slickdeals?c=bf70");
+    assert.equal(deal.status, 302);
+    const target = new URL(deal.headers.get("location") ?? "");
+    assert.equal(`${target.origin}${target.pathname}`, SHOPIFY_PRODUCT_URL);
+    assert.equal(target.searchParams.get("utm_source"), "slickdeals");
+    assert.equal(target.searchParams.get("utm_medium"), "deal-site");
+    assert.equal(target.searchParams.get("utm_campaign"), "gob-bf-2026");
+    assert.equal(target.searchParams.get("utm_content"), "bf70");
+    const creator = new URL((await go("/go/creator-sample")).headers.get("location") ?? "");
+    assert.equal(creator.searchParams.get("utm_medium"), "creator");
+    assert.equal((await go("/go/Bad%20Channel!")).status, 404);
+    const home = await page("/");
+    assert.match(home, /id="squads"/);
+    assert.match(home, /About \$39 each<\/strong> with code BF70/);
   });
 
   it("redirects /checkout to Shopify and does not open a Stripe session", async () => {
