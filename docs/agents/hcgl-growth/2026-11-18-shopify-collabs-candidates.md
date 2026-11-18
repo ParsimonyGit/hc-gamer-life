@@ -1,7 +1,7 @@
 # Shopify Collabs creator tracker — HCG1 Holiday Creator Partners
 
 **Captured:** 2026-11-18 (America/Chicago)  
-**Source:** Shopify Collabs Recruiting, Electronics-category results  
+**Source:** Shopify Collabs Recruiting Electronics-category results plus a unique `gaming` search  
 **Store program:** HCG1 Holiday Creator Partners  
 **Program commission:** 20% per tracked sale  
 **Product destination:** https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible  
