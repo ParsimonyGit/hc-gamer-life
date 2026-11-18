@@ -18,7 +18,8 @@ The offer is live on Shopify (codes BF60 and BF70, both ACTIVE, HCG1 Pro only, e
 | Product list price $129.99, inventory 1,291 | Shopify product `gid://shopify/Product/1297442340935` |
 | Checkout URL | `https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible` |
 | Live Shopify theme | **HC GamerLife Trust+Hero 2026-11-18** (`gid://shopify/OnlineStoreTheme/161914454087`, role MAIN) |
-| Org sales pitch + `/go/<channel>` + `#squads` | PR #17, not merged |
+| Org sales pitch + `/go/<channel>` + `#squads` | PR #17, merged and live |
+| GOB demotion on hcgamerlife.org | PR #20, merged and live |
 
 The published Shopify theme already states: Black Friday BF60/BF70, free continental US shipping, ships from Idaho in 1–2 business days, sold without warranty. Homepage CTA is **Buy HCG1**. One homepage rich-text block still says "while supplies last"; that phrase is banned on hcgamerlife.org.
 
@@ -28,9 +29,9 @@ All ⛔ items need a yes on this PR before anyone sends or submits.
 
 ### A. Shopify Email to the ~710 subscribers and opted-in quiz contacts — ⛔ each send
 
-Paste the copy kit into Shopify Email. Do not send the Gmail drafts to the list. Gmail on this run is `tezlin007@gmail.com` and is not the list.
+Paste **Email 3** from the copy kit into Shopify Email. Do not send the Gmail drafts to the list. Gmail on this run is `tezlin007@gmail.com` and is not the list. Do **not** send Email 1 (it reruns the Oct 31 $40 closeout).
 
-1. Launch email now.
+1. Email 3 now: free shipping + Amazon reviews (new CTA).
 2. Last-call email the morning of Monday, Nov 30, 2026 (America/Chicago).
 
 ### B. Coupon and deal-code listings — ⛔ submit
