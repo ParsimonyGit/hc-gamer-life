@@ -9,11 +9,11 @@
 
 ## Dedupe rules
 
-Use the Shopify creator ID as the primary key. Before any future invite, search this file by creator ID and social URL. A creator may only move from `candidate` or `shortlisted-existing` to `invite-prepared` after the invitation copy is ready, and to `invited` only after Shopify confirms the invitation was actually sent. Never create a second row for the same creator ID or social URL.
+Use the Shopify creator ID as the primary key. Before any future invite, search this file by creator ID and social URL. A creator may only move from `candidate` or `shortlisted-existing` to `invite-prepared` after the invitation copy is ready, and to `invited` only after Shopify confirms the invitation was actually sent. Use `blocked` when the creator is visible in Recruiting but Shopify does not expose a usable profile route. Never create a second row for the same creator ID or social URL.
 
-Status values: `candidate`, `shortlisted-existing`, `invite-prepared`, `invited`, `accepted`, `declined`, `paused`, `not-fit`, `duplicate`.
+Status values: `candidate`, `shortlisted-existing`, `invite-prepared`, `invited`, `accepted`, `declined`, `paused`, `blocked`, `not-fit`, `duplicate`.
 
-The three earlier shortlists are deliberately marked `shortlisted-existing`; they were discussed but not invited in the observed workflow.
+The three earlier shortlists were included in the invitation pass and are now marked `invited` after Shopify confirmation.
 
 ## Coupon-aware invitation facts
 
@@ -33,58 +33,71 @@ Suggested invite copy:
 
 | Shopify ID | Creator | Platform | Public profile | Location | Visible categories | Reach shown | Fit | Request status |
 |---|---|---|---|---|---|---:|---|---|
-| 1551019 | Nathan Kehn | TikTok | [profile](https://www.tiktok.com/@nathanthecatlady) | United States | Animals & Pets; Electronics; Health & Wellness; Home; Toys & Gaming | 850K | A- | shortlisted-existing |
-| 64872 | Michael Myers | TikTok | [profile](https://www.tiktok.com/@mmamyers) | United States | Electronics; Sports & Fitness; Toys & Gaming | 381K | A | shortlisted-existing |
-| 102576 | David Jewell | TikTok | [profile](https://www.tiktok.com/@trappedinanime) | United States | Arts & Entertainment; Electronics; Toys & Gaming | 252K | A | shortlisted-existing |
-| 1457400 | Valerie Musser | Instagram | [profile](https://www.instagram.com/whosagoodlizard) | United States | Animals & Pets; Crafts & DIY; Electronics; Food & Drink; Home | 1.2M | B | candidate |
-| 1253300 | Giuseppina Cassenti | Instagram | [profile](https://www.instagram.com/venezolanos_por_espana) | Spain | Electronics; Health & Wellness; Home; Sports & Fitness; Travel | 442K | B | candidate |
-| 1237338 | Kennedy Rose | TikTok | [profile](https://www.tiktok.com/@cozy.games) | United States | Crafts & DIY; Electronics; Home; Technology; Toys & Gaming | 682K | A | candidate |
-| 2250976 | Phone Repair Guru | TikTok | [profile](https://www.tiktok.com/@phonerepairguru) | Canada | Electronics | 4.6M | A- | candidate |
-| 104069 | Roxie Skinner | Instagram | [profile](https://www.instagram.com/roxie_enchanted_rose) | United Kingdom | Beauty; Electronics; Fashion | 94K | C | candidate |
-| 633294 | Vinay Kumar Verma | Instagram | [profile](https://www.instagram.com/tech_on_trend) | India | Electronics; Technology; Travel | 7.3K | B- | candidate |
-| 261626 | James McCloy | TikTok | [profile](https://www.tiktok.com/@rc_air_shenanigans) | United States | Electronics; Technology; Toys & Gaming | 152K | A | candidate |
-| 144143 | Gannon Meyer | Instagram | [profile](https://www.instagram.com/gannon.meyer) | United States | Career & Entrepreneurship; Electronics | 206K | B | candidate |
-| 1296446 | Vanessa Love | Instagram | [profile](https://www.instagram.com/vanessa.the.valkyrie) | United States | Electronics; Fashion; Food & Drink; Photography; Travel | 103K | C+ | candidate |
-| 920591 | Tomi Awoderu | TikTok | [profile](https://www.tiktok.com/@techbymidas) | Canada | Electronics; Sports & Fitness; Technology | 603K | B+ | candidate |
-| 219344 | Matt Tran | Instagram | [profile](https://www.instagram.com/nvzion) | Not shown | Electronics; Photography; Technology | 256K | B | candidate |
-| 1190337 | Curious Programmer | Instagram | [profile](https://www.instagram.com/curious_.programmer) | India | Electronics; Finance; Home; Technology; Travel | 380K | B | candidate |
-| 148458 | Vincent Tse | TikTok | [profile](https://www.tiktok.com/@excessorizeme) | Canada | Electronics; Technology; Toys & Gaming | 697K | A | candidate |
-| 128157 | Lindsay Turford | Instagram | [profile](https://www.instagram.com/dazlincleaning) | United Kingdom | Electronics; Fashion; Home | 105K | C | candidate |
-| 1646406 | Andrew Blumer | Instagram | [profile](https://www.instagram.com/theblumers) | United States | Career & Entrepreneurship; Electronics; Parenting; Photography; Vehicles | 1.2M | B | candidate |
-| 385511 | Bridget Null | TikTok | [profile](https://www.tiktok.com/@bridget_529) | United States | Beauty; Electronics; Fashion; Home; Travel | 742K | C+ | candidate |
-| 2004340 | Descuentos Rata | Instagram | [profile](https://www.instagram.com/descuentosrata) | Chile | Beauty; Electronics; Fashion; Technology; Toys & Gaming | 657K | A- | candidate |
-| 1765406 | Robert Sauter | Instagram | [profile](https://www.instagram.com/robertredbeardmtg) | United States | Arts & Entertainment; Electronics; Toys & Gaming | 94K | A- | candidate |
-| 1592941 | Nicholas Wong | Instagram | [profile](https://www.instagram.com/laakeawong) | United States | Arts & Entertainment; Beauty; Electronics; Fashion; Vehicles | 156K | C+ | candidate |
-| 1017336 | Andrew Adedeji | Instagram | [profile](https://www.instagram.com/theflightdoc) | Australia | Electronics; Technology; Toys & Gaming | 118K | A- | candidate |
-| 39499 | Christina astronuggie | Instagram | [profile](https://www.instagram.com/astronuggie) | Canada | Electronics; Home; Toys & Gaming | 133K | A- | candidate |
-| 332399 | Thomas Palacios | TikTok | [profile](https://www.tiktok.com/@magicwiththomas) | United States | Electronics; Toys & Gaming; Travel | 874K | A | candidate |
-| 237214 | Ashley Brown | TikTok | [profile](https://www.tiktok.com/@braiderbae) | United States | Beauty; Electronics; Fashion | 349K | C+ | candidate |
-| 944107 | Kristofer Adams | Instagram | [profile](https://www.instagram.com/tofer.a) | United States | Electronics | 266K | B- | candidate |
-| 913786 | Manuel Agostini | Instagram | [profile](https://www.instagram.com/manuel_agostini) | Italy | Electronics; Photography; Technology; Travel; Vehicles | 134K | B | candidate |
-| 547214 | Mattia Di Lisio | Instagram | [profile](https://www.instagram.com/matdilisio) | Spain | Electronics; Home; Technology | 347K | B | candidate |
-| 716828 | Mohammed Nabeel Nawab | Instagram | [profile](https://www.instagram.com/nawabnabeel) | India | Electronics; Technology | 399K | B | candidate |
-| 1324466 | Rachel Allen | TikTok | [profile](https://www.tiktok.com/@mrs.allen.81) | United States | Arts & Entertainment; Electronics; Home; Photography; Technology | 222K | B | candidate |
-| 1002599 | adrian bello | TikTok | [profile](https://www.tiktok.com/@adrianbrmusic) | United States | Electronics; Fashion; Health & Wellness; Photography; Technology | 501K | B | candidate |
-| 1206377 | Nolan Perkins | TikTok | [profile](https://www.tiktok.com/@radnolan) | United States | Arts & Entertainment; Career & Entrepreneurship; Electronics; Technology; Toys & Gaming | 350K | A | candidate |
-| 1176650 | Nikolas Roumell | Facebook | [profile](https://www.facebook.com/101057202663054) | United States | Arts & Entertainment; Electronics; Technology | 269K | B | candidate |
-| 1910649 | Mohamed Matar | Instagram | [profile](https://www.instagram.com/imohamedmatar) | Lebanon | Arts & Entertainment; Electronics; Fashion; Technology; Toys & Gaming | 118K | A- | candidate |
-| 2345512 | Jeff Chang | Instagram | [profile](https://www.instagram.com/theapartmentphoto) | Canada | Electronics; Home; Photography; Technology; Travel | 294K | B | candidate |
-| 2503941 | Joey Lens | Instagram | [profile](https://www.instagram.com/back_by_dope_demand_vinyl) | Netherlands | Arts & Entertainment; Electronics | 61K | C+ | candidate |
-| 1085477 | Dan Baynton | Instagram | [profile](https://www.instagram.com/milwaukee_tool_addict) | United States | Arts & Entertainment; Crafts & DIY; Electronics; Photography; Technology | 378K | B | candidate |
-| 134464 | Steve Porter | Facebook | [profile](https://www.facebook.com/1394635077450140) | United States | Crafts & DIY; Electronics; Technology | 877K | B | candidate |
-| 722523 | Tony Berardo | Instagram | [profile](https://www.instagram.com/theberardo) | United States | Electronics; Toys & Gaming; Travel | 107K | A- | candidate |
-| 111903 | DeMarco Lemons | TikTok | [profile](https://www.tiktok.com/@marcorocko_1) | United States | Electronics; Food & Drink; Sports & Fitness | 128K | B- | candidate |
-| 1131345 | Swapera Agency | TikTok | [profile](https://www.tiktok.com/@swapera) | Romania | Arts & Entertainment; Electronics; Technology; Travel; Vehicles | 225K | B | candidate |
-| 1059791 | Shannon Head | Instagram | [profile](https://www.instagram.com/restlesscrusade) | Canada | Electronics; Food & Drink; Parenting; Sports & Fitness; Travel | 76K | C+ | candidate |
-| 1885557 | Iris Rubio | Instagram | [profile](https://www.instagram.com/gamyris) | Spain | Electronics; Food & Drink; Technology | 246K | B | candidate |
-| 772188 | Leona Szeto | TikTok | [profile](https://www.tiktok.com/@cloudnoela) | Canada | Electronics; Technology; Toys & Gaming | 94K | A- | candidate |
-| 557011 | Rodrigo Ponce | Twitch | [profile](https://www.twitch.tv/drigo) | Argentina | Electronics; Technology; Toys & Gaming | 623K | A | candidate |
-| 1701921 | Jocelyn Aspa | Instagram | [profile](https://www.instagram.com/coolgalreading) | Canada | Arts & Entertainment; Electronics | 80K | C+ | candidate |
-| 1258542 | Lyn Katada | Instagram | [profile](https://www.instagram.com/small.vroom) | United States | Arts & Entertainment; Beauty; Electronics; Technology; Vehicles | 146K | B- | candidate |
+| 1551019 | Nathan Kehn | TikTok | [profile](https://www.tiktok.com/@nathanthecatlady) | United States | Animals & Pets; Electronics; Health & Wellness; Home; Toys & Gaming | 850K | A- |invited|
+| 64872 | Michael Myers | TikTok | [profile](https://www.tiktok.com/@mmamyers) | United States | Electronics; Sports & Fitness; Toys & Gaming | 381K | A |invited|
+| 102576 | David Jewell | TikTok | [profile](https://www.tiktok.com/@trappedinanime) | United States | Arts & Entertainment; Electronics; Toys & Gaming | 252K | A |invited|
+| 1457400 | Valerie Musser | Instagram | [profile](https://www.instagram.com/whosagoodlizard) | United States | Animals & Pets; Crafts & DIY; Electronics; Food & Drink; Home | 1.2M | B |invited|
+| 1253300 | Giuseppina Cassenti | Instagram | [profile](https://www.instagram.com/venezolanos_por_espana) | Spain | Electronics; Health & Wellness; Home; Sports & Fitness; Travel | 442K | B |invited|
+| 1237338 | Kennedy Rose | TikTok | [profile](https://www.tiktok.com/@cozy.games) | United States | Crafts & DIY; Electronics; Home; Technology; Toys & Gaming | 682K | A |blocked|
+| 2250976 | Phone Repair Guru | TikTok | [profile](https://www.tiktok.com/@phonerepairguru) | Canada | Electronics | 4.6M | A- |invited|
+| 104069 | Roxie Skinner | Instagram | [profile](https://www.instagram.com/roxie_enchanted_rose) | United Kingdom | Beauty; Electronics; Fashion | 94K | C |invited|
+| 633294 | Vinay Kumar Verma | Instagram | [profile](https://www.instagram.com/tech_on_trend) | India | Electronics; Technology; Travel | 7.3K | B- |invited|
+| 261626 | James McCloy | TikTok | [profile](https://www.tiktok.com/@rc_air_shenanigans) | United States | Electronics; Technology; Toys & Gaming | 152K | A |invited|
+| 144143 | Gannon Meyer | Instagram | [profile](https://www.instagram.com/gannon.meyer) | United States | Career & Entrepreneurship; Electronics | 206K | B |invited|
+| 1296446 | Vanessa Love | Instagram | [profile](https://www.instagram.com/vanessa.the.valkyrie) | United States | Electronics; Fashion; Food & Drink; Photography; Travel | 103K | C+ |invited|
+| 920591 | Tomi Awoderu | TikTok | [profile](https://www.tiktok.com/@techbymidas) | Canada | Electronics; Sports & Fitness; Technology | 603K | B+ |invited|
+| 219344 | Matt Tran | Instagram | [profile](https://www.instagram.com/nvzion) | Not shown | Electronics; Photography; Technology | 256K | B |invited|
+| 1190337 | Curious Programmer | Instagram | [profile](https://www.instagram.com/curious_.programmer) | India | Electronics; Finance; Home; Technology; Travel | 380K | B |invited|
+| 148458 | Vincent Tse | TikTok | [profile](https://www.tiktok.com/@excessorizeme) | Canada | Electronics; Technology; Toys & Gaming | 697K | A |invited|
+| 128157 | Lindsay Turford | Instagram | [profile](https://www.instagram.com/dazlincleaning) | United Kingdom | Electronics; Fashion; Home | 105K | C |invited|
+| 1646406 | Andrew Blumer | Instagram | [profile](https://www.instagram.com/theblumers) | United States | Career & Entrepreneurship; Electronics; Parenting; Photography; Vehicles | 1.2M | B |invited|
+| 385511 | Bridget Null | TikTok | [profile](https://www.tiktok.com/@bridget_529) | United States | Beauty; Electronics; Fashion; Home; Travel | 742K | C+ |invited|
+| 2004340 | Descuentos Rata | Instagram | [profile](https://www.instagram.com/descuentosrata) | Chile | Beauty; Electronics; Fashion; Technology; Toys & Gaming | 657K | A- |invited|
+| 1765406 | Robert Sauter | Instagram | [profile](https://www.instagram.com/robertredbeardmtg) | United States | Arts & Entertainment; Electronics; Toys & Gaming | 94K | A- |invited|
+| 1592941 | Nicholas Wong | Instagram | [profile](https://www.instagram.com/laakeawong) | United States | Arts & Entertainment; Beauty; Electronics; Fashion; Vehicles | 156K | C+ |invited|
+| 1017336 | Andrew Adedeji | Instagram | [profile](https://www.instagram.com/theflightdoc) | Australia | Electronics; Technology; Toys & Gaming | 118K | A- |invited|
+| 39499 | Christina astronuggie | Instagram | [profile](https://www.instagram.com/astronuggie) | Canada | Electronics; Home; Toys & Gaming | 133K | A- |invited|
+| 332399 | Thomas Palacios | TikTok | [profile](https://www.tiktok.com/@magicwiththomas) | United States | Electronics; Toys & Gaming; Travel | 874K | A |invited|
+| 237214 | Ashley Brown | TikTok | [profile](https://www.tiktok.com/@braiderbae) | United States | Beauty; Electronics; Fashion | 349K | C+ |invited|
+| 944107 | Kristofer Adams | Instagram | [profile](https://www.instagram.com/tofer.a) | United States | Electronics | 266K | B- |invited|
+| 913786 | Manuel Agostini | Instagram | [profile](https://www.instagram.com/manuel_agostini) | Italy | Electronics; Photography; Technology; Travel; Vehicles | 134K | B |invited|
+| 547214 | Mattia Di Lisio | Instagram | [profile](https://www.instagram.com/matdilisio) | Spain | Electronics; Home; Technology | 347K | B |invited|
+| 716828 | Mohammed Nabeel Nawab | Instagram | [profile](https://www.instagram.com/nawabnabeel) | India | Electronics; Technology | 399K | B |invited|
+| 1324466 | Rachel Allen | TikTok | [profile](https://www.tiktok.com/@mrs.allen.81) | United States | Arts & Entertainment; Electronics; Home; Photography; Technology | 222K | B |invited|
+| 1002599 | adrian bello | TikTok | [profile](https://www.tiktok.com/@adrianbrmusic) | United States | Electronics; Fashion; Health & Wellness; Photography; Technology | 501K | B |invited|
+| 1206377 | Nolan Perkins | TikTok | [profile](https://www.tiktok.com/@radnolan) | United States | Arts & Entertainment; Career & Entrepreneurship; Electronics; Technology; Toys & Gaming | 350K | A |invited|
+| 1176650 | Nikolas Roumell | Facebook | [profile](https://www.facebook.com/101057202663054) | United States | Arts & Entertainment; Electronics; Technology | 269K | B |invited|
+| 1910649 | Mohamed Matar | Instagram | [profile](https://www.instagram.com/imohamedmatar) | Lebanon | Arts & Entertainment; Electronics; Fashion; Technology; Toys & Gaming | 118K | A- |invited|
+| 2345512 | Jeff Chang | Instagram | [profile](https://www.instagram.com/theapartmentphoto) | Canada | Electronics; Home; Photography; Technology; Travel | 294K | B |invited|
+| 2503941 | Joey Lens | Instagram | [profile](https://www.instagram.com/back_by_dope_demand_vinyl) | Netherlands | Arts & Entertainment; Electronics | 61K | C+ |invited|
+| 1085477 | Dan Baynton | Instagram | [profile](https://www.instagram.com/milwaukee_tool_addict) | United States | Arts & Entertainment; Crafts & DIY; Electronics; Photography; Technology | 378K | B |invited|
+| 134464 | Steve Porter | Facebook | [profile](https://www.facebook.com/1394635077450140) | United States | Crafts & DIY; Electronics; Technology | 877K | B |blocked|
+| 722523 | Tony Berardo | Instagram | [profile](https://www.instagram.com/theberardo) | United States | Electronics; Toys & Gaming; Travel | 107K | A- |invited|
+| 111903 | DeMarco Lemons | TikTok | [profile](https://www.tiktok.com/@marcorocko_1) | United States | Electronics; Food & Drink; Sports & Fitness | 128K | B- |invited|
+| 1131345 | Swapera Agency | TikTok | [profile](https://www.tiktok.com/@swapera) | Romania | Arts & Entertainment; Electronics; Technology; Travel; Vehicles | 225K | B |invited|
+| 1059791 | Shannon Head | Instagram | [profile](https://www.instagram.com/restlesscrusade) | Canada | Electronics; Food & Drink; Parenting; Sports & Fitness; Travel | 76K | C+ |invited|
+| 1885557 | Iris Rubio | Instagram | [profile](https://www.instagram.com/gamyris) | Spain | Electronics; Food & Drink; Technology | 246K | B |invited|
+| 772188 | Leona Szeto | TikTok | [profile](https://www.tiktok.com/@cloudnoela) | Canada | Electronics; Technology; Toys & Gaming | 94K | A- |invited|
+| 557011 | Rodrigo Ponce | Twitch | [profile](https://www.twitch.tv/drigo) | Argentina | Electronics; Technology; Toys & Gaming | 623K | A |invited|
+| 1701921 | Jocelyn Aspa | Instagram | [profile](https://www.instagram.com/coolgalreading) | Canada | Arts & Entertainment; Electronics | 80K | C+ |invited|
+| 1258542 | Lyn Katada | Instagram | [profile](https://www.instagram.com/small.vroom) | United States | Arts & Entertainment; Beauty; Electronics; Technology; Vehicles | 146K | B- |invited|
 
-| 2657276 | Retronaut Gaming | Not shown | Not shown in result | United States | Arts & Entertainment; Electronics; Photography; Technology; Toys & Gaming | Not shown | A- | candidate |
-| 2341033 | Patrick Cushing | TikTok | [profile](https://www.tiktok.com/@cushgaming) | United States | Not shown | 35K | A- | candidate |
+| 2657276 | Retronaut Gaming | Not shown | Not shown in result | United States | Arts & Entertainment; Electronics; Photography; Technology; Toys & Gaming | Not shown | A- |invited|
+| 2341033 | Patrick Cushing | TikTok | [profile](https://www.tiktok.com/@cushgaming) | United States | Not shown | 35K | A- |invited|
+
+
+| 400014 | Paul Antill | YouTube | [Collabs profile](https://admin.shopify.com/store/hc-gamerlife/apps/collabs/embedded/creators/400014) | United States | Electronics; Photography; Technology; Toys & Gaming; Travel | 7.2K YouTube subscribers; 2.7K social | B | invited |
+| 2243926 | Marshall Foster | YouTube; Instagram | [Collabs profile](https://admin.shopify.com/store/hc-gamerlife/apps/collabs/embedded/creators/2243926) | United Kingdom | Electronics; Tech | 108K Instagram; 63K YouTube subscribers | B | invited |
+
+## Invitation outcome — 2026-11-18
+
+Shopify Collabs confirmed 50 pending invitations for **HCG1 Holiday Creator Partners** at 20% commission:
+
+- 48 invitations matched creator IDs already in this tracker.
+- Two replacement invitations were confirmed for Paul Antill (400014) and Marshall Foster (2243926).
+- Kennedy Rose (1237338) and Steve Porter (134464) remained visible in Recruiting, but their creator-profile routes redirected to Connections during the observed attempt. No invitation was confirmed for either, so both are marked `blocked`.
+- The invitation message included BF60, BF70, the November 30, 2026 deadline, free continental-US shipping, and the no-warranty/returns language.
 
 ## Operating note
 
-This is a research and dedupe tracker, not proof that an invitation was sent. Update the row only after checking Shopify Collabs and record the date, exact status, and any response. The next operational pass should prioritize Fit A/A- creators, then broader Electronics/Technology creators, while preserving this list as the source of truth.
+This is a research and dedupe tracker with a checked invitation outcome section. Update each row only after checking Shopify Collabs and record the exact status and any response. The next operational pass should prioritize Fit A/A- creators, then broader Electronics/Technology creators, while preserving this list as the source of truth.
