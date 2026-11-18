@@ -2,7 +2,7 @@
 
 This folder is for the HCGL Growth Grok bot. It should open its own branch and pull request for each plan (Gleam, Lettergrowth, Branduo, Shopify Email). Do not edit hcgamerlife.org storefront files from Growth PRs unless the storefront agent reviews that change.
 
-**Do not send or submit until** [PR #17](https://github.com/ParsimonyGit/hc-gamer-life/pull/17) is on `main` and `/go/` links 302. Follow [`../ORCHESTRATOR.md`](../ORCHESTRATOR.md). Do not recreate BF60/BF70. Do not publish `DennisSimonson/hc-gamer-life-game`.
+**#17 is on `main`. `/go/` is live.** Follow [`../ORCHESTRATOR.md`](../ORCHESTRATOR.md). Do not recreate BF60/BF70. Do not publish `DennisSimonson/hc-gamer-life-game`. Do **not** send Shopify Email 1 (closeout rerun). Next list send is Email 3 in the copy kit (free shipping + Amazon reviews). Paste in Shopify Email; do not send from Gmail.
 
 ## What this agent should replace immediately
 

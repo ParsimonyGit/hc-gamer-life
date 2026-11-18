@@ -11,11 +11,12 @@
 | Order | Surface | Git repo? | Owner | Status Nov 18 |
 |---|---|---|---|---|
 | 0 | Shopify discounts BF60 / BF70 | No. Shopify Admin only. | Orchestrator / Dennis | **Live.** Do not recreate. |
-| 1 | Shopify theme **HC GamerLife Trust+Hero 2026-11-18** | No. Shopify theme, not git. | Shopify theme agent (Codex QA may propose; one agent applies) | **Published.** Do not publish a second live theme. |
-| 2 | Agent proposal docs | `ParsimonyGit/hc-gamer-life` → `docs/agents/<agent-id>/` | Each agent, own PR | **This PR (#18)** is the convention. Merge before other docs folders if they conflict. |
-| 3 | hcgamerlife.org Worker (sales pitch, `/go/` links, `#squads`) | `ParsimonyGit/hc-gamer-life` only | Storefront agent (this run) | **PR #17**, not merged. This is the next git publish. |
-| 4 | Outbound (email, coupons, Gleam, Collabs, Reddit) | No git. Copy lives in `docs/agents/`. Sends happen after #17 is live so `/go/` URLs resolve. | HCGL Growth | Not started. Growth opens its own PR under `docs/agents/hcgl-growth/`. |
-| 5 | Google Merchant Center / Amazon B07BHYZFLF | No git | Dennis + Growth | Not started. After #17, not instead of it. |
+| 1 | Shopify theme **HC GamerLife Trust+Hero 2026-11-18** | No. Shopify theme, not git. | Shopify theme agent | **Published** (`gid://shopify/OnlineStoreTheme/161914454087`). Do not publish a second live theme until Dennis says yes. |
+| 1b | Unpublished **HC GamerLife Holiday Copy 2026-11-18** | No. Shopify theme. | Orchestrator applied #19 copy | **Ready, not live** (`gid://shopify/OnlineStoreTheme/161920581703`). Dennis must `theme_publish`. |
+| 2 | Agent proposal docs | `ParsimonyGit/hc-gamer-life` → `docs/agents/<agent-id>/` | Each agent, own PR | **#18 merged.** Copy kit Email 3 is on `main` via #22. |
+| 3 | hcgamerlife.org Worker (sales pitch, `/go/` links, GOB demotion) | `ParsimonyGit/hc-gamer-life` only | Storefront agent | **#17 and #20 merged and live.** Topline is Black Friday / in stock now. |
+| 4 | Outbound (email, coupons, Gleam, Collabs, Reddit) | No git. Copy lives in `docs/agents/`. | HCGL Growth | `/go/` is live. Growth still owes `docs/agents/hcgl-growth/`. Honey listing email sent from `tezlin007@gmail.com` (cannot send as `dennis@`). Shopify Email still needs Dennis to paste Email 3. |
+| 5 | Google Merchant Center / Amazon B07BHYZFLF | No git | Dennis | HCG1 Pro is **already published** to the Shopify Google & YouTube channel. Remaining: Merchant Center free listings + BF60 promotion in admin, and Amazon Seller Central reactivate. |
 
 ## Do not publish these for this campaign
 
@@ -29,26 +30,25 @@
 
 | PR | Agent | Merge? |
 |---|---|---|
-| [#18](https://github.com/ParsimonyGit/hc-gamer-life/pull/18) | Storefront / orchestrator | Docs convention. Safe to merge first (Worker code unchanged). |
-| [#17](https://github.com/ParsimonyGit/hc-gamer-life/pull/17) | Storefront | Next Worker publish. After #18 if both land. |
-| [#19](https://github.com/ParsimonyGit/hc-gamer-life/pull/19) | Codex (ChatGPT connector) | Proposal only. Do **not** treat as a second coupon kit. Move later files to `docs/agents/codex/`. Do not merge until it uses that folder and does not duplicate #18 copy. |
+| #16 #17 #18 #20 #22 | Storefront / orchestrator | **Merged.** |
+| [#19](https://github.com/ParsimonyGit/hc-gamer-life/pull/19) | Codex (ChatGPT connector) | Proposal only. Copy already applied on unpublished Holiday Copy theme. Do **not** merge as a second coupon kit. |
 | #8 #9 #10 | Older Grok storefront work | **Do not merge** during BF60/BF70. |
 
 ## Who writes where
 
 | Agent | Writes | Does not write |
 |---|---|---|
-| Storefront / orchestrator | `src/` on hc-gamer-life, `docs/agents/hcgamerlife-org/`, this file | Shopify theme files, Gleam, Shopify Email sends |
-| HCGL Growth | `docs/agents/hcgl-growth/` only, then sends after #17 is live | `src/`, Shopify theme, recreating BF60/BF70 |
-| Codex / theme QA | `docs/agents/codex/` for QA notes; unpublished Shopify theme duplicates if Dennis assigns theme work | Worker `src/`, a second live theme, coupon listings already in #18 |
+| Storefront / orchestrator | `src/` on hc-gamer-life, `docs/agents/hcgamerlife-org/`, this file | Live Shopify theme publish, Gleam, Shopify Email sends |
+| HCGL Growth | `docs/agents/hcgl-growth/` only, then sends | `src/`, Shopify theme, recreating BF60/BF70, Shopify Email 1 |
+| Codex / theme QA | `docs/agents/codex/` for QA notes | Worker `src/`, a second live theme, coupon listings already in #18 |
 | Anyone else | A new `docs/agents/<id>/` PR | Direct `main`, live Shopify theme, `$40` copy |
 
-## After #17 is on `main`
+## After #17 is on `main` (done)
 
-1. Confirm `https://hcgamerlife.org/go/email` 302s to Shopify with `utm_campaign=gob-bf-2026`.
-2. Growth may send Shopify Email and submit coupon listings from the copy kit in #18.
-3. Theme copy fixes (GOB demotion, non-stacking line, timezone) go through one unpublished Shopify theme, then one publish. Not through the Worker.
+1. `https://hcgamerlife.org/go/email` 302s to Shopify with `utm_campaign=gob-bf-2026`. **Verified.**
+2. Next Shopify Email is **Email 3** (reviews + free shipping), not Email 1. Paste in Shopify Email. Do not send from Gmail.
+3. Theme copy fixes sit on unpublished Holiday Copy. One publish, after Dennis yes.
 
 ## Offer facts (all agents)
 
-Regular $129.99. BF60 ~$52. BF70 ~$39 each on 5+. Codes end Nov 30, 2026, 11:59 PM CT. Free continental US shipping. Sold without warranty. 30-day returns. 90-day defect replacement. No `$40`. No 2-year guarantee.
+Regular $129.99. BF60 ~$52. BF70 ~$39 each on 5+. Codes end Nov 30, 2026, 11:59 PM CT. Free continental US shipping. Sold without warranty. 30-day returns. 90-day defect replacement. No `$40`. No 2-year guarantee. Do not lead with going-out-of-business; keep it in terms/FAQ.
