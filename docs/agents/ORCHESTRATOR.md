@@ -46,8 +46,8 @@
 
 ## After #17 is on `main` (done)
 
-1. `https://hcgamerlife.org/go/email` 302s to Shopify with `utm_campaign=gob-bf-2026`. **Verified.**
-2. Next Shopify Email is **Email 3** (reviews + free shipping), not Email 1. **HCGL Growth sends it** in Shopify Email. Do not send from Gmail. Assignment is on [PR #21](https://github.com/ParsimonyGit/hc-gamer-life/pull/21).
+1. `https://hcgamerlife.org/go/email` 302s to Shopify with `utm_campaign=gob-bf-2026`. **Verified.** Published copy should use the Shopify product URL with those UTMs, not the .org homepage. .org has no cart.
+2. Next Shopify Email is **Email 3** (reviews + free shipping), not Email 1. **HCGL Growth sends it** in Shopify Email, CTA to hcgamerlife.com. Do not send from Gmail. Assignment is on [PR #21](https://github.com/ParsimonyGit/hc-gamer-life/pull/21).
 3. Theme copy fixes sit on unpublished Holiday Copy. One publish, after Dennis yes.
 
 ## Offer facts (all agents)

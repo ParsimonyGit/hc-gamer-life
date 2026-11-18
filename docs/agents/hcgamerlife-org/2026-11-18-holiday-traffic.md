@@ -36,7 +36,7 @@ All ⛔ items need a yes on this PR before anyone sends or submits.
 
 ### B. Coupon and deal-code listings — ⛔ submit
 
-RetailMeNot, CouponBirds, Dealspotr, Knoji, WeThrift. Public codes only. Destination URLs use `/go/<site>` after PR #17 deploys; until then, the Shopify product URL with the same UTMs.
+RetailMeNot, CouponBirds, Dealspotr, Knoji, WeThrift. Public codes only. Destination is the Shopify product URL with UTMs (hcgamerlife.com). Do not send coupon traffic to hcgamerlife.org; that site has no cart. `/go/<site>` still 302s if a short link is needed.
 
 Honey: email `deals@joinhoney.com` from `dennis@hcgamerlife.com`.
 
@@ -66,7 +66,7 @@ Listing is "Currently unavailable" and still shows 4.2★ from 485 ratings (Nov 
 
 Campaign tag, shared with HCGL Growth: `utm_campaign=gob-bf-2026`.
 
-After PR #17: `https://hcgamerlife.org/go/<channel>?c=<content>` 302s to Shopify with `utm_source`, `utm_medium`, and that campaign.
+Published destinations: `https://www.hcgamerlife.com/products/gaming-headset-xbox-one-ps4-pc-mobile-compatible` plus `utm_source`, `utm_medium`, and that campaign. `/go/<channel>?c=<content>` still 302s there. Do not land buyers on hcgamerlife.org.
 
 Measure daily in Shopify: sessions by `utm_campaign=gob-bf-2026`, orders using BF60 vs BF70, units per order. Recompute any units/day target; Growth's 54/day figure was for the retired $40 price. Do not publish a unit count until the IWS 1,300 vs 1,530 question is closed.
 

@@ -54,6 +54,9 @@ const CHANNEL_MEDIUM: Record<string, string> = {
   retailmenot: "coupon-site",
   dealspotr: "coupon-site",
   knoji: "coupon-site",
+  couponbirds: "coupon-site",
+  honey: "coupon-site",
+  wethrift: "coupon-site",
   reddit: "social",
   facebook: "social",
   discord: "community",
@@ -63,7 +66,11 @@ const CHANNEL_MEDIUM: Record<string, string> = {
   club: "outreach",
   press: "pr",
   email: "email",
-  newsletter: "newsletter"
+  newsletter: "newsletter",
+  lettergrowth: "newsletter",
+  gleam: "giveaway",
+  branduo: "partner",
+  "hcgamerlife-org": "website"
 };
 
 /** Tracked short link: /go/<channel>[?c=<content>] sends the shopper to Shopify with UTMs. */
@@ -79,6 +86,10 @@ export function trackedShopifyUrl(channel: string, content?: string | null): str
   if (cleanContent) url.searchParams.set("utm_content", cleanContent);
   return url.toString();
 }
+
+/** Buy buttons on hcgamerlife.org. Checkout is Shopify; this site has no cart. */
+export const ORG_HOME_CHECKOUT_URL = trackedShopifyUrl("hcgamerlife-org", "home")!;
+export const ORG_QUIZ_CHECKOUT_URL = trackedShopifyUrl("hcgamerlife-org", "quiz")!;
 
 export function shopifyCheckoutRedirect(): Response {
   return new Response(null, {

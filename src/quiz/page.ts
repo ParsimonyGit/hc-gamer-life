@@ -1,5 +1,5 @@
 import { clientConfig } from "./data.ts";
-import { BF60_CODE, HOLIDAY_TOPLINE, OFFER_PRICE, QUIZ_LEDE, QUIZ_META_DESCRIPTION, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL } from "../sale.ts";
+import { BF60_CODE, HOLIDAY_TOPLINE, OFFER_PRICE, ORG_QUIZ_CHECKOUT_URL, QUIZ_LEDE, QUIZ_META_DESCRIPTION, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL } from "../sale.ts";
 
 const SITE_URL = "https://hcgamerlife.org";
 const SEO_IMAGE = `${SITE_URL}/brand/og.jpg`;
@@ -543,8 +543,7 @@ const RUNTIME = `(() => {
           <ul class="promises">\${promises}</ul>
           <p class="saved">Profile unlocked. You are on the HCG1 list.</p>
           <div class="cta-row">
-            <a class="button" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} →</a>
-            <a class="button button-quiet" href="/#product">Meet the HCG1 Pro</a>
+            <a class="button" href="${ORG_QUIZ_CHECKOUT_URL}">${SHOP_CTA_LABEL} →</a>
             <button class="back" type="button" data-action="retake">Retake quiz</button>
           </div>
         </div>
@@ -697,7 +696,7 @@ export function renderQuizPage(): Response {
     <div class="shell">
       <header>
         <a class="brand" href="/" aria-label="HC GamerLife home"><span class="brand-mark">HC</span> GAMERLIFE</a>
-        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="${ORG_QUIZ_CHECKOUT_URL}">${SHOP_CTA_LABEL}</a>
       </header>
       <div class="progress-wrap hidden" id="progress-wrap">
         <div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
