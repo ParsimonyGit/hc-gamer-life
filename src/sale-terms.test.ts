@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import worker from "./index.ts";
+import { AMAZON_EXCERPTS, AMAZON_LISTING_URL, NAMED_REVIEWS } from "./proof.ts";
 import { BANDS } from "./quiz/data.ts";
 import { GOB_SALE_TERMS, HOME_META_DESCRIPTION, OFFER_PRICE, QUIZ_META_DESCRIPTION, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL } from "./sale.ts";
 
@@ -119,7 +120,7 @@ describe("Black Friday going-out-of-business sale copy", () => {
       assert.match(quiz, new RegExp(band.story.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
     }
     assert.match(home, new RegExp(shopifyHref));
-    assert.equal(home.match(new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`, "g"))?.length, 3);
+    assert.equal(home.match(new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`, "g"))?.length, 5);
     assert.match(quiz, new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`));
     assert.doesNotMatch(home, /Buy the HCG1 Pro/);
     assert.doesNotMatch(quiz, /Buy the HCG1 Pro/);
@@ -127,6 +128,25 @@ describe("Black Friday going-out-of-business sale copy", () => {
     assert.doesNotMatch(home, /js\.stripe\.com/);
     assert.doesNotMatch(home, /stripe-checkout-form/);
     assert.doesNotMatch(home, /api\.stripe\.com/);
+  });
+
+  it("sells the HCG1 with attributed Amazon reviews and an honest comparison", async () => {
+    const home = await page("/");
+    const product = home.slice(home.indexOf('id="product"'), home.indexOf('class="manifesto"'));
+    assert.match(product, /The complete wired headset for serious game time\./);
+    assert.match(product, /About \$52<\/strong> with code BF60/);
+    assert.match(product, /4\.2 out of 5<\/strong> from 485 Amazon ratings/);
+    assert.match(product, /“Almost all metal\.”<cite>— Craig B\., Amazon review/);
+    assert.match(product, /“No sound distortion!!”<cite>— Spencer H\., Amazon review/);
+    for (const review of NAMED_REVIEWS) assert.ok(home.includes(review.quote), review.author);
+    for (const excerpt of Object.values(AMAZON_EXCERPTS)) assert.ok(home.includes(excerpt));
+    assert.ok(home.includes(`href="${AMAZON_LISTING_URL}"`));
+    assert.match(home, /id="compare"/);
+    assert.match(home, /HyperX includes more connection options and has a larger review base\. Recon 70 usually costs less\./);
+    assert.doesNotMatch(home, /better than (HyperX|Turtle Beach)|best headset under|universal compatibility|warranty\/guarantee|two-year support|ships within 24/i);
+    assert.doesNotMatch(product + home.slice(home.indexOf('id="compare"'), home.indexOf('id="setup"')), /noise.cancel/i);
+    const shopifyHref = SHOPIFY_PRODUCT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    assert.ok((home.match(new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`, "g"))?.length ?? 0) >= 5);
   });
 
   it("redirects /checkout to Shopify and does not open a Stripe session", async () => {

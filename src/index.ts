@@ -5,6 +5,7 @@ import { HCG1_SHIPPING_CENTS } from "./purchase/map.ts";
 import { handleStripeWebhook } from "./purchase/webhook.ts";
 import { handleQuizApi } from "./quiz/api.ts";
 import { renderQuizPage } from "./quiz/page.ts";
+import { AMAZON_EXCERPTS, AMAZON_LISTING_URL, AMAZON_RATING, AMAZON_RATING_COUNT, AMAZON_SNAPSHOT_LABEL, NAMED_REVIEWS } from "./proof.ts";
 import { BF60_CODE, BF70_CODE, BF_ENDS_LABEL, BUSINESS_ADDRESS, FAQ_PRICE_ANSWER, FAQ_PRICE_QUESTION, FAQ_SUPPORT_ANSWER, GOB_SALE_TERMS, HOME_META_DESCRIPTION, OFFER_PRICE, REGULAR_PRICE_LABEL, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL, shopifyCheckoutRedirect } from "./sale.ts";
 
 const MEDIA_SOURCES: Record<string, string> = {
@@ -95,6 +96,14 @@ const GALLERY_VIDEOS: GalleryVideo[] = [
   { src: "/assets/gallery/video/desk-spin.mp4", poster: "/assets/gallery/video/desk-spin.jpg", kicker: "15s", caption: "On the desk", alt: "HCG1 product clip rotating on a gaming desk", orientation: "portrait" },
   { src: "/assets/gallery/video/lock-in.mp4", poster: "/assets/gallery/video/lock-in.jpg", kicker: "15s", caption: "Lock in", alt: "Player putting on the HCG1 Pro Gaming Headset", orientation: "landscape" },
   { src: "/assets/gallery/video/you-heard-that.mp4", poster: "/assets/gallery/video/you-heard-that.jpg", kicker: "15s", caption: "You heard that?", alt: "HCG1 commercial: You heard that? They didn't.", orientation: "portrait" }
+];
+const BENEFITS = [
+  { feature: "53mm drivers", title: "Hear more of the match.", body: "Full-size 53mm drivers keep game audio, footsteps, and team comms clear when the session gets intense.", quote: "No sound distortion!!", author: "Spencer H., Amazon review" },
+  { feature: "Detachable mic", title: "Be heard without shouting.", body: "Keep the boom on for squad chat. Pull it off for solo play, music, or travel.", quote: AMAZON_EXCERPTS.mic, author: "Amazon review" },
+  { feature: "Inline mute and volume", title: "Control the moment.", body: "Mute fast when someone walks in, and adjust volume on the cord without opening a menu.", quote: AMAZON_EXCERPTS.partyChat, author: "Amazon review" },
+  { feature: "Wired 3.5mm", title: "Ready when you are.", body: "Plug in and play. No charging, no pairing, no battery warning before game night.", quote: AMAZON_EXCERPTS.allAround, author: "Amazon review" },
+  { feature: "Metal frame and padding", title: "Comfort you notice after the first hour.", body: "A spring-steel frame and soft cushions give a solid feel without clamping down through a long session.", quote: AMAZON_EXCERPTS.comfort, author: "Amazon review" },
+  { feature: "Built, not disposable", title: "Feels like it should.", body: "Reviewers compare the build to headphones that cost more, not to the plastic headsets they replaced.", quote: "These headsets are almost all metal.", author: "Craig B., Amazon review" }
 ];
 const safeJsonLd = (value: unknown): string => JSON.stringify(value).replace(/</g, "\\u003c");
 const HOME_JSON_LD = safeJsonLd({
@@ -835,6 +844,36 @@ const PAGE = `<!doctype html>
       .sale-facts strong { color: var(--ink); display: block; font-size: 1.02rem; letter-spacing: -.02em; }
       .sale-facts span { color: var(--muted); display: block; font-size: .88rem; line-height: 1.35; }
       .hero-terms { font-size: .84rem; line-height: 1.45; margin: 14px 0 0; max-width: 36rem; }
+      .buy-proof { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; margin: 34px 0 22px; }
+      .buy-box, .proof-box { background: var(--panel); border: 1px solid var(--line); border-radius: 4px 28px 4px 28px; padding: 26px; }
+      .buy-box { background: linear-gradient(135deg, rgba(107,201,255,.14), rgba(255,118,92,.12)); border-color: rgba(107,201,255,.42); }
+      .buy-price { font-size: 1.15rem; margin: 10px 0 6px; }
+      .buy-price strong { color: var(--ink); display: block; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 500; letter-spacing: -.05em; line-height: 1; }
+      .buy-sub { color: var(--muted); margin: 0 0 18px; }
+      .rating { color: var(--muted); margin: 0 0 12px; }
+      .rating strong { color: var(--ink); }
+      .proof-box blockquote, .benefit-grid blockquote, .review-card blockquote { border-left: 2px solid var(--secondary); color: var(--ink); font-size: 1.02rem; margin: 0 0 12px; padding-left: 12px; }
+      .proof-box cite, .benefit-grid cite, .review-card cite { color: var(--muted); display: block; font-size: .82rem; font-style: normal; margin-top: 4px; }
+      .proof-note { color: var(--muted); font-size: .92rem; margin: 6px 0 0; }
+      .benefit-grid .feature-card p { margin-bottom: 14px; }
+      .benefit-grid blockquote { font-size: .92rem; }
+      .benefit-feature { color: var(--secondary); font-size: .74rem; font-weight: 800; letter-spacing: .14em; margin-bottom: 8px; text-transform: uppercase; }
+      .compare-wrap { overflow-x: auto; }
+      .compare { border-collapse: collapse; min-width: 620px; width: 100%; }
+      .compare th, .compare td { border-bottom: 1px solid var(--line); padding: 14px 12px; text-align: left; vertical-align: top; }
+      .compare thead th { color: var(--muted); font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+      .compare thead th:nth-child(2), .compare td:nth-child(2) { background: rgba(107,201,255,.08); color: var(--ink); font-weight: 700; }
+      .compare tbody th { color: var(--muted); font-weight: 600; }
+      .compare-note { color: var(--muted); font-size: .92rem; margin: 18px 0 0; max-width: 62rem; }
+      .review-grid { display: grid; gap: 15px; grid-template-columns: repeat(3, 1fr); }
+      .review-card { background: var(--panel); border: 1px solid var(--line); border-radius: 4px 22px 4px 22px; margin: 0; padding: 22px; }
+      .review-card figcaption { margin-bottom: 10px; }
+      .review-cta { align-items: center; display: flex; flex-wrap: wrap; gap: 20px; margin-top: 26px; }
+      @media (max-width: 820px) {
+        .buy-proof, .review-grid { grid-template-columns: 1fr; }
+        .section-head { display: block; }
+        .section-head p { margin-top: 14px; }
+      }
       @media (max-width: 820px) {
         .header-buy { margin-left: auto; }
         .hero { padding: 26px 0 12px; }
@@ -973,13 +1012,53 @@ const PAGE = `<!doctype html>
         </section>
 
         <section id="product">
-          <div class="section-head"><div><div class="eyebrow">Why HCG1</div><h2>Every detail earns its spot.</h2></div><p>Good gear disappears into the moment. You hear more, say more, and think less about what is on your head.</p></div>
-          <div class="feature-grid">
-            <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 15a8 8 0 0 1 16 0"/><path d="M4 15v3a2 2 0 0 0 2 2h1v-5H4Zm16 0v3a2 2 0 0 1-2 2h-1v-5h3Z"/><path d="M12 7v4m-2 0h4"/></svg></div><h3>Sound with a point of view</h3><p>Balanced stereo audio keeps footsteps, movement, and your favorite soundtrack distinct when the screen gets busy.</p></article>
-            <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 5v7a5 5 0 0 0 10 0V5"/><path d="M4 10v2a8 8 0 0 0 16 0v-2M12 20v-3m-3 3h6"/></svg></div><h3>Comfort for the “last game”</h3><p>Soft over-ear cushions and a flexible fit stay easy through long queues, long flights, and long nights with friends.</p></article>
-            <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 5 6v5c0 4.5 2.9 8.2 7 10 4.1-1.8 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Ready when you are</h3><p>A detachable boom mic, inline controls, and broad device compatibility keep the setup simple and the focus where it belongs.</p></article>
+          <div class="section-head"><div><div class="eyebrow">HCG1 Pro Wired Gaming Headset</div><h2>The complete wired headset for serious game time.</h2></div><p>Hear the action. Stay clear in comms. Plug in and play — no battery, no separate mic, and no complicated setup.</p></div>
+          <div class="buy-proof">
+            <div class="buy-box">
+              <div class="eyebrow">Black Friday · final stock</div>
+              <p class="buy-price"><strong>About $52</strong> with code ${BF60_CODE}</p>
+              <p class="buy-sub">Regular ${REGULAR_PRICE_LABEL}. Buying for the squad? Code ${BF70_CODE} takes 70% off 5 or more (about $39 each). Codes end ${BF_ENDS_LABEL}. Free shipping, continental US.</p>
+              <a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="proof-box">
+              <p class="rating"><strong>${AMAZON_RATING} out of 5</strong> from ${AMAZON_RATING_COUNT} Amazon ratings</p>
+              <blockquote>“Almost all metal.”<cite>— Craig B., Amazon review</cite></blockquote>
+              <blockquote>“No sound distortion!!”<cite>— Spencer H., Amazon review</cite></blockquote>
+              <blockquote>“Played for 10 hours straight some days and it didn't hurt my head.”<cite>— Amazon review</cite></blockquote>
+              <p class="proof-note">Reviewers also call out long-session comfort, a solid build, and clearer party chat.</p>
+            </div>
+          </div>
+          <div class="feature-grid benefit-grid">
+            ${BENEFITS.map((benefit) => `<article class="feature-card"><div class="benefit-feature">${benefit.feature}</div><h3>${benefit.title}</h3><p>${benefit.body}</p><blockquote>“${benefit.quote}”<cite>— ${benefit.author}</cite></blockquote></article>`).join("")}
           </div>
           <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Going-out-of-business sale</div><h3>Now is the best time to buy</h3><p>${GOB_SALE_TERMS} The HCG1 and the HCG1 Pro are the same headset. Checkout is on hcgamerlife.com.</p></div><a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a></div>
+        </section>
+      </div>
+
+      <div class="shell">
+        <section id="compare">
+          <div class="section-head"><div><div class="eyebrow">How it compares</div><h2>More than a budget headset. Less hassle than a full setup.</h2></div><p>Some entry-level headsets cost less. Some headphones are built for listening, not lobbies. HCG1 sits in the useful middle: 53mm drivers, a detachable mic, and inline controls in one wired headset.</p></div>
+          <div class="compare-wrap"><table class="compare">
+            <thead><tr><th scope="col"></th><th scope="col">HCG1 Pro</th><th scope="col">HyperX Cloud III (wired)</th><th scope="col">Turtle Beach Recon 70</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Drivers</th><td>53mm</td><td>53mm</td><td>40mm</td></tr>
+              <tr><th scope="row">Microphone</th><td>Detachable boom</td><td>Detachable</td><td>Fixed, flip-to-mute</td></tr>
+              <tr><th scope="row">Connection</th><td>Wired 3.5mm, adapter included</td><td>USB-C, USB-A, 3.5mm</td><td>Wired 3.5mm</td></tr>
+              <tr><th scope="row">Battery to charge</th><td>None</td><td>None</td><td>None</td></tr>
+            </tbody>
+          </table></div>
+          <p class="compare-note">HyperX includes more connection options and has a larger review base. Recon 70 usually costs less. Choose HCG1 when you want full-size drivers, a mic you can take off, and controls on the cord without paying for features you will not use. Comparing with a listening headphone like the Sennheiser HD 518? It is open-back with no built-in mic or controls. HCG1 includes both. Competitor specs from their Amazon product pages, ${AMAZON_SNAPSHOT_LABEL}.</p>
+        </section>
+
+        <section id="reviews">
+          <div class="section-head"><div><div class="eyebrow">Amazon reviews</div><h2>What reviewers noticed first.</h2></div><p><strong>${AMAZON_RATING} out of 5</strong> from ${AMAZON_RATING_COUNT} ratings on Amazon as of ${AMAZON_SNAPSHOT_LABEL}. Metal build, long-session comfort, clear voice chat, and no distracting distortion.</p></div>
+          <div class="review-grid">
+            ${NAMED_REVIEWS.map((review) => `<figure class="review-card"><figcaption><strong>${review.title}</strong></figcaption><blockquote>“${review.quote}”</blockquote><cite>— ${review.author}, Amazon review</cite></figure>`).join("")}
+            <figure class="review-card"><blockquote>“${AMAZON_EXCERPTS.allAround}”</blockquote><cite>— Amazon review</cite></figure>
+            <figure class="review-card"><blockquote>“${AMAZON_EXCERPTS.partyChat}”</blockquote><cite>— Amazon review</cite></figure>
+            <figure class="review-card"><blockquote>“${AMAZON_EXCERPTS.build}”</blockquote><cite>— Amazon review</cite></figure>
+          </div>
+          <div class="review-cta"><a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a><a class="text-link" href="${AMAZON_LISTING_URL}" rel="noopener">Read every review on Amazon ↗</a></div>
         </section>
       </div>
 
