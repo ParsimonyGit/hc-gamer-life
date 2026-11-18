@@ -15,7 +15,7 @@
 | 1b | Unpublished **HC GamerLife Holiday Copy 2026-11-18** | No. Shopify theme. | Orchestrator applied #19 copy | **Ready, not live** (`gid://shopify/OnlineStoreTheme/161920581703`). Dennis must `theme_publish`. |
 | 2 | Agent proposal docs | `ParsimonyGit/hc-gamer-life` → `docs/agents/<agent-id>/` | Each agent, own PR | **#18 merged.** Copy kit Email 3 is on `main` via #22. |
 | 3 | hcgamerlife.org Worker (sales pitch, `/go/` links, GOB demotion) | `ParsimonyGit/hc-gamer-life` only | Storefront agent | **#17 and #20 merged and live.** Topline is Black Friday / in stock now. |
-| 4 | Outbound (email, coupons, Gleam, Collabs, Reddit) | No git. Copy lives in `docs/agents/`. | HCGL Growth | `/go/` is live. Growth still owes `docs/agents/hcgl-growth/`. Honey listing email sent from `tezlin007@gmail.com` (cannot send as `dennis@`). Shopify Email still needs Dennis to paste Email 3. |
+| 4 | Outbound (email, coupons, Gleam, Collabs, Reddit) | No git. Copy lives in `docs/agents/`. | HCGL Growth | `/go/` is live. Growth PR [#21](https://github.com/ParsimonyGit/hc-gamer-life/pull/21). **Dennis assigned Shopify Email 3 to Growth** (Nov 18). Do not send Email 1. Honey already sent from `tezlin007@gmail.com`. |
 | 5 | Google Merchant Center / Amazon B07BHYZFLF | No git | Dennis | HCG1 Pro is **already published** to the Shopify Google & YouTube channel. Remaining: Merchant Center free listings + BF60 promotion in admin, and Amazon Seller Central reactivate. |
 
 ## Do not publish these for this campaign
@@ -31,6 +31,7 @@
 | PR | Agent | Merge? |
 |---|---|---|
 | #16 #17 #18 #20 #22 | Storefront / orchestrator | **Merged.** |
+| [#21](https://github.com/ParsimonyGit/hc-gamer-life/pull/21) | HCGL Growth | Docs. Email 3 assignment is on this PR. Safe to merge (Worker code unchanged) after Growth rebases onto current `main`. |
 | [#19](https://github.com/ParsimonyGit/hc-gamer-life/pull/19) | Codex (ChatGPT connector) | Proposal only. Copy already applied on unpublished Holiday Copy theme. Do **not** merge as a second coupon kit. |
 | #8 #9 #10 | Older Grok storefront work | **Do not merge** during BF60/BF70. |
 
@@ -46,7 +47,7 @@
 ## After #17 is on `main` (done)
 
 1. `https://hcgamerlife.org/go/email` 302s to Shopify with `utm_campaign=gob-bf-2026`. **Verified.**
-2. Next Shopify Email is **Email 3** (reviews + free shipping), not Email 1. Paste in Shopify Email. Do not send from Gmail.
+2. Next Shopify Email is **Email 3** (reviews + free shipping), not Email 1. **HCGL Growth sends it** in Shopify Email. Do not send from Gmail. Assignment is on [PR #21](https://github.com/ParsimonyGit/hc-gamer-life/pull/21).
 3. Theme copy fixes sit on unpublished Holiday Copy. One publish, after Dennis yes.
 
 ## Offer facts (all agents)

@@ -29,7 +29,7 @@ All ⛔ items need a yes on this PR before anyone sends or submits.
 
 ### A. Shopify Email to the ~710 subscribers and opted-in quiz contacts — ⛔ each send
 
-Paste **Email 3** from the copy kit into Shopify Email. Do not send the Gmail drafts to the list. Gmail on this run is `tezlin007@gmail.com` and is not the list. Do **not** send Email 1 (it reruns the Oct 31 $40 closeout).
+**HCGL Growth sends Email 3** (Dennis assigned this Nov 18). Paste into Shopify Email. Do not send the Gmail drafts to the list. Do **not** send Email 1 (it reruns the Oct 31 $40 closeout). Assignment: [PR #21](https://github.com/ParsimonyGit/hc-gamer-life/pull/21).
 
 1. Email 3 now: free shipping + Amazon reviews (new CTA).
 2. Last-call email the morning of Monday, Nov 30, 2026 (America/Chicago).
