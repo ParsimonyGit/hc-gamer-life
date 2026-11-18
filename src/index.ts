@@ -6,7 +6,7 @@ import { handleStripeWebhook } from "./purchase/webhook.ts";
 import { handleQuizApi } from "./quiz/api.ts";
 import { renderQuizPage } from "./quiz/page.ts";
 import { AMAZON_EXCERPTS, AMAZON_LISTING_URL, AMAZON_RATING, AMAZON_RATING_COUNT, AMAZON_SNAPSHOT_LABEL, NAMED_REVIEWS } from "./proof.ts";
-import { BF60_CODE, BF70_CODE, BF_ENDS_LABEL, BUSINESS_ADDRESS, FAQ_PRICE_ANSWER, FAQ_PRICE_QUESTION, FAQ_SUPPORT_ANSWER, GOB_SALE_TERMS, HOLIDAY_TOPLINE, HOME_META_DESCRIPTION, OFFER_PRICE, REGULAR_PRICE_LABEL, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL, CONTACT_EMAIL, shopifyCheckoutRedirect, trackedShopifyUrl } from "./sale.ts";
+import { BF60_CODE, BF70_CODE, BF_ENDS_LABEL, BUSINESS_ADDRESS, FAQ_PRICE_ANSWER, FAQ_PRICE_QUESTION, FAQ_SUPPORT_ANSWER, GOB_SALE_TERMS, HOLIDAY_TOPLINE, HOME_META_DESCRIPTION, OFFER_PRICE, ORG_HOME_CHECKOUT_URL, REGULAR_PRICE_LABEL, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL, CONTACT_EMAIL, shopifyCheckoutRedirect, trackedShopifyUrl } from "./sale.ts";
 
 const MEDIA_SOURCES: Record<string, string> = {
   "product-hero": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-hero",
@@ -911,7 +911,7 @@ const PAGE = `<!doctype html>
           <a href="#faq">FAQ</a>
           <a href="/quiz">Take the quiz</a>
         </nav>
-        <a class="nav-cta header-buy" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL}</a>
+        <a class="nav-cta header-buy" href="${ORG_HOME_CHECKOUT_URL}">${SHOP_CTA_LABEL}</a>
       </header>
     </div>
 
@@ -929,7 +929,7 @@ const PAGE = `<!doctype html>
               <li><strong>Final stock</strong><span>We are not restocking</span></li>
             </ul>
             <div class="actions">
-              <a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a>
+              <a class="button button-primary" href="${ORG_HOME_CHECKOUT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a>
               <a class="button button-quiet" href="/quiz">Take the quiz</a>
             </div>
             <p class="hero-terms">Sold without warranty. 30-day returns (you pay return shipping unless the unit is defective). Defective units replaced within 90 days.</p>
@@ -1020,7 +1020,7 @@ const PAGE = `<!doctype html>
               <div class="eyebrow">Black Friday · final stock</div>
               <p class="buy-price"><strong>About $52</strong> with code ${BF60_CODE}</p>
               <p class="buy-sub">Regular ${REGULAR_PRICE_LABEL}. Buying for the squad? Code ${BF70_CODE} takes 70% off 5 or more (about $39 each). Codes end ${BF_ENDS_LABEL}. Free shipping, continental US.</p>
-              <a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a>
+              <a class="button button-primary" href="${ORG_HOME_CHECKOUT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a>
             </div>
             <div class="proof-box">
               <p class="rating"><strong>${AMAZON_RATING} out of 5</strong> from ${AMAZON_RATING_COUNT} Amazon ratings</p>
@@ -1033,7 +1033,7 @@ const PAGE = `<!doctype html>
           <div class="feature-grid benefit-grid">
             ${BENEFITS.map((benefit) => `<article class="feature-card"><div class="benefit-feature">${benefit.feature}</div><h3>${benefit.title}</h3><p>${benefit.body}</p><blockquote>“${benefit.quote}”<cite>— ${benefit.author}</cite></blockquote></article>`).join("")}
           </div>
-          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Black Friday · final stock</div><h3>Now is the best time to buy</h3><p>${GOB_SALE_TERMS} The HCG1 and the HCG1 Pro are the same headset. Checkout is on hcgamerlife.com.</p></div><a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a></div>
+          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Black Friday · final stock</div><h3>Now is the best time to buy</h3><p>${GOB_SALE_TERMS} The HCG1 and the HCG1 Pro are the same headset. Checkout is on hcgamerlife.com.</p></div><a class="button button-primary" href="${ORG_HOME_CHECKOUT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a></div>
         </section>
       </div>
 
@@ -1058,7 +1058,7 @@ const PAGE = `<!doctype html>
               <div class="eyebrow">Esports clubs · LAN nights · the whole squad</div>
               <p class="buy-price"><strong>About $39 each</strong> with code ${BF70_CODE}</p>
               <p class="buy-sub">Order 5 or more and code ${BF70_CODE} takes 70% off at Shopify checkout. Codes end ${BF_ENDS_LABEL}. Free shipping, continental US.</p>
-              <a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a>
+              <a class="button button-primary" href="${ORG_HOME_CHECKOUT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a>
             </div>
             <div class="proof-box">
               <h2 class="squad-title">Gear up the whole team.</h2>
@@ -1075,7 +1075,7 @@ const PAGE = `<!doctype html>
             <figure class="review-card"><blockquote>“${AMAZON_EXCERPTS.partyChat}”</blockquote><cite>— Amazon review</cite></figure>
             <figure class="review-card"><blockquote>“${AMAZON_EXCERPTS.build}”</blockquote><cite>— Amazon review</cite></figure>
           </div>
-          <div class="review-cta"><a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a><a class="text-link" href="${AMAZON_LISTING_URL}" rel="noopener">Read every review on Amazon ↗</a></div>
+          <div class="review-cta"><a class="button button-primary" href="${ORG_HOME_CHECKOUT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a><a class="text-link" href="${AMAZON_LISTING_URL}" rel="noopener">Read every review on Amazon ↗</a></div>
         </section>
       </div>
 
@@ -1084,7 +1084,7 @@ const PAGE = `<!doctype html>
       <div class="shell">
         <section id="setup"><div class="details"><div class="details-copy"><div class="eyebrow">Your setup</div><h2>One jack. Every lobby.</h2><p>Use the included 3.5mm connection with the devices you already play on. The HCG1 is designed to move with you from desk to couch to wherever the next match starts.</p><p class="sale-terms">${GOB_SALE_TERMS}</p></div><div class="specs" aria-label="HCG1 specifications"><div class="spec-row"><span>Connection</span><strong>Wired 3.5mm · inline controls</strong></div><div class="spec-row"><span>Microphone</span><strong>Detachable boom · inline mute</strong></div><div class="spec-row"><span>Fit</span><strong>Closed-back over-ear</strong></div><div class="spec-row"><span>Compatibility</span><strong>PC · PlayStation · Xbox · Switch · mobile</strong></div><div class="spec-row"><span>Regular price</span><strong>${REGULAR_PRICE_LABEL}</strong></div><div class="spec-row"><span>Black Friday</span><strong>${BF60_CODE} · 60% off · ${BF70_CODE} on 5+</strong></div><div class="spec-row"><span>Codes end</span><strong>${BF_ENDS_LABEL}</strong></div><div class="spec-row"><span>Stock</span><strong>Final stock · no restock</strong></div><div class="spec-row"><span>Shipping</span><strong>Free · continental US</strong></div><div class="spec-row"><span>Coverage</span><strong>No warranty · 30-day returns</strong></div></div></div></section>
         <section id="faq"><div class="section-head"><div><div class="eyebrow">Quick answers</div><h2>Before you queue up.</h2></div><p>Keep the setup moving. Here are the details players ask about most.</p></div><div class="faq"><details><summary>Is the microphone removable?</summary><p>Yes. Remove the boom mic when you are playing solo or listening on the go.</p></details><details><summary>Does it work across consoles?</summary><p>Yes. The wired 3.5mm connection works with PC, PlayStation, Xbox, Nintendo Switch, and compatible mobile devices. Some setups may need the included adapter.</p></details><details><summary>Does it use active noise cancellation?</summary><p>No. The closed-back design offers passive isolation so you can stay focused without a battery or software.</p></details><details><summary>${FAQ_PRICE_QUESTION}</summary><p>${FAQ_PRICE_ANSWER}</p></details><details><summary>How is it supported?</summary><p>${FAQ_SUPPORT_ANSWER}</p></details></div></section>
-        <section id="drop"><div class="closing"><div class="eyebrow">Your next main character arc</div><h2>Hear the play. Call the play. Own the moment.</h2><p>Four taps unlock your Gamer Audio Profile — Immersed, Climbing, or Ready for Pro — then a straight path to the HCG1 Pro.</p><a class="button button-primary" href="/quiz">Take the quiz <span aria-hidden="true">↗</span></a></div></section>
+        <section id="drop"><div class="closing"><div class="eyebrow">Your next main character arc</div><h2>Hear the play. Call the play. Own the moment.</h2><p>Checkout is on hcgamerlife.com. Enter BF60 or BF70 there. This site has no cart.</p><a class="button button-primary" href="${ORG_HOME_CHECKOUT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a></div></section>
       </div>
     </main>
 
@@ -1165,6 +1165,7 @@ function renderGallery(): Response {
       nav { display:flex; gap:22px; }
       nav a { color:var(--muted); font-size:.88rem; }
       nav a:hover, nav a:focus-visible { color:var(--ink); }
+      .nav-cta { background:var(--red); border-radius:999px; color:#210a10; font-size:.8rem; font-weight:800; padding:9px 15px; white-space:nowrap; }
       .hero { padding:36px 0 20px; }
       .eyebrow { color:var(--secondary); font-size:.73rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
       h1 { font-size:clamp(2.6rem, 7vw, 5.4rem); letter-spacing:-.08em; line-height:.92; margin:10px 0 16px; max-width:16ch; }
@@ -1215,6 +1216,7 @@ function renderGallery(): Response {
           <a href="/#journal">Journal</a>
           <a href="/quiz">Take the quiz</a>
         </nav>
+        <a class="nav-cta header-buy" href="${ORG_HOME_CHECKOUT_URL}">${SHOP_CTA_LABEL}</a>
       </header>
       <main>
         <section class="hero">
@@ -1402,8 +1404,8 @@ function renderArticle(article: Article): Response {
     </style>
   </head>
   <body>
-    <div class="wrap"><header><a class="brand" href="/"><span class="brand-mark">HC</span> GAMERLIFE</a><a class="back" href="/#journal">Back to the journal ↗</a></header></div>
-    <main><div class="wrap"><section class="hero"><div class="kicker">${article.section}</div><h1>${article.title}</h1><p class="dek">${article.excerpt}</p></section><figure class="feature"><img src="/media/image?key=${imageKey}&amp;variant=hero&amp;v=3" alt="${article.title}" decoding="async" fetchpriority="high" /></figure><article class="prose">${article.body}<div class="callout"><strong>Make the next session easier.</strong><br />Save this guide, share it with your squad, and explore the HCG1 setup when you are ready for a simple, wired connection.</div></article><section class="more"><h2>Keep exploring</h2><p><a href="/#product">Meet the HCG1 Pro Gaming Headset</a> · <a href="/#setup">See the setup guide</a> · <a href="/#journal">Browse every guide</a></p></section></div></main>
+    <div class="wrap"><header><a class="brand" href="/"><span class="brand-mark">HC</span> GAMERLIFE</a><a class="back" href="${ORG_HOME_CHECKOUT_URL}">${SHOP_CTA_LABEL} ↗</a></header></div>
+    <main><div class="wrap"><section class="hero"><div class="kicker">${article.section}</div><h1>${article.title}</h1><p class="dek">${article.excerpt}</p></section><figure class="feature"><img src="/media/image?key=${imageKey}&amp;variant=hero&amp;v=3" alt="${article.title}" decoding="async" fetchpriority="high" /></figure><article class="prose">${article.body}<div class="callout"><strong>Make the next session easier.</strong><br />Save this guide, share it with your squad, and explore the HCG1 setup when you are ready for a simple, wired connection.</div></article><section class="more"><h2>Keep exploring</h2><p><a href="${ORG_HOME_CHECKOUT_URL}">Shop the HCG1 Pro on hcgamerlife.com</a> · <a href="/#setup">See the setup guide</a> · <a href="/#journal">Browse every guide</a></p></section></div></main>
     <div class="wrap"><footer><a class="brand" href="/"><span class="brand-mark">HC</span> GAMERLIFE</a> · <a href="/terms">Terms</a> · <a href="/privacy-policy">Privacy</a></footer></div>
   </body>
 </html>`;

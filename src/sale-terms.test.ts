@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import worker from "./index.ts";
 import { AMAZON_EXCERPTS, AMAZON_LISTING_URL, NAMED_REVIEWS } from "./proof.ts";
 import { BANDS } from "./quiz/data.ts";
-import { GOB_SALE_TERMS, HOME_META_DESCRIPTION, OFFER_PRICE, QUIZ_META_DESCRIPTION, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL } from "./sale.ts";
+import { GOB_SALE_TERMS, HOME_META_DESCRIPTION, OFFER_PRICE, ORG_HOME_CHECKOUT_URL, ORG_QUIZ_CHECKOUT_URL, QUIZ_META_DESCRIPTION, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL } from "./sale.ts";
 
 const env = {
   ASSETS: { fetch: async () => new Response(null, { status: 404 }) }
@@ -76,7 +76,7 @@ describe("Black Friday going-out-of-business sale copy", () => {
     assert.match(aboveGallery, /Sold without warranty/);
     assert.match(aboveGallery, /30-day returns \(you pay return shipping unless the unit is defective\)/);
     assert.match(aboveGallery, /Defective units replaced within 90 days/);
-    const shopifyHref = SHOPIFY_PRODUCT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const shopifyHref = ORG_HOME_CHECKOUT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     assert.match(aboveGallery, new RegExp(`href="${shopifyHref}"`));
     const actions = aboveGallery.slice(aboveGallery.indexOf('class="actions"'));
     const buyInActions = actions.indexOf(SHOP_CTA_LABEL);
@@ -124,9 +124,12 @@ describe("Black Friday going-out-of-business sale copy", () => {
       assertNoRetiredPrice(text);
       assert.match(quiz, new RegExp(band.story.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
     }
+    const quizCheckoutHref = ORG_QUIZ_CHECKOUT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     assert.match(home, new RegExp(shopifyHref));
-    assert.equal(home.match(new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`, "g"))?.length, 6);
-    assert.match(quiz, new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`));
+    assert.ok((home.match(new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`, "g"))?.length ?? 0) >= 6);
+    assert.match(quiz, new RegExp(`href="${quizCheckoutHref}">${SHOP_CTA_LABEL}`));
+    assert.match(ORG_HOME_CHECKOUT_URL, /utm_source=hcgamerlife-org/);
+    assert.match(ORG_HOME_CHECKOUT_URL, /utm_campaign=gob-bf-2026/);
     assert.doesNotMatch(home, /Buy the HCG1 Pro/);
     assert.doesNotMatch(quiz, /Buy the HCG1 Pro/);
     assert.match(quiz, /gaming-headset-xbox-one-ps4-pc-mobile-compatible/);
@@ -150,7 +153,7 @@ describe("Black Friday going-out-of-business sale copy", () => {
     assert.match(home, /HyperX includes more connection options and has a larger review base\. Recon 70 usually costs less\./);
     assert.doesNotMatch(home, /better than (HyperX|Turtle Beach)|best headset under|universal compatibility|warranty\/guarantee|two-year support|ships within 24/i);
     assert.doesNotMatch(product + home.slice(home.indexOf('id="compare"'), home.indexOf('id="setup"')), /noise.cancel/i);
-    const shopifyHref = SHOPIFY_PRODUCT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const shopifyHref = ORG_HOME_CHECKOUT_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     assert.ok((home.match(new RegExp(`href="${shopifyHref}">${SHOP_CTA_LABEL}`, "g"))?.length ?? 0) >= 5);
   });
 
@@ -166,6 +169,9 @@ describe("Black Friday going-out-of-business sale copy", () => {
     assert.equal(target.searchParams.get("utm_content"), "bf70");
     const creator = new URL((await go("/go/creator-sample")).headers.get("location") ?? "");
     assert.equal(creator.searchParams.get("utm_medium"), "creator");
+    const couponbirds = new URL((await go("/go/couponbirds")).headers.get("location") ?? "");
+    assert.equal(couponbirds.searchParams.get("utm_medium"), "coupon-site");
+    assert.equal(`${couponbirds.origin}${couponbirds.pathname}`, SHOPIFY_PRODUCT_URL);
     assert.equal((await go("/go/Bad%20Channel!")).status, 404);
     const home = await page("/");
     assert.match(home, /id="squads"/);
