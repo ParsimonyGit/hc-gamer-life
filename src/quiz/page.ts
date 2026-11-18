@@ -1,5 +1,5 @@
 import { clientConfig } from "./data.ts";
-import { BF60_CODE, BF70_CODE, BF_ENDS_LABEL, OFFER_PRICE, QUIZ_LEDE, QUIZ_META_DESCRIPTION, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL } from "../sale.ts";
+import { BF60_CODE, HOLIDAY_TOPLINE, OFFER_PRICE, QUIZ_LEDE, QUIZ_META_DESCRIPTION, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL } from "../sale.ts";
 
 const SITE_URL = "https://hcgamerlife.org";
 const SEO_IMAGE = `${SITE_URL}/brand/og.jpg`;
@@ -693,7 +693,7 @@ export function renderQuizPage(): Response {
     <style>${STYLES}</style>
   </head>
   <body>
-    <div class="topline"><strong>GOING OUT OF BUSINESS</strong> Black Friday · code ${BF60_CODE} 60% off · code ${BF70_CODE} 70% off on 5+ · codes end ${BF_ENDS_LABEL}</div>
+    <div class="topline">${HOLIDAY_TOPLINE}</div>
     <div class="shell">
       <header>
         <a class="brand" href="/" aria-label="HC GamerLife home"><span class="brand-mark">HC</span> GAMERLIFE</a>

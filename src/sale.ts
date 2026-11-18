@@ -36,7 +36,10 @@ export const QUIZ_META_DESCRIPTION = `Gamer Audio Profile quiz, then the HCG1 Pr
 
 export const QUIZ_LEDE = `Four taps. Your Gamer Audio Profile. Then the HCG1 Pro — wired, universal. Black Friday: ${BF60_OFFER}. ${BF70_OFFER}. Codes end ${BF_ENDS_LABEL}.`;
 
-export const QUIZ_RESULT_OFFER = `The going-out-of-business sale is final stock. Regular price ${REGULAR_PRICE_LABEL}. Black Friday: ${BF60_OFFER}. ${BF70_OFFER}. Enter the code at Shopify checkout. Codes end ${BF_ENDS_LABEL}.`;
+export const QUIZ_RESULT_OFFER = `This is final stock. Regular price ${REGULAR_PRICE_LABEL}. Black Friday: ${BF60_OFFER}. ${BF70_OFFER}. Enter the code at Shopify checkout. Codes end ${BF_ENDS_LABEL}.`;
+
+/** First-impression bar. Black Friday leads; going-out-of-business stays in offer terms and FAQ. */
+export const HOLIDAY_TOPLINE = `<strong>BLACK FRIDAY</strong> ${BF60_CODE} 60% off (about $52) · ${BF70_CODE} 70% off on 5+ (about $39 each) · regular ${REGULAR_PRICE_LABEL} · in stock now · final stock, no restock · free shipping, continental US · codes end ${BF_ENDS_LABEL}`;
 
 /** Live Shopify product. Listed at the regular price; Black Friday codes are entered at checkout. */
 export const SHOPIFY_PRODUCT_URL =
