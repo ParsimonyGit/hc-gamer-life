@@ -60,7 +60,10 @@ describe("Black Friday going-out-of-business sale copy", () => {
     assert.doesNotMatch(home, /countdown|ends tonight|ends today|hours left|days left/i);
 
     const aboveGallery = home.slice(0, home.indexOf('id="gallery"'));
-    assert.match(aboveGallery, /Going out of business/i);
+    assert.match(aboveGallery, /Black Friday · in stock now/);
+    assert.doesNotMatch(aboveGallery, /going out of business/i);
+    assert.match(home, /Going-out-of-business sale:/);
+    assert.match(home, /How is it supported\?/);
     assert.match(aboveGallery, /Now is the<br \/><span>best time\.<\/span>/);
     assert.match(aboveGallery, /53mm drivers, a detachable mic/);
     assert.match(aboveGallery, /Regular price \$129\.99/);
@@ -108,6 +111,8 @@ describe("Black Friday going-out-of-business sale copy", () => {
     assert.match(quiz, /BF60<\/strong><span>60% off · about \$52/);
     assert.match(quiz, /70% off orders of 5 or more with code BF70 \(about \$39 each\)/);
     assert.match(quiz, /Codes end Nov 30, 2026/);
+    assert.match(home, /Black Friday · final stock/);
+    assert.doesNotMatch(quiz.slice(0, quiz.indexOf('id="quiz-app"')), /going out of business/i);
     assert.match(quiz, new RegExp(QUIZ_META_DESCRIPTION.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
     assert.match(quiz, /"price":"129\.99"/);
     for (const band of Object.values(BANDS)) {

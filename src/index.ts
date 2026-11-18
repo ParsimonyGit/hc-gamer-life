@@ -6,7 +6,7 @@ import { handleStripeWebhook } from "./purchase/webhook.ts";
 import { handleQuizApi } from "./quiz/api.ts";
 import { renderQuizPage } from "./quiz/page.ts";
 import { AMAZON_EXCERPTS, AMAZON_LISTING_URL, AMAZON_RATING, AMAZON_RATING_COUNT, AMAZON_SNAPSHOT_LABEL, NAMED_REVIEWS } from "./proof.ts";
-import { BF60_CODE, BF70_CODE, BF_ENDS_LABEL, BUSINESS_ADDRESS, FAQ_PRICE_ANSWER, FAQ_PRICE_QUESTION, FAQ_SUPPORT_ANSWER, GOB_SALE_TERMS, HOME_META_DESCRIPTION, OFFER_PRICE, REGULAR_PRICE_LABEL, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL, CONTACT_EMAIL, shopifyCheckoutRedirect, trackedShopifyUrl } from "./sale.ts";
+import { BF60_CODE, BF70_CODE, BF_ENDS_LABEL, BUSINESS_ADDRESS, FAQ_PRICE_ANSWER, FAQ_PRICE_QUESTION, FAQ_SUPPORT_ANSWER, GOB_SALE_TERMS, HOLIDAY_TOPLINE, HOME_META_DESCRIPTION, OFFER_PRICE, REGULAR_PRICE_LABEL, SHOP_CTA_LABEL, SHOPIFY_PRODUCT_URL, CONTACT_EMAIL, shopifyCheckoutRedirect, trackedShopifyUrl } from "./sale.ts";
 
 const MEDIA_SOURCES: Record<string, string> = {
   "product-hero": "https://imagedelivery.net/br_zPISWrxm4a9uyt0OSzw/product-hero",
@@ -899,7 +899,7 @@ const PAGE = `<!doctype html>
     </style>
   </head>
   <body>
-    <div class="topline"><strong>GOING OUT OF BUSINESS</strong> Black Friday · ${BF60_CODE} 60% off (about $52) · ${BF70_CODE} 70% off on 5+ (about $39 each) · regular ${REGULAR_PRICE_LABEL} · final stock, no restock · free shipping, continental US · codes end ${BF_ENDS_LABEL}</div>
+    <div class="topline">${HOLIDAY_TOPLINE}</div>
     <div class="shell">
       <header>
         <a class="brand" href="#top" aria-label="HC GamerLife home"><span class="brand-mark">HC</span> GAMERLIFE</a>
@@ -919,7 +919,7 @@ const PAGE = `<!doctype html>
       <div class="shell">
         <section class="hero">
           <div class="hero-copy">
-            <div class="eyebrow">Going out of business</div>
+            <div class="eyebrow">Black Friday · in stock now</div>
             <h1>Now is the<br /><span>best time.</span></h1>
             <p>The HCG1 Pro is here while this stock lasts. It is the same wired headset — 53mm drivers, a detachable mic, and comfort for the long session. Regular price ${REGULAR_PRICE_LABEL}. Black Friday: 60% off with code ${BF60_CODE} (about $52). 70% off orders of 5 or more with code ${BF70_CODE} (about $39 each). Enter the code at Shopify checkout. Codes end ${BF_ENDS_LABEL}.</p>
             <ul class="sale-facts" aria-label="Black Friday sale">
@@ -1033,7 +1033,7 @@ const PAGE = `<!doctype html>
           <div class="feature-grid benefit-grid">
             ${BENEFITS.map((benefit) => `<article class="feature-card"><div class="benefit-feature">${benefit.feature}</div><h3>${benefit.title}</h3><p>${benefit.body}</p><blockquote>“${benefit.quote}”<cite>— ${benefit.author}</cite></blockquote></article>`).join("")}
           </div>
-          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Going-out-of-business sale</div><h3>Now is the best time to buy</h3><p>${GOB_SALE_TERMS} The HCG1 and the HCG1 Pro are the same headset. Checkout is on hcgamerlife.com.</p></div><a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a></div>
+          <div class="purchase-panel" id="purchase-panel"><div><div class="eyebrow">Black Friday · final stock</div><h3>Now is the best time to buy</h3><p>${GOB_SALE_TERMS} The HCG1 and the HCG1 Pro are the same headset. Checkout is on hcgamerlife.com.</p></div><a class="button button-primary" href="${SHOPIFY_PRODUCT_URL}">${SHOP_CTA_LABEL} <span aria-hidden="true">↗</span></a></div>
         </section>
       </div>
 
