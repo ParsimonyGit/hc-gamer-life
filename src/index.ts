@@ -2,6 +2,7 @@
 
 import { legalKind, renderLegalPage } from "./legal.ts";
 import { HCG1_SHIPPING_CENTS } from "./purchase/map.ts";
+import { handleIwsLabelWebhook } from "./purchase/iws-label.ts";
 import { handleStripeWebhook } from "./purchase/webhook.ts";
 import { handleQuizApi } from "./quiz/api.ts";
 import { renderQuizPage } from "./quiz/page.ts";
@@ -42,6 +43,10 @@ type Env = {
   ERP_ITEM_RATE?: string;
   ERP_DRY_RUN?: string;
   PURCHASE_DRY_RUN?: string;
+  SHOPIFY_ADMIN_TOKEN?: string;
+  SHOPIFY_WEBHOOK_SECRET?: string;
+  IWS_GMAIL_SCRIPT_URL?: string;
+  IWS_GMAIL_SCRIPT_SECRET?: string;
   ASSETS: Fetcher;
 };
 
@@ -1520,6 +1525,9 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   }
   if (url.pathname === "/api/stripe/webhook") {
     return handleStripeWebhook(request, env);
+  }
+  if (url.pathname === "/api/shopify/iws-label") {
+    return handleIwsLabelWebhook(request, env);
   }
   if (url.pathname.startsWith("/api/")) {
     return new Response(JSON.stringify({ ok: false, error: "Not found" }), {
