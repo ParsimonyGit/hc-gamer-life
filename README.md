@@ -73,6 +73,25 @@ hcgamerlife.org does not create a Stripe Checkout session for this sale. The Str
 
 The Worker still contains a Stripe webhook (`POST /api/stripe/webhook`) that can record an already-created Checkout session in ERPNext and HighLevel. That path is not how new headset orders are taken. New orders are Shopify’s.
 
+## IWS shipping labels
+
+IWS Fulfillment (Pocatello) packs HCG1 orders and does not have Shopify admin access. Shopify Flow buys the label. The Worker then emails the label PDF as an attachment from `dennis@hcgamerlife.com` to `robert@iwsfulfillment.com` and `kevin@iwsfulfillment.com`.
+
+`POST /api/shopify/iws-label` is the Shopify `fulfillments/create` (and `fulfillments/update`) webhook. It ignores Whatnot/giveaway/`do-not-email`/`internal-transfer`/`owner-transfer` orders, downloads the Shopify Shipping PDF, sends it, then tags the order `iws-label-emailed`.
+
+Required Wrangler secrets (do not commit):
+
+```bash
+npx wrangler secret put SHOPIFY_ADMIN_TOKEN
+npx wrangler secret put SHOPIFY_WEBHOOK_SECRET
+npx wrangler secret put IWS_GMAIL_SCRIPT_URL
+npx wrangler secret put IWS_GMAIL_SCRIPT_SECRET
+```
+
+`SHOPIFY_ADMIN_TOKEN` and `SHOPIFY_WEBHOOK_SECRET` come from a custom Shopify app with `read_orders`, `read_fulfillments`, `read_merchant_managed_fulfillment_orders`, and `write_orders`. Point the app’s fulfillment webhooks at `https://hcgamerlife.org/api/shopify/iws-label`.
+
+`IWS_GMAIL_SCRIPT_URL` is the Google Apps Script web app in `scripts/iws-gmail-send.gs`, deployed as **Me / Anyone**. Store the same random value as `IWS_GMAIL_SCRIPT_SECRET` here and in the script’s `IWS_GMAIL_SCRIPT_SECRET` property. The script sends from the dennis@ Gmail account with the PDF attached.
+
 Quiz contacts still use the HighLevel secret:
 
 ```bash
